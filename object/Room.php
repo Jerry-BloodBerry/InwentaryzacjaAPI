@@ -1,7 +1,7 @@
 <?php
 
 
-class Room
+class Room implements JsonSerializable
 {
     private $id;
     private $name;
@@ -56,4 +56,15 @@ class Room
     }
 
 
+    /**
+     * @inheritDoc
+     */
+    public function jsonSerialize()
+    {
+        return [
+            "id" => $this->id,
+            "name" => $this->name,
+            "building" => $this->building
+        ];
+    }
 }
