@@ -25,10 +25,4 @@ interface IService
      * @return void
      */
     static function deleteOneById($id);
-
-    /**
-     * @param array $key_value
-     * @return void
-     */
-    static function findOneBy($key_value);
 }

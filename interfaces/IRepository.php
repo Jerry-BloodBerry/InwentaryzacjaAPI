@@ -4,7 +4,7 @@
 interface IRepository
 {
     function find($id);
-    function findOneBy($column_name);
     function findAll();
-    function findAllLike();
+    function deleteOne($id);
+    function addNew($asset);
 }

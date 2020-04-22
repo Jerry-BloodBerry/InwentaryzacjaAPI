@@ -4,7 +4,7 @@
 class Database
 {
     private $host = "localhost.inwentaryzacja.com";
-    private $db_name = "api_db";
+    private $db_name = "inwentaryzacja_db";
     private $username = "root";
     private $password = "";
     public $conn;

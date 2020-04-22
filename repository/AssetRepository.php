@@ -14,15 +14,19 @@ class AssetRepository implements IRepository
         $this->conn = $db;
     }
 
+    /**
+     * @param integer $id
+     * @return Asset
+     */
     function find($id)
     {
         $query = "SELECT 
-                a.id, a.name, a.type_id 
+                a.id, a.name, a.asset_type 
           FROM
             " . $this->table_name . " a
             LEFT JOIN 
                 asset_types ast
-                    ON a.type_id = ast.id
+                    ON a.asset_type = ast.id
             WHERE
                 a.id = ?
             LIMIT
@@ -35,29 +39,28 @@ class AssetRepository implements IRepository
 
         //fetch row
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        var_dump($row);
+        if(!$row) return null;
+
         $asset = new Asset();
-        $asset->setAssetType($row["type_id"]);
+        $asset->setAssetType($row["asset_type"]);
         $asset->setId($id);
         $asset->setName($row["name"]);
 
         return $asset;
     }
 
-    function findOneBy($column_name)
-    {
-        // TODO: Implement findOneBy() method.
-    }
-
+    /**
+     * @return array
+     */
     function findAll()
     {
         $query = "SELECT
-                a.id, a.name, a.type_id
+                a.id, a.name, a.asset_type
             FROM
                 " . $this->table_name . " a
                 LEFT JOIN
                     asset_types ast
-                        ON a.type_id = ast.id
+                        ON a.asset_type = ast.id
                 ORDER BY a.id";
         $stmt = $this->conn->prepare($query);
 
@@ -68,14 +71,65 @@ class AssetRepository implements IRepository
             $asset = new Asset();
             $asset->setId($row["id"]);
             $asset->setName($row["name"]);
-            $asset->setAssetType($row["type_id"]);
+            $asset->setAssetType($row["asset_type"]);
             $asset_array [] = $asset;
         }
         return array("count" => $stmt->rowCount(), "assets" => $asset_array);
     }
 
-    function findAllLike()
+    /**
+     * @param integer $id
+     * @return bool
+     */
+    function deleteOne($id)
     {
-        // TODO: Implement findAllLike() method.
+        $query = "DELETE
+                FROM " . $this->table_name . "
+                WHERE id = ?";
+        //prepare_query
+        $stmt = $this->conn->prepare($query);
+
+        //sanitize data
+        $id = htmlspecialchars(strip_tags($id));
+
+        //bind parameter
+        $stmt->bindParam(1,$id);
+
+        if($stmt->execute())
+        {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param Asset $asset
+     * @return bool
+     */
+    function addNew($asset)
+    {
+        $query = "INSERT
+                INTO " . $this->table_name . "
+                SET
+                    name=:name, asset_type=:type_id";
+        $stmt = $this->conn->prepare($query);
+
+        //sanitize data
+        $asset->setName(htmlspecialchars(strip_tags($asset->getName())));
+        $asset->setAssetType(htmlspecialchars(strip_tags($asset->getAssetType())));
+
+        //bind params
+        $name = $asset->getName();
+        $type = $asset->getAssetType();
+
+        $stmt->bindParam(":name",$name);
+        $stmt->bindParam(":type_id",$type);
+
+        //execute query
+        if($stmt->execute())
+        {
+            return true;
+        }
+        return false;
     }
 }

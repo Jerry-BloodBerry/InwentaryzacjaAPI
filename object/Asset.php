@@ -41,7 +41,7 @@ class Asset implements JsonSerializable
     }
 
     /**
-     * @return AssetType
+     * @return integer
      */
     public function getAssetType()
     {
@@ -49,7 +49,7 @@ class Asset implements JsonSerializable
     }
 
     /**
-     * @param AssetType $assetType
+     * @param integer $assetType
      */
     public function setAssetType($assetType)
     {
