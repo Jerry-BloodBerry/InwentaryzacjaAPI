@@ -15,10 +15,10 @@ interface IService
     static function findAll();
 
     /**
-     * @param object $object
+     * @param array $data
      * @return void
      */
-    static function addNew($object);
+    static function addNew($data);
 
     /**
      * @param integer $id

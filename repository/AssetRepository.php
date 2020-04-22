@@ -95,7 +95,7 @@ class AssetRepository implements IRepository
         //bind parameter
         $stmt->bindParam(1,$id);
 
-        if($stmt->execute())
+        if($stmt->execute() && $stmt->rowCount()>0)
         {
             return true;
         }
