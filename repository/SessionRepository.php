@@ -120,18 +120,12 @@ class SessionRepository implements IRepository
         $session->setUserId(htmlspecialchars(strip_tags($session->getUserId())));
         $session->setToken(htmlspecialchars(strip_tags($session->getToken())));
         $session->setCreateDate(new DateTime('now'));
-        try{
-            $session->setExpirationDate(new DateTime(htmlspecialchars(strip_tags($session->getExpirationDate()))));
-        }
-        catch (Exception $e) {
-            echo 'An exception occurred while setting date fields: ' . $e->getMessage();
-        }
 
         //bind params
         $user_id = $session->getUserId();
         $token = $session->getToken();
-        $exp_date = $session->getExpirationDate();
-        $crt_date = $session->getCreateDate();
+        $exp_date = $session->getExpirationDate()->format('Y-m-d H:i:s');
+        $crt_date = $session->getCreateDate()->format('Y-m-d H:i:s');
 
         //bind params
         $stmt->bindParam(":u_id",$user_id);

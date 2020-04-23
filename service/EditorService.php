@@ -1,13 +1,14 @@
 <?php
 include_once '../security/Security.php';
 include_once '../interfaces/IService.php';
+include_once '../security/BearerToken.php';
 
 class EditorService
 {
     public static function Create(IService $service, $data)
     {
-        if(!empty($data->token)) {
-            if(Security::authorizeUser(htmlspecialchars(strip_tags($data->token)))) {
+        if(!empty(BearerToken::getBearerToken())) {
+            if(Security::authorizeUser(BearerToken::getBearerToken())) {
                 $service::addNew($data);
             }
             else {
@@ -23,8 +24,8 @@ class EditorService
 
     public static function Delete(IService $service, $data)
     {
-        if(!empty($data->token) && !empty($data->id)) {
-            if (Security::authorizeUser(htmlspecialchars(strip_tags($data->token)))) {
+        if(!empty(BearerToken::getBearerToken()) && !empty($data->id)) {
+            if (Security::authorizeUser(BearerToken::getBearerToken())) {
                 $service::deleteOneById($data->id);
             }
             else {
