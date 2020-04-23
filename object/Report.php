@@ -1,7 +1,7 @@
 <?php
 
 
-class Report
+class Report implements JsonSerializable
 {
     private $id;
     private $name;
@@ -89,4 +89,17 @@ class Report
         $this->owner = $owner;
     }
 
+    /**
+     * @inheritDoc
+     */
+    public function jsonSerialize()
+    {
+        return [
+            "id" => $this->id,
+            "name" => $this->name,
+            "room" => $this->room,
+            "create_date" => $this->create_date,
+            "owner" => $this->owner
+        ];
+    }
 }
