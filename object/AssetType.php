@@ -1,10 +1,27 @@
 <?php
 
 
-class AssetType
+class AssetType implements JsonSerializable
 {
+    private $id;
     private $letter;
     private $name;
+
+    /**
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param integer $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
 
     /**
      * @return string
@@ -38,5 +55,15 @@ class AssetType
         $this->name = $name;
     }
 
-
+    /**
+     * @inheritDoc
+     */
+    public function jsonSerialize()
+    {
+        return [
+            "id" => $this->id,
+            "letter" => $this->letter,
+            "name" => $this->name
+        ];
+    }
 }
