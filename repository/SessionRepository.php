@@ -119,7 +119,6 @@ class SessionRepository implements IRepository
         //sanitize data
         $session->setUserId(htmlspecialchars(strip_tags($session->getUserId())));
         $session->setToken(htmlspecialchars(strip_tags($session->getToken())));
-        $session->setCreateDate(new DateTime('now'));
 
         //bind params
         $user_id = $session->getUserId();

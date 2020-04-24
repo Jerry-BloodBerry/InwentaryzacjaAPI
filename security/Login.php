@@ -34,7 +34,9 @@ class Login
 
                    $session = new Session();
                    $session->setCreateDate(new DateTime('now'));
-                   $session->setExpirationDate(new DateTime('tomorrow'));
+                   $start_date = new DateTime($session->getCreateDate()->format('Y-m-d H:i:s'));
+                   $end_date = $start_date->add(DateInterval::createFromDateString('1 week'));
+                   $session->setExpirationDate($end_date);
                    $session->setToken(Token::getToken(20));
                    $session->setUserId($user->getId());
 
