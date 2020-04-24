@@ -3,5 +3,6 @@
 header("Access-Control-Allow-Origin: *");
 header("Content-Type application/json; charset=UTF-8");
 include_once '../service/BuildingService.php';
+include_once '../service/RetrieverService.php';
 
-BuildingService::findAll();
+RetrieverService::RetrieveAllObjects(new BuildingService());
