@@ -10,7 +10,7 @@ The entire project is written in vanilla PHP.
 All the read and read_one endpoints are of type GET. 
 All the create and delete endpoints are of type POST.
 -----------------------------------------------------
-###Asset
+### Asset
 * /asset/read.php - returns all objects of type Asset in JSON
 format.
 * /asset/read_one.php?id=x - returns object of type Asset with
@@ -21,7 +21,7 @@ format.
   the Asset object from the database. If the asset does not exist
   in the database this will return an error 
   message in JSON format.
-###AssetType
+### AssetType
 * /asset_type/read.php - returns all objects of type AssetType
  in JSON format.
 * /asset_type/read_one.php?id=x - returns object of type AssetType
@@ -43,7 +43,7 @@ format.
    the Building object from the database. If the building does not
    exist in the database this will return an error 
    message in JSON format.
- ###Report
+ ### Report
   * /report/read.php - returns all objects of type Report in JSON
   format.
   * /report/read_one.php?id=x - returns object of type Report with
@@ -54,7 +54,7 @@ format.
     the Report object from the database. If the report does not
     exist in the database this will return an error 
     message in JSON format.
-  ###Room
+  ### Room
   * /room/read.php - returns all objects of type Room in JSON
   format.
   * /room/read_one.php?id=x - returns object of type Room with
@@ -65,7 +65,7 @@ format.
   the Room object from the database. If the report does not
   exist in the database this will return an error 
   message in JSON format.
-  ###UserCreator <- Just for testing!
+  ### UserCreator <- Just for testing!
  * /creator/user_creator.php - creates a User object with 
  the specified login and password and persists it to database.
  This should only be used for testing purposes as it is not 
