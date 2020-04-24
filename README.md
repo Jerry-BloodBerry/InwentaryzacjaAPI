@@ -32,7 +32,7 @@ format.
  deletes the AssetType object from the database. If the asset
  does not exist in the database this will return an error 
  message in JSON format.
- ###Building
+ ### Building
  * /building/read.php - returns all objects of type Building in JSON
  format.
  * /building/read_one.php?id=x - returns object of type Building with
