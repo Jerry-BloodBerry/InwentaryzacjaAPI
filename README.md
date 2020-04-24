@@ -10,6 +10,10 @@ The entire project is written in vanilla PHP.
 All the read and read_one endpoints are of type GET. 
 All the create and delete endpoints are of type POST.
 -----------------------------------------------------
+### Login
+* /login/login.php - creates session for a user that has an
+account in the database. Returns a token allowing the user
+to make requests listed below.
 ### Asset
 * /asset/read.php - returns all objects of type Asset in JSON
 format.
