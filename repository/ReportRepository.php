@@ -2,10 +2,14 @@
 include_once '../interfaces/IRepository.php';
 include_once '../object/Report.php';
 include_once '../config/Database.php';
+include_once '../security/BearerToken.php';
 
 class ReportRepository implements IRepository
 {
     //database connection and table name
+    /**
+     * @var PDO
+     */
     private $conn;
     private $table_name = "reports";
 
@@ -89,39 +93,85 @@ class ReportRepository implements IRepository
     }
 
     /**
-     * @param Report $report
+     * @param mixed $report_data
      * @return bool
      */
-    function addNew($report)
+    function addNew($report_data)
     {
-        $query = "INSERT
-                INTO " . $this->table_name . "
-                SET
-                    name=:name, room=:room, create_date=:create_date, owner=:owner";
-        $stmt = $this->conn->prepare($query);
-
+        /** @var Report $report */
+        $report = $report_data['report'];
+        $assets = $report_data['assets'];
         //sanitize data
         $report->setName(htmlspecialchars(strip_tags($report->getName())));
         $report->setRoom(htmlspecialchars(strip_tags($report->getRoom())));
-        $report->setCreateDate(htmlspecialchars(strip_tags($report->getCreateDate())));
-        $report->setOwner(htmlspecialchars(strip_tags($report->getOwner())));
+        $this->setOwnerForReport($report);
 
-        //bind param
-        $name = $report->getName();
-        $room = $report->getRoom();
-        $create_date = $report->getCreateDate();
-        $owner = $report->getOwner();
+        try {
+            $date = $report->getCreateDate()->format('Y-m-d H:i:s');
+            $this->conn->beginTransaction();
+            $this->insertReport($report,$date);
 
-        $stmt->bindParam(":name",$name);
-        $stmt->bindParam(":room",$room);
-        $stmt->bindParam(":create_date",$create_date);
-        $stmt->bindParam(":owner",$owner);
+            $last_report_id = $this->getLastReportId();
+            $this->insertReportsAssets($assets,$report,$last_report_id);
 
-        //execute query
-        if($stmt->execute())
-        {
+            $this->conn->commit();
             return true;
+        } catch (Exception $e) {
+            error_log($e->getMessage());
+            $this->conn->rollBack();
+            return false;
         }
-        return false;
+    }
+
+    private function setOwnerForReport($report)
+    {
+        $token = BearerToken::getBearerToken();
+        $stmt = $this->conn->query("
+        SELECT `user_id` FROM login_sessions
+        WHERE `token` = '{$token}'
+        ");
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $owner = $row['user_id'];
+        $report->setOwner($owner);
+    }
+
+    private function getLastReportId()
+    {
+        $stmt = $this->conn->query("
+            SELECT `id` FROM `{$this->table_name}` ORDER BY `id` DESC LIMIT 1");
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row['id'];
+    }
+
+    /**
+     * @param array $assets
+     * @param Report $report
+     * @param integer $last_report_id
+     */
+    private function insertReportsAssets($assets, $report, $last_report_id)
+    {
+        foreach ($assets as $asset)
+        {
+            $asset->setPreviousRoom($report->getRoom());
+            $asset->setReportId($last_report_id);
+            $this->conn->exec("
+                INSERT INTO `reports_assets`
+                SET
+                `report_id` = {$asset->getReportId()},
+                `asset_id` = {$asset->getAssetId()},
+                `previous_room` = {$asset->getPreviousRoom()} 
+                ");
+        }
+    }
+    private function insertReport($report, $date)
+    {
+        $this->conn->exec("
+            INSERT INTO `{$this->table_name}` 
+            SET 
+            `name` = '{$report->getName()}', 
+            `room` = {$report->getRoom()},
+            `create_date` = '{$date}',
+            `owner` = {$report->getOwner()}
+            ");
     }
 }

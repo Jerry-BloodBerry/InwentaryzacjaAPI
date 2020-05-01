@@ -3,6 +3,7 @@ include_once '../interfaces/IService.php';
 include_once '../object/Report.php';
 include_once '../config/Database.php';
 include_once '../repository/ReportRepository.php';
+include_once '../object/ReportAsset.php';
 
 class ReportService implements IService
 {
@@ -67,22 +68,36 @@ class ReportService implements IService
         if(
             !empty($data->name)&&
             !empty($data->room)&&
-            !empty($data->create_date)&&
-            !empty($data->owner))
+            !empty($data->assets))
         {
+            $assets = array();
+            foreach ($data->assets as $asset)
+            {
+                if(empty($asset->asset_id))
+                {
+                    http_response_code(400);
+                    echo json_encode(array("message" => "Unable to create report. The data is incomplete."));
+                    exit();
+                }
+                $reportAsset = new ReportAsset();
+                $reportAsset->setAssetId($asset->asset_id);
+                $assets[] = $reportAsset;
+            }
             $report = new Report();
             $report->setName($data->name);
             $report->setRoom($data->room);
-            $report->setCreateDate($data->create_date);
-            $report->setOwner($data->owner);
+            $report->setCreateDate(new DateTime('now'));
 
             //init database
             $database = new Database();
             $db = $database->getConnection();
 
             $rr = new ReportRepository($db);
-
-            if($rr->addNew($report))
+            $report_data = [
+                'report' => $report,
+                'assets' => $assets
+            ];
+            if($rr->addNew($report_data))
             {
                 http_response_code(201);
                 echo json_encode(array("message" => "Report created successfully"));
