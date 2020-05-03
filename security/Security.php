@@ -31,7 +31,7 @@ class Security
 
     /**
      * 
-     * Funkcja sprawdza czy Token przekazany przez użytkownika nadal jest ważny
+     * Funkcja sprawdza czy Token przekazany przez uzytkownika nadal jest wazny
      * @return true jezeli nadal wazny, a false jezeli juz wygasl 
      */
     private static function validateTokenExpiry($session)
