@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * 
+ * Klasa bazy danych
+ * 
+ * 
+ */
 
 class Database
 {
@@ -8,7 +14,10 @@ class Database
     private $username = "root";
     private $password = "";
     public $conn;
-
+/**
+ * Funkcja nawiązująca połączeniem pomiędzy userem a bazą danych 
+ * @return void
+ */
     public function getConnection()
     {
         $this->conn = null;
