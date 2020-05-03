@@ -5,11 +5,15 @@ include_once '../config/Database.php';
 include_once '../repository/ReportRepository.php';
 include_once '../object/ReportAsset.php';
 
+/**
+ * Klasa posrednia pomiedzy otrzymaniem danych a wstawieniem ich do bazy danych
+ */
 class ReportService implements IService
 {
 
     /**
-     * @inheritDoc
+     * Funkcja znajdujaca srodek trwaly po jego id
+     * @param $id - id szukanego srodka trwalego
      */
     static function findOneById($id)
     {
@@ -35,7 +39,7 @@ class ReportService implements IService
     }
 
     /**
-     * @inheritDoc
+     * Funkcja znajdujaca wszystkie srodki trwale
      */
     static function findAll()
     {
@@ -61,7 +65,8 @@ class ReportService implements IService
     }
 
     /**
-     * @inheritDoc
+     * Funkcja dodajaca nowy srodek trwaly
+     * @param $data - dane dodawanego srodka trwalego
      */
     static function addNew($data)
     {
@@ -116,7 +121,8 @@ class ReportService implements IService
     }
 
     /**
-     * @inheritDoc
+     * Funkcja usuwajaca srodek trwaly po jego id
+     * @param $id - id usuwanego srodka trwalego
      */
     static function deleteOneById($id)
     {

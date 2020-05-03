@@ -4,7 +4,8 @@
 class BearerToken
 {
     /**
-     * Get header Authorization
+     * Funkcja pobierajaca naglowki autoryzacyjne
+     * @return naglowki autoryzacyjne
      * */
     static function getAuthorizationHeader(){
         $headers = null;
@@ -29,7 +30,7 @@ class BearerToken
         return $headers;
     }
     /**
-     * get access token from header
+     * Funkcja pobierajaca token dostepu od uzytkownika
      * */
     static function getBearerToken() {
         $headers = self::getAuthorizationHeader();

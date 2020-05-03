@@ -4,25 +4,26 @@
 interface IService
 {
     /**
-     * @param $id
-     * @return void
+     * Funkcja wyszukuje element w bazie Repozytorium i go zwraca
+     * @param $id - id szukanego elementu
      */
     static function findOneById($id);
 
     /**
-     * @return void
+     * Funkcja wyszukuje wszystkie elementy w bazie Repozytorium i je zwraca
+     *
      */
     static function findAll();
 
     /**
-     * @param array $data
-     * @return void
+     * Funkcja dodaje element do bazy repozytorium
+     * @param $data - dane elementu dodawanego
      */
     static function addNew($data);
 
     /**
-     * @param integer $id
-     * @return void
+     * Funkcja usuwa element z bazy repozytorium
+     *  @param $id - id usuwanego elementu
      */
     static function deleteOneById($id);
 }

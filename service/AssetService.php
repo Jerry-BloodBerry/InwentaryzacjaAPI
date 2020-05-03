@@ -3,11 +3,16 @@ include_once '../repository/AssetRepository.php';
 include_once '../interfaces/IService.php';
 include_once '../config/Database.php';
 
+/**
+ * Klasa zarzadzajaca srodkami trwalymi
+ * 
+ */
 class AssetService implements IService
 {
 
     /**
-     * @inheritDoc
+     * Funkcja znajduje element (srodek trwaly) w bazie po jego id
+     * @param $id - id szukanego elementu w bazie
      */
     static function findOneById($id)
     {
@@ -32,9 +37,9 @@ class AssetService implements IService
         }
     }
 
-    /**
-     * @inheritDoc
-     */
+   /**
+    * Funkcja wyszukujaca wszystkie elementy (srodki trwale) w bazie
+    */
     static function findAll()
     {
         // get database connection
@@ -59,7 +64,8 @@ class AssetService implements IService
     }
 
     /**
-     * @inheritDoc
+     * Funkcja dodajaca nowy srodek trwaly do bazy
+     * @param $data - dane nowego elementu
      */
     static function addNew($data)
     {
@@ -97,7 +103,8 @@ class AssetService implements IService
     }
 
     /**
-     * @inheritDoc
+     * Funkcja usuwajaca srodek trwaly po jego id
+     * @param $id - id srodka trwalego
      */
     static function deleteOneById($id)
     {

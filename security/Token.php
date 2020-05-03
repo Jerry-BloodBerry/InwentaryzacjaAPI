@@ -3,6 +3,10 @@
 
 class Token
 {
+    /**
+     * Funkcja generujaca token
+     * @param $length - dlugosc generowanego tokenu
+     */
     static function getToken($length)
     {
         $token = "";

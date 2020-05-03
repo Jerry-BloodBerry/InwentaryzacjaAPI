@@ -3,12 +3,16 @@ include_once '../interfaces/IService.php';
 include_once '../repository/RoomRepository.php';
 include_once '../config/Database.php';
 include_once '../object/Room.php';
-
+/**
+ * Klasa posrednia pomiedzy otrzymaniem danych a wstawieniem ich do bazy danych
+ * Obsluguje wszystko zwiazane z pokojami
+ */
 class RoomService implements IService
 {
 
     /**
-     * @inheritDoc
+     * Funkcja znajdujaca pokoj w bazie danych, po jego id
+     * @param $id - id szukanego pokoju
      */
     static function findOneById($id)
     {
@@ -34,7 +38,7 @@ class RoomService implements IService
     }
 
     /**
-     * @inheritDoc
+     * Funkcja znajdujaca wszystkie pokoje w bazie danych
      */
     static function findAll()
     {
@@ -60,7 +64,8 @@ class RoomService implements IService
     }
 
     /**
-     * @inheritDoc
+     * Funkcja dodajaca nowy pokoj do bazy danych
+     * @param $data - dane dodawanego pokoju
      */
     static function addNew($data)
     {
@@ -95,7 +100,8 @@ class RoomService implements IService
     }
 
     /**
-     * @inheritDoc
+     * Funkcja usuwajaca pokoj z bazy danych na podstawie jego id
+     * @param $id - id usuwanego pokoju
      */
     static function deleteOneById($id)
     {

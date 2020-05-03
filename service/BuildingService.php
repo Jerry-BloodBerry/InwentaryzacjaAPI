@@ -4,11 +4,16 @@ include_once '../object/Building.php';
 include_once '../repository/BuildingRepository.php';
 include_once '../config/Database.php';
 
+/**
+ * Klasa zarzadzajaca ustawieniami budynkow w bazie danych
+ * 
+ */
 class BuildingService implements IService
 {
 
     /**
-     * @inheritDoc
+     * Funkcja wyszukujaca budynek w bazie danych
+     * @param $id - id szukanego budynku
      */
     static function findOneById($id)
     {
@@ -34,7 +39,7 @@ class BuildingService implements IService
     }
 
     /**
-     * @inheritDoc
+     * Funkcja znajdujaca wszystkie budynki w bazie danych
      */
     static function findAll()
     {
@@ -60,7 +65,8 @@ class BuildingService implements IService
     }
 
     /**
-     * @inheritDoc
+     * Funkcja dodajaca nowy budynek do bazy danych
+     * @param $data - dane dodawanego obiektu (budynku)
      */
     static function addNew($data)
     {
@@ -94,7 +100,8 @@ class BuildingService implements IService
     }
 
     /**
-     * @inheritDoc
+     * Funkcja usuwajaca dany budynek z bazy danych na podstawie id
+     * @param $id - id usuwanego obiektu 
      */
     static function deleteOneById($id)
     {
