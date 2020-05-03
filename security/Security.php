@@ -31,8 +31,8 @@ class Security
 
     /**
      * 
-     * Funkcja ustawiajaca termin wygasniecia tokena
-     * @return czas wygasniecia tokena
+     * Funkcja sprawdza czy Token przekazany przez użytkownika nadal jest ważny
+     * @return true jezeli nadal wazny, a false jezeli juz wygasl 
      */
     private static function validateTokenExpiry($session)
     {
