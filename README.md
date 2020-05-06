@@ -58,6 +58,11 @@ format.
     the Report object from the database. If the report does not
     exist in the database this will return an error 
     message in JSON format.
+  ### Report's Assets
+  * /reports_assets/asset_last_room.php - returns last room for
+   asset with the given id
+  * /reports_assets/room_report_content.php - returns all objects
+  of type ReportAsset in JSON format 
   ### Room
   * /room/read.php - returns all objects of type Room in JSON
   format.
