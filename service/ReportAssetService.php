@@ -23,7 +23,7 @@ class ReportAssetService
         }
         else {
             http_response_code(404); // last report for room was not found
-            echo json_encode(["message" => "Report for this room does not exist in the database."]);
+            echo json_encode(["message" => "ReportHeader for this room does not exist in the database."]);
         }
     }
 

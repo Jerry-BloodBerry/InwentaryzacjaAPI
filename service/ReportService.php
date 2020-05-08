@@ -1,6 +1,6 @@
 <?php
 include_once '../interfaces/IService.php';
-include_once '../object/Report.php';
+include_once '../object/ReportHeader.php';
 include_once '../config/Database.php';
 include_once '../repository/ReportRepository.php';
 include_once '../object/ReportAsset.php';
@@ -30,7 +30,7 @@ class ReportService implements IService
         }
         else {
             http_response_code(404); // asset was not found
-            echo json_encode(["message" => "Report does not exist"]);
+            echo json_encode(["message" => "ReportHeader does not exist"]);
         }
     }
 
@@ -70,7 +70,7 @@ class ReportService implements IService
             !empty($data->room)&&
             !empty($data->assets))
         {
-            $assets = array();
+            $assets = $data->assets;
             foreach ($data->assets as $asset)
             {
                 if(empty($asset->asset_id))
@@ -83,9 +83,9 @@ class ReportService implements IService
                 $reportAsset->setAssetId($asset->asset_id);
                 $assets[] = $reportAsset;
             }
-            $report = new Report();
+            $report = new ReportHeader();
             $report->setName($data->name);
-            $report->setRoom($data->room);
+            $report->setRoomId($data->room);
             $report->setCreateDate(new DateTime('now'));
 
             //init database
@@ -100,7 +100,7 @@ class ReportService implements IService
             if($rr->addNew($report_data))
             {
                 http_response_code(201);
-                echo json_encode(array("message" => "Report created successfully"));
+                echo json_encode(array("message" => "ReportHeader created successfully"));
             }
             else
             {
@@ -130,7 +130,7 @@ class ReportService implements IService
         if($rr->deleteOne($id))
         {
             http_response_code(200);
-            echo json_encode(array("message" => "Report was deleted"));
+            echo json_encode(array("message" => "ReportHeader was deleted"));
         }
         else {
             http_response_code(503);

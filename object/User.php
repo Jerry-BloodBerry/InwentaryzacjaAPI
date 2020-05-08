@@ -5,7 +5,6 @@ class User implements JsonSerializable
 {
     private $id;
     private $login;
-    private $salt;
     private $hash;
 
     /**
@@ -43,22 +42,6 @@ class User implements JsonSerializable
     /**
      * @return string
      */
-    public function getSalt()
-    {
-        return $this->salt;
-    }
-
-    /**
-     * @param string $salt
-     */
-    public function setSalt($salt)
-    {
-        $this->salt = $salt;
-    }
-
-    /**
-     * @return string
-     */
     public function getHash()
     {
         return $this->hash;
@@ -80,7 +63,6 @@ class User implements JsonSerializable
         return [
             "id" => $this->id,
             "login" => $this->login,
-            "salt" => $this->salt,
             "hash" => $this->hash
         ];
     }

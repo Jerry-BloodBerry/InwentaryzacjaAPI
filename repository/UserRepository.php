@@ -16,7 +16,7 @@ class UserRepository
     public function findOneByLogin($login)
     {
         $query = "SELECT 
-                u.id, u.login, u.salt, u.hash 
+                u.id, u.login, u.hash 
           FROM
             " . $this->table_name . " u
             WHERE
@@ -36,7 +36,6 @@ class UserRepository
         $user = new User();
         $user->setId($row["id"]);
         $user->setLogin($row["login"]);
-        $user->setSalt($row["salt"]);
         $user->setHash($row["hash"]);
 
         return $user;
