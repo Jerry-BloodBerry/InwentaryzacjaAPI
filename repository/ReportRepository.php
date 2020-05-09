@@ -36,8 +36,21 @@ class ReportRepository implements IRepository
 
     function findAll()
     {
-        $query = "CALL getReportsHeaders()";
+        $query = "CALL getLoginSession(?)";
         $stmt = $this->conn->prepare($query);
+
+        $token = BearerToken::getBearerToken();
+        $stmt->bindParam(1,$token);
+
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $user_id = $row['user_id'];
+
+        $query = "CALL getReportsHeaders(?)";
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(1,$user_id);
 
         //execute query
         $stmt->execute();

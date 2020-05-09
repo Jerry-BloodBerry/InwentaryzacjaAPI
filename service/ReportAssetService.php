@@ -17,7 +17,7 @@ class ReportAssetService
 
         if($room_assets!=null)
         {
-            //everything went OK, asset was found
+            //everything went OK, assets were found
             http_response_code(200);
             echo json_encode($room_assets);
         }

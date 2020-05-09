@@ -42,10 +42,11 @@ class ReportAssetRepository
         $stmt = $this->conn->prepare($query);
 
         //sanitize
-        $report_id = htmlspecialchars(strip_tags($report_id));
-
+        $report_id = (int) htmlspecialchars(strip_tags($report_id));
         //bind param
         $stmt->bindParam(1,$report_id);
+        //execute query
+        $stmt->execute();
 
         $report_assets = array();
         while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {

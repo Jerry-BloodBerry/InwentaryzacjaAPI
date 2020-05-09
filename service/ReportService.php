@@ -7,7 +7,6 @@ include_once '../object/ReportAsset.php';
 
 class ReportService implements IService
 {
-
     /**
      * @inheritDoc
      */

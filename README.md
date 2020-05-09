@@ -47,7 +47,7 @@ to make requests listed below.
    the Building object from the database. If the building does not
    exist in the database this will return an error 
    message in JSON format.
- * /building/read_rooms_building.php - returns all objects of type 
+ * /building/read_rooms.php - returns all objects of type 
    Room belonging to the building with the specified id in JSON format.
  ### Report
   * /report/read.php - returns all objects of type Report in JSON
@@ -60,18 +60,17 @@ to make requests listed below.
     the Report object from the database. If the report does not
     exist in the database this will return an error 
     message in JSON format.
-  ### Room's/Report's Assets
-  * /r_assets/read_report_assets.php - returns all assets
-  of type ReportAsset, that were inside the report with the given
-  id, in JSON format
-  * /r_assets/read_room_assets.php - returns all objects
-  of type ReportAsset belonging to room with the specified id 
-  in JSON format 
+  * /report/read_assets.php?id=? - returns all assets
+    of type ReportAsset, that were inside the report with the given
+    id, in JSON format
   ### Room
   * /room/create.php - when passed complete data it creates
   a Room object and persists it in the database.
+  * /room/read_assets.php - returns all objects
+    of type ReportAsset belonging to room with the specified id 
+    in JSON format 
   ### UserCreator <- Just for testing!
- * /creator/user_creator.php - creates a User object with 
+  * /creator/user_creator.php - creates a User object with 
  the specified login and password and persists it to database.
  This should only be used for testing purposes as it is not 
  a secured endpoint. No token/privileges verification is performed

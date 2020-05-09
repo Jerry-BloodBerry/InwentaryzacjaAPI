@@ -117,10 +117,7 @@ class BuildingRepository implements IRepository
      */
     function addNew($building)
     {
-        $query = "INSERT
-                INTO " . $this->table_name . "
-                SET
-                    name=:name";
+        $query = "CALL addBuilding(:name)";
         $stmt = $this->conn->prepare($query);
 
         //sanitize data
@@ -128,6 +125,7 @@ class BuildingRepository implements IRepository
 
         //bind param
         $name = $building->getName();
+
         $stmt->bindParam(":name",$name);
 
         //execute query

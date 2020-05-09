@@ -2,6 +2,7 @@
 include_once '../repository/RoomRepository.php';
 include_once '../config/Database.php';
 include_once '../object/Room.php';
+include_once '../object/Building.php';
 
 class RoomService
 {

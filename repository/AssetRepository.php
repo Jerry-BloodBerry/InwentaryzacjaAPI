@@ -70,9 +70,7 @@ class AssetRepository
      */
     function addNew($asset)
     {
-        $query = "INSERT
-                INTO " . $this->table_name . "
-                SET type=:type_id";
+        $query = "CALL addNewAsset(:type_id)";
         $stmt = $this->conn->prepare($query);
 
         //bind params
