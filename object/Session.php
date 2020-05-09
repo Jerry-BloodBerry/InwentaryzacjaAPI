@@ -8,6 +8,7 @@ class Session
     private $token;
     private $expiration_date;
     private $create_date;
+    private $expired;
 
     /**
      * @return integer
@@ -88,6 +89,24 @@ class Session
     {
         $this->create_date = $create_date;
     }
+
+    /**
+     * @return boolean
+     */
+    public function getExpired()
+    {
+        return $this->expired;
+    }
+
+    /**
+     * @param boolean $expired
+     */
+    public function setExpired($expired)
+    {
+        $this->expired = $expired;
+    }
+
+
 
 
 }

@@ -6,6 +6,31 @@ include_once '../config/Database.php';
 
 class BuildingService implements IService
 {
+    /**
+     * @inheritDoc
+     */
+    public static function findAllRooms($building_id)
+    {
+        // get database connection
+        $database = new Database();
+        $db = $database->getConnection();
+
+        // create a repository instance
+        $rr = new BuildingRepository($db);
+
+        $rooms = $rr->findAllRooms($building_id);
+
+        if($rooms['count']>0)
+        {
+            http_response_code(200);
+            echo json_encode($rooms["rooms"]);
+        }
+        else
+        {
+            http_response_code(404);
+            echo json_encode(array("message" => "No rooms were found"));
+        }
+    }
 
     /**
      * @inheritDoc

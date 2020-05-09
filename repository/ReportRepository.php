@@ -90,7 +90,7 @@ class ReportRepository implements IRepository
         $name = $report->getName();
         $room = $report->getRoomId();
         $owner = $report->getOwnerId();
-        //$assets = json_encode($assets);
+        $assets = json_encode($assets);
         $stmt->bindParam(':name', $name);
         $stmt->bindParam(':room', $room);
         $stmt->bindParam(':owner', $owner);

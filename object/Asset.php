@@ -1,12 +1,14 @@
 <?php
-
+include_once 'Building.php';
+include_once 'AssetType.php';
 
 class Asset implements JsonSerializable
 {
     //fields
     private $id;
-    private $name;
     private $assetType;
+    private $room;
+    private $building;
 
     /**
      * @return integer
@@ -25,23 +27,7 @@ class Asset implements JsonSerializable
     }
 
     /**
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param string $name
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-    }
-
-    /**
-     * @return integer
+     * @return AssetType
      */
     public function getAssetType()
     {
@@ -49,11 +35,43 @@ class Asset implements JsonSerializable
     }
 
     /**
-     * @param integer $assetType
+     * @param AssetType $assetType
      */
     public function setAssetType($assetType)
     {
         $this->assetType = $assetType;
+    }
+
+    /**
+     * @return Room
+     */
+    public function getRoom()
+    {
+        return $this->room;
+    }
+
+    /**
+     * @param Room $room
+     */
+    public function setRoom($room)
+    {
+        $this->room = $room;
+    }
+
+    /**
+     * @return Building
+     */
+    public function getBuilding()
+    {
+        return $this->building;
+    }
+
+    /**
+     * @param Building $building
+     */
+    public function setBuilding($building)
+    {
+        $this->building = $building;
     }
 
     /**
@@ -64,7 +82,8 @@ class Asset implements JsonSerializable
         return [
             'id' => $this->id,
             'assetType' => $this->assetType,
-            'name' => $this->name
+            'room' => $this->room,
+            'building' => $this->building
         ];
     }
 }

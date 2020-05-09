@@ -1,11 +1,9 @@
 <?php
 include_once '../repository/AssetRepository.php';
-include_once '../interfaces/IService.php';
 include_once '../config/Database.php';
 
-class AssetService implements IService
+class AssetService
 {
-
     /**
      * @inheritDoc
      */
@@ -35,42 +33,16 @@ class AssetService implements IService
     /**
      * @inheritDoc
      */
-    static function findAll()
-    {
-        // get database connection
-        $database = new Database();
-        $db = $database->getConnection();
-
-        // create a repository instance
-        $ar = new AssetRepository($db);
-
-        $assets = $ar->findAll();
-
-        if($assets['count']>0)
-        {
-            http_response_code(200);
-            echo json_encode($assets["assets"]);
-        }
-        else
-        {
-            http_response_code(404);
-            echo json_encode(array("message" => "No assets were found"));
-        }
-    }
-
-    /**
-     * @inheritDoc
-     */
     static function addNew($data)
     {
         if(
-            !empty($data->name) &&
-            !empty($data->asset_type)
+            !empty($data->type)
         )
         {
             $asset = new Asset();
-            $asset->setName($data->name);
-            $asset->setAssetType($data->asset_type);
+            $asset_type = new AssetType();
+            $asset_type->setId($data->type);
+            $asset->setAssetType($asset_type);
 
             //init database
             $database = new Database();
@@ -99,7 +71,7 @@ class AssetService implements IService
     /**
      * @inheritDoc
      */
-    static function deleteOneById($id)
+    public static function deleteOneById($id)
     {
         // get database connection
         $database = new Database();

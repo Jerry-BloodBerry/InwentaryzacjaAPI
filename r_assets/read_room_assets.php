@@ -5,9 +5,12 @@ header("Access-Control-Allow-Headers: access");
 header("Access-Control-Allow-Methods: GET");
 header("Access-Control-Allow-Credentials: true");
 header('Content-Type: application/json');
-include_once '../service/RoomService.php';
-include_once '../service/RetrieverService.php';
+include_once '../service/ReportAssetService.php';
+include_once '../security/Security.php';
 
 $id = isset($_GET['id']) ? $_GET['id'] : die();
 
-RetrieverService::RetrieveObject(new RoomService(), $id);
+if(Security::performAuthorization())
+{
+    ReportAssetService::getAssetsInRoom($id);
+}

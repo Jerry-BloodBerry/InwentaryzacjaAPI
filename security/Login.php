@@ -33,22 +33,23 @@ class Login
                    $sr = new SessionRepository($db);
 
                    $session = new Session();
-                   $session->setCreateDate(new DateTime('now'));
-                   $start_date = new DateTime($session->getCreateDate()->format('Y-m-d H:i:s'));
+                   $start_date = new DateTime('now');
                    $end_date = $start_date->add(DateInterval::createFromDateString('1 week'));
                    $session->setExpirationDate($end_date);
                    $session->setToken(Token::getToken(20));
                    $session->setUserId($user->getId());
 
-                   if($sr->addNew($session))
-                   {
-                       header("Authorization: Bearer " . $session->getToken());
-                       http_response_code(200);
-                       echo json_encode(array("message" => "Login success"));
-                   }
-                   else {
-                       http_response_code(500);
-                       echo json_encode(["message" => "Incomplete data passed to service. Unable to create session."]);
+                   try {
+                       if ($sr->addNew($session)) {
+                           header("Authorization: Bearer " . $session->getToken());
+                           http_response_code(200);
+                           echo json_encode(array("message" => "Login success"));
+                       } else {
+                           http_response_code(500);
+                           echo json_encode(["message" => "Incomplete data passed to service. Unable to create session."]);
+                       }
+                   } catch (Exception $e) {
+                       echo "An exception was thrown while trying to create session: " . $e->getMessage();
                    }
                }
                else

@@ -73,15 +73,11 @@ class ReportService implements IService
             $assets = $data->assets;
             foreach ($data->assets as $asset)
             {
-                if(empty($asset->asset_id))
-                {
+                if(empty($asset->id) || empty($asset->present)) {
                     http_response_code(400);
                     echo json_encode(array("message" => "Unable to create report. The data is incomplete."));
                     exit();
                 }
-                $reportAsset = new ReportAsset();
-                $reportAsset->setAssetId($asset->asset_id);
-                $assets[] = $reportAsset;
             }
             $report = new ReportHeader();
             $report->setName($data->name);

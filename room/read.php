@@ -3,6 +3,9 @@
 header("Access-Control-Allow-Origin: *");
 header("Content-Type application/json; charset=UTF-8");
 include_once '../service/RoomService.php';
-include_once '../service/RetrieverService.php';
+include_once '../security/Security.php';
 
-RetrieverService::RetrieveAllObjects(new RoomService());
+if(Security::performAuthorization())
+{
+    RoomService::findAll();
+}

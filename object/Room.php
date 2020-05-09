@@ -40,7 +40,7 @@ class Room implements JsonSerializable
     }
 
     /**
-     * @return integer
+     * @return Building
      */
     public function getBuilding()
     {
@@ -48,7 +48,7 @@ class Room implements JsonSerializable
     }
 
     /**
-     * @param integer $building
+     * @param Building $building
      */
     public function setBuilding($building)
     {
