@@ -43,28 +43,4 @@ class RoomService
             echo json_encode(array("message" => "Unable to create room. The data is incomplete."));
         }
     }
-
-    public static function findAll()
-    {
-        // get database connection
-        $database = new Database();
-        $db = $database->getConnection();
-
-        // create a repository instance
-        $rr = new RoomRepository($db);
-
-        $rooms = $rr->findAll();
-
-        if($rooms['count']>0)
-        {
-            http_response_code(200);
-            echo json_encode($rooms["rooms"]);
-        }
-        else
-        {
-            http_response_code(404);
-            echo json_encode(array("message" => "No rooms were found"));
-        }
-
-    }
 }

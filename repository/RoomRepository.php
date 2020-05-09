@@ -14,32 +14,6 @@ class RoomRepository
         $this->conn = $db;
     }
 
-    function findAll()
-    {
-        $query = "CALL getRooms()";
-        $stmt = $this->conn->prepare($query);
-
-        //execute query
-        $stmt->execute();
-
-        $rooms_array = array();
-
-        while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-
-            $building = new Building();
-            $building->setId($row['building_id']);
-            $building->setName($row['building_name']);
-
-            $room = new Room();
-            $room->setId($row['id']);
-            $room->setName($row['name']);
-            $room->setBuilding($building);
-
-            $rooms_array [] = $room;
-        }
-        return array("count" => $stmt->rowCount(), "rooms" => $rooms_array);
-    }
-
     /**
      * @param Room $room
      * @return bool
