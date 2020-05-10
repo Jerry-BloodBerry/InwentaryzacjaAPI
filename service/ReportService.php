@@ -47,10 +47,10 @@ class ReportService implements IService
 
         $reports = $rr->findAll();
 
-        if($reports['count']>0)
+        if(count($reports)>0)
         {
             http_response_code(200);
-            echo json_encode($reports["reports"]);
+            echo json_encode($reports);
         }
         else
         {

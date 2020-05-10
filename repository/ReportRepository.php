@@ -59,7 +59,7 @@ class ReportRepository implements IRepository
 
             $report_array [] = self::prepareReport($row);
         }
-        return array("count" => $stmt->rowCount(), "reports" => $report_array);
+        return $report_array;
     }
 
     function deleteOne($id)

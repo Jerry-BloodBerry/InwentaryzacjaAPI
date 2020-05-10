@@ -15,7 +15,7 @@ class ReportAssetService
 
         $room_assets = $rar->getAssetsInRoom($room_id);
 
-        if($room_assets!=null)
+        if(count($room_assets)>0)
         {
             //everything went OK, assets were found
             http_response_code(200);
@@ -37,8 +37,9 @@ class ReportAssetService
         $rar = new ReportAssetRepository($db);
 
         $report_assets = $rar->getAssetsInReport($report_id);
+        $report_assets = $report_assets['report_assets'];
 
-        if($report_assets!=null)
+        if(count($report_assets)>0)
         {
             //everything went OK, asset was found
             http_response_code(200);

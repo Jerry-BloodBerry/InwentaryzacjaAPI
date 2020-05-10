@@ -32,7 +32,7 @@ class ReportAssetRepository
 
             $room_assets [] = self::createRoomAsset($row);
         }
-        return array("count" => $stmt->rowCount(), "room_assets" => $room_assets);
+        return $room_assets;
     }
 
     public function getAssetsInReport($report_id)
@@ -53,7 +53,7 @@ class ReportAssetRepository
 
             $report_assets [] = self::createReportAsset($row);
         }
-        return array("count" => $stmt->rowCount(), "room_assets" => $report_assets);
+        return array("report_assets" => $report_assets);
     }
 
     private static function createRoomAsset($row)
