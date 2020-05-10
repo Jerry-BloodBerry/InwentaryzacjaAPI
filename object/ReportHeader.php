@@ -17,13 +17,13 @@ class ReportHeader implements JsonSerializable
      */
     public function getId()
     {
-        return $this->id;
+        return (int) $this->id;
     }
 
     /**
      * @param integer $id
      */
-    public function setId($id)
+    public function setId(int $id)
     {
         $this->id = $id;
     }
@@ -39,7 +39,7 @@ class ReportHeader implements JsonSerializable
     /**
      * @param string $name
      */
-    public function setName($name)
+    public function setName(string $name)
     {
         $this->name = $name;
     }
@@ -55,7 +55,7 @@ class ReportHeader implements JsonSerializable
     /**
      * @param DateTime $create_date
      */
-    public function setCreateDate($create_date)
+    public function setCreateDate(DateTime $create_date)
     {
         $this->create_date = $create_date;
     }
@@ -71,7 +71,7 @@ class ReportHeader implements JsonSerializable
     /**
      * @param integer $owner_id
      */
-    public function setOwnerId($owner_id)
+    public function setOwnerId(int $owner_id)
     {
         $this->owner_id = $owner_id;
     }
@@ -87,7 +87,7 @@ class ReportHeader implements JsonSerializable
     /**
      * @param string $owner_name
      */
-    public function setOwnerName($owner_name)
+    public function setOwnerName(string $owner_name)
     {
         $this->owner_name = $owner_name;
     }
@@ -103,7 +103,7 @@ class ReportHeader implements JsonSerializable
     /**
      * @param string $room_name
      */
-    public function setRoomName($room_name)
+    public function setRoomName(string $room_name)
     {
         $this->room_name = $room_name;
     }
@@ -119,7 +119,7 @@ class ReportHeader implements JsonSerializable
     /**
      * @param string $building_name
      */
-    public function setBuildingName($building_name)
+    public function setBuildingName(string $building_name)
     {
         $this->building_name = $building_name;
     }
@@ -135,7 +135,7 @@ class ReportHeader implements JsonSerializable
     /**
      * @param integer $room_id
      */
-    public function setRoomId($room_id)
+    public function setRoomId(int $room_id)
     {
         $this->room_id = $room_id;
     }
@@ -146,7 +146,7 @@ class ReportHeader implements JsonSerializable
     public function jsonSerialize()
     {
         return [
-            "id" => $this->id,
+            "id" => (int)$this->id,
             "name" => $this->name,
             "create_date" => $this->create_date,
             "owner_id" => $this->owner_id,

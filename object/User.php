@@ -18,7 +18,7 @@ class User implements JsonSerializable
     /**
      * @param integer $id
      */
-    public function setId($id)
+    public function setId(int $id)
     {
         $this->id = $id;
     }
@@ -34,7 +34,7 @@ class User implements JsonSerializable
     /**
      * @param string $login
      */
-    public function setLogin($login)
+    public function setLogin(string $login)
     {
         $this->login = $login;
     }
@@ -50,7 +50,7 @@ class User implements JsonSerializable
     /**
      * @param string $hash
      */
-    public function setHash($hash)
+    public function setHash(string $hash)
     {
         $this->hash = $hash;
     }
@@ -61,7 +61,7 @@ class User implements JsonSerializable
     public function jsonSerialize()
     {
         return [
-            "id" => $this->id,
+            "id" => (int) $this->id,
             "login" => $this->login,
             "hash" => $this->hash
         ];

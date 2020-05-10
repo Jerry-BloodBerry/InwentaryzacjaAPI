@@ -12,13 +12,13 @@ class Room implements JsonSerializable
      */
     public function getId()
     {
-        return $this->id;
+        return (int) $this->id;
     }
 
     /**
      * @param integer $id
      */
-    public function setId($id)
+    public function setId(int $id)
     {
         $this->id = $id;
     }
@@ -34,7 +34,7 @@ class Room implements JsonSerializable
     /**
      * @param string $name
      */
-    public function setName($name)
+    public function setName(string $name)
     {
         $this->name = $name;
     }
@@ -50,7 +50,7 @@ class Room implements JsonSerializable
     /**
      * @param Building $building
      */
-    public function setBuilding($building)
+    public function setBuilding(Building $building)
     {
         $this->building = $building;
     }
@@ -62,7 +62,7 @@ class Room implements JsonSerializable
     public function jsonSerialize()
     {
         return [
-            "id" => $this->id,
+            "id" => (int) $this->id,
             "name" => $this->name,
             "building" => $this->building
         ];

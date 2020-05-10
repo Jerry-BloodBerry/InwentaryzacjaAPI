@@ -12,15 +12,15 @@ class AssetType implements JsonSerializable
      */
     public function getId()
     {
-        return $this->id;
+        return (int) $this->id;
     }
 
     /**
      * @param integer $id
      */
-    public function setId($id)
+    public function setId(int $id)
     {
-        $this->id = $id;
+        $this->id = (int) $id;
     }
 
     /**
@@ -34,7 +34,7 @@ class AssetType implements JsonSerializable
     /**
      * @param string $letter
      */
-    public function setLetter($letter)
+    public function setLetter(string $letter)
     {
         $this->letter = $letter;
     }
@@ -50,7 +50,7 @@ class AssetType implements JsonSerializable
     /**
      * @param string $name
      */
-    public function setName($name)
+    public function setName(string $name)
     {
         $this->name = $name;
     }
@@ -61,7 +61,7 @@ class AssetType implements JsonSerializable
     public function jsonSerialize()
     {
         return [
-            "id" => $this->id,
+            "id" => (int) $this->id,
             "letter" => $this->letter,
             "name" => $this->name
         ];
