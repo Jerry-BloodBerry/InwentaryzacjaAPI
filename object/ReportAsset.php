@@ -126,7 +126,7 @@ class ReportAsset implements JsonSerializable
     }
 
     /**
-     * @return integer
+     * @return integer|NULL
      */
     public function getPreviousRoom()
     {
@@ -134,9 +134,9 @@ class ReportAsset implements JsonSerializable
     }
 
     /**
-     * @param integer $previous_room
+     * @param integer|NULL $previous_room
      */
-    public function setPreviousRoom(int $previous_room)
+    public function setPreviousRoom(?int $previous_room)
     {
         $this->previous_room = $previous_room;
     }
