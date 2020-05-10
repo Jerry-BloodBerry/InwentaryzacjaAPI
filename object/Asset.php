@@ -9,7 +9,6 @@ class Asset implements JsonSerializable
     private $id;
     private $assetType;
     private $room;
-    private $building;
 
     /**
      * @return integer
@@ -60,31 +59,14 @@ class Asset implements JsonSerializable
     }
 
     /**
-     * @return Building
-     */
-    public function getBuilding()
-    {
-        return $this->building;
-    }
-
-    /**
-     * @param Building $building
-     */
-    public function setBuilding(Building $building)
-    {
-        $this->building = $building;
-    }
-
-    /**
      * @inheritDoc
      */
     public function jsonSerialize()
     {
         return [
             'id' => (int) $this->id,
-            'assetType' => $this->assetType,
-            'room' => $this->room,
-            'building' => $this->building
+            'type' => $this->assetType,
+            'room' => $this->room
         ];
     }
 }

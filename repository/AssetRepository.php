@@ -93,20 +93,21 @@ class AssetRepository
         $building = new Building();
         $room = new Room();
 
-
         $asset->setId($row['id']);
 
         $asset_type->setId($row['type']);
         $asset_type->setName($row['asset_type_name']);
+        $asset_type->setLetter($row['letter']);
+
+        $building->setName($row['building_name']);
+        $building->setId($row['building_id']);
 
         $room->setId($row['room_id']);
         $room->setName($row['room_name']);
-
-        $building->setName($row['building_name']);
+        $room->setBuilding($building);
 
         $asset->setAssetType($asset_type);
         $asset->setRoom($room);
-        $asset->setBuilding($building);
 
         return $asset;
     }

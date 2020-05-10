@@ -86,7 +86,11 @@ class SessionRepository
         $session = new Session();
         $session->setId($row["id"]);
         $session->setUserId($row["user_id"]);
-        $session->setExpirationDate($row["expiration_date"]);
+        try {
+            $session->setExpirationDate(new DateTime($row["expiration_date"]));
+        } catch (Exception $e) {
+            echo 'Error while setting expirationDate for Session: ' . $e->getMessage();
+        }
         $session->setToken($row["token"]);
         $session->setExpired($row['expired']);
 

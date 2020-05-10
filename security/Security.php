@@ -33,7 +33,7 @@ class Security
      */
     private static function validateTokenExpiry($session)
     {
-        return (new DateTime($session->getExpirationDate())>new DateTime('now'));
+        return ($session->getExpirationDate()>new DateTime('now'));
     }
 
     public static function performAuthorization()
