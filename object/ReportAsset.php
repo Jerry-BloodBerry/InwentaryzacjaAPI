@@ -113,11 +113,8 @@ class ReportAsset implements JsonSerializable
     {
         return [
             'asset' => $this->asset,
-            'new_asset' => $this->new_asset,
-            'moved' => $this->moved,
-            'moved_from_room' => $this->moved_from_room,
-            'previous_room' => $this->previous_room,
-            'present' => $this->present
+            'present' => $this->present,
+            'previous_room' => $this->previous_room
         ];
     }
 }

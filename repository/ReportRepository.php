@@ -32,7 +32,7 @@ class ReportRepository implements IRepository
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         if(!$row) return null;
 
-        return self::prepareReport($row);
+        return self::createReport($row);
     }
 
     function findAll()
@@ -58,7 +58,7 @@ class ReportRepository implements IRepository
         $report_array = array();
         while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
-            $report_array [] = self::prepareReport($row);
+            $report_array [] = self::createReport($row);
         }
         return $report_array;
     }
@@ -116,11 +116,13 @@ class ReportRepository implements IRepository
 
     private function setOwnerForReport(ReportHeader $report)
     {
+        $query = "CALL getLoginSession(?)";
+        $stmt = $this->conn->prepare($query);
+
         $token = BearerToken::getBearerToken();
-        $stmt = $this->conn->query("
-        SELECT `user_id` FROM login_sessions
-        WHERE `token` = '{$token}'
-        ");
+        $stmt->bindParam(1,$token);
+
+        $stmt->execute();
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
         $owner = new User();
@@ -128,7 +130,7 @@ class ReportRepository implements IRepository
         $report->setOwner($owner);
     }
 
-    private static function prepareReport($row)
+    private static function createReport($row)
     {
         $report = new ReportHeader();
         $report->setId($row["id"]);
@@ -146,6 +148,7 @@ class ReportRepository implements IRepository
         $room = new Room();
         $building = new Building();
         $building->setName($row['building_name']);
+        $building->setId($row['building_id']);
 
         $room->setName($row['room_name']);
         $room->setBuilding($building);

@@ -66,4 +66,12 @@ class User implements JsonSerializable
             "hash" => $this->hash
         ];
     }
+
+    public function jsonSerializeNoHash()
+    {
+        return [
+            "id" => (int) $this->id,
+            "login" => $this->login
+        ];
+    }
 }

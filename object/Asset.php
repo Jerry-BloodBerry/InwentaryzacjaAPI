@@ -63,10 +63,11 @@ class Asset implements JsonSerializable
      */
     public function jsonSerialize()
     {
-        return [
-            'id' => (int) $this->id,
-            'type' => $this->assetType,
-            'room' => $this->room
-        ];
+        $json = array();
+        $json['id'] = (int) $this->id;
+        $json['type'] = $this->assetType;
+        if($this->room != null)
+            $json['room'] = $this->room;
+        return $json;
     }
 }

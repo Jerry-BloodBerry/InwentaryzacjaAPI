@@ -98,7 +98,7 @@ class ReportHeader implements JsonSerializable
             "id" => (int)$this->id,
             "name" => $this->name,
             "create_date" => $this->create_date,
-            "owner" => $this->owner,
+            "owner" => $this->owner->jsonSerializeNoHash(),
             "room" => $this->room
         ];
     }
