@@ -151,6 +151,7 @@ class ReportRepository implements IRepository
         $building->setId($row['building_id']);
 
         $room->setName($row['room_name']);
+        $room->setId($row['room_id']);
         $room->setBuilding($building);
 
         $report->setRoom($room);

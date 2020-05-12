@@ -4,6 +4,7 @@ include_once '../object/Building.php';
 include_once '../object/Room.php';
 include_once '../object/AssetType.php';
 include_once '../object/Asset.php';
+include_once '../object/RoomAsset.php';
 
 class ReportAssetRepository
 {
@@ -68,16 +69,19 @@ class ReportAssetRepository
     {
         $report_asset = new ReportAsset();
 
-        $previous_building = new Building();
-        $previous_building->setId($row['previous_building_id']);
-        $previous_building->setName($row['previous_building_name']);
+        if($row['previous_id']!=null)
+        {
+            $previous_building = new Building();
+            $previous_building->setId($row['previous_building_id']);
+            $previous_building->setName($row['previous_building_name']);
 
-        $previous_room = new Room();
-        $previous_room->setName($row['previous_name']);
-        $previous_room->setId($row['previous_id']);
-        $previous_room->setBuilding($previous_building);
+            $previous_room = new Room();
+            $previous_room->setName($row['previous_name']);
+            $previous_room->setId($row['previous_id']);
+            $previous_room->setBuilding($previous_building);
 
-        $report_asset->setPreviousRoom($previous_room);
+            $report_asset->setPreviousRoom($previous_room);
+        }
         $report_asset->setPresent($row['present']);
 
         $asset_type = new AssetType();
@@ -95,11 +99,11 @@ class ReportAssetRepository
 
     /**
      * @param array $row
-     * @return ReportAsset
+     * @return RoomAsset
      */
     private static function createRoomAsset(array $row)
     {
-        $report_asset = new ReportAsset();
+        $report_asset = new RoomAsset();
         $report_asset->setNewAsset($row['new_asset']);
         $report_asset->setMoved($row['moved']);
 
@@ -113,6 +117,7 @@ class ReportAssetRepository
         $asset_type = new AssetType();
         $asset_type->setId($row['type']);
         $asset_type->setName($row['asset_type_name']);
+        $asset_type->setLetter($row['asset_type_letter']);
 
         $asset = new Asset();
         $asset->setId($row['id']);
