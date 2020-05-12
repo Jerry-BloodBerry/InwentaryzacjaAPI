@@ -40,31 +40,7 @@ class AssetService
     }
 
 
-   /**
-    * Funkcja wyszukujaca wszystkie elementy (srodki trwale) w bazie
-    */
-    static function findAll()
-    {
-        // get database connection
-        $database = new Database();
-        $db = $database->getConnection();
-
-        // create a repository instance
-        $ar = new AssetRepository($db);
-
-        $assets = $ar->findAll();
-
-        if($assets['count']>0)
-        {
-            http_response_code(200);
-            echo json_encode($assets["assets"]);
-        }
-        else
-        {
-            http_response_code(404);
-            echo json_encode(array("message" => "No assets were found"));
-        }
-    }
+   
 
     /**
      * Funkcja dodajaca nowy srodek trwaly do bazy

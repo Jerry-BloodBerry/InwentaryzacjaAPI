@@ -53,28 +53,4 @@ class RoomService
     }
 
 
-    /**
-     * Funkcja usuwajaca pokoj z bazy danych na podstawie jego id
-     * @param $id - id usuwanego pokoju
-     */
-    static function deleteOneById($id)
-    {
-        // get database connection
-        $database = new Database();
-        $db = $database->getConnection();
-
-        // create a repository instance
-        $rr = new RoomRepository($db);
-
-        if($rr->deleteOne($id))
-        {
-            http_response_code(200);
-            echo json_encode(array("message" => "Room was deleted"));
-        }
-        else {
-            http_response_code(503);
-            echo json_encode(array("message" => "Unable to delete room. Service temporarily unavailable."));
-        }
-    }
-
 }

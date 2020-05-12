@@ -2,8 +2,16 @@
 include_once '../config/Database.php';
 include_once '../repository/ReportAssetRepository.php';
 
+/**
+ * Klasa odpowiadajaca za obsluge rzeczy zwiazanych z raportami srodkow trwalych
+ * 
+ */
 class ReportAssetService
 {
+    /**
+     * Funkcja sprawdzajaca srodki trwale w pokoju (na podstawie jego id) na podstawie ostatniego raportu
+     * @param $room_id - id pokoju ktory jest sprawdzany
+     */
     public static function getAssetsInRoom($room_id)
     {
         // get database connection
@@ -26,7 +34,10 @@ class ReportAssetService
             echo json_encode(["message" => "Room with the given id does not exist in the database."]);
         }
     }
-
+    /**
+     * Funkcja sprawdzajaca pozycje (srodki trwale) raportu na podstawie jego id
+     * @param $report_id - id raportu
+     */
     public static function getPositionsInReport($report_id)
     {
         // get database connection

@@ -9,7 +9,7 @@ class EditorService
 {
     /**
      * Funkcja tworzaca (dodajaca) cos do bazy danych
-     * @param $service - usluga zwiazana z tym czyms
+     * @param $service - usluga zwiazana z tym czyms, okresla co chce dodac
      * @param $data - dane obiektu dodawanego do bazy danych
      */
     public static function Create(IService $service, $data)
@@ -21,7 +21,7 @@ class EditorService
     }
 /**
  * Funkcja usuwajaca cos z bazy danych
- * @param $service - usluga zwiazana z tym czyms
+ * @param $service - usluga zwiazana z tym czyms, okresla co chce usunac
  * @param $data - dane obiektu usuwanego z bazy danych
  */
     public static function Delete(IService $service, $data)

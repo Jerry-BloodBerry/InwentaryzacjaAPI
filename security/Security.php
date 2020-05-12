@@ -46,6 +46,10 @@ class Security
     {
         return ($session->getExpirationDate()>new DateTime('now'));
     }
+    /**
+     * Funkcja przeprowadzajaca autoryzacje uzytkownika
+     * 
+     */
 
     public static function performAuthorization()
     {

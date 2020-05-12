@@ -9,7 +9,7 @@ class RetrieverService
 {
     /**
      * Funkcja zwracajaca dany obiekt
-     * @param $service - usluga do obiektu
+     * @param $service - usluga do obiektu, okresla co chce zwrocic
      * @param $id - id zwracanego obiektu
      */
     public static function RetrieveObject(IService $service, $id)
@@ -21,7 +21,7 @@ class RetrieverService
     }
     /**
      * Funkcja zwracajaca wszystkie obiekty
-     * @param $service - usluga do obiektu
+     * @param $service - usluga do obiektu, okresla co chce zwrocic
      */
     public static function RetrieveAllObjects(IService $service)
     {

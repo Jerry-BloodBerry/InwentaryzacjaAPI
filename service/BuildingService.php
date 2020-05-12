@@ -11,7 +11,8 @@ include_once '../config/Database.php';
 class BuildingService implements IService
 {
     /**
-     * @inheritDoc
+     * Funkcja znajdujaca wszystkie pokoje w budynku po jego id
+     * @param $building_id - id budynku
      */
     public static function findAllRooms($building_id)
     {
@@ -37,7 +38,7 @@ class BuildingService implements IService
     }
 
     /**
-     * Funkcja wyszukujaca budynek w bazie danych
+     * Funkcja wyszukujaca budynek w bazie danych po jego id
      * @param $id - id szukanego budynku
      */
     static function findOneById($id)
