@@ -4,7 +4,7 @@
 class ReportAsset implements JsonSerializable
 {
     /** Asset srodek trwaly */
-   private $asset;
+    private $asset;
 
     /** boolean czy nowy srodek trwaly  */
     private $new_asset;
@@ -12,8 +12,8 @@ class ReportAsset implements JsonSerializable
     /** boolean czy srodek trwaly zostal przeniesiony */
     private $moved;
 
-     /** Room pokoj z ktorego srodek trwaly zostal przeniesiony */
-   private $moved_from_room;
+    /** Room pokoj z ktorego srodek trwaly zostal przeniesiony */
+    private $moved_from_room;
 
     /** integer id pokoju z ktorego srodek trwaly zostal przeniesiony? */
     private $previous_room;
@@ -41,7 +41,8 @@ class ReportAsset implements JsonSerializable
     }
 
     /**
-     * @return boolean
+     * Zwraca czy srodek trwaly jest nowy
+     * @return boolean czy nowy srodek trwaly
      */
     public function getNewAsset()
     {
@@ -85,48 +86,12 @@ class ReportAsset implements JsonSerializable
     }
 
     /**
-     * Ustawia id pokoju z ktorego srodek trwaly zostal przeniesiony
-     * @param integer|NULL $moved_from_id id pokoju z ktorego srodek trwaly zostal przeniesiony
+     * Ustawia pokoj z ktorego srodek trwaly zostal przeniesiony
+     * @param Room $previous_room pokoj z ktorego srodek trwaly zostal przeniesiony
      */
     public function setPreviousRoom(?Room $previous_room)
     {
         $this->previous_room = $previous_room;
-    }
-
-    /**
-     * Zwraca nazwe pokoju z ktorego srodek trwaly zostal przeniesiony
-     * @return string|NULL nazwa pokoju z ktorego srodek trwaly zostal przeniesiony
-     */
-    public function getPresent()
-    {
-        return $this->present;
-    }
-
-    /**
-     * Ustawia nazwe pokoju z ktorego srodek trwaly zostal przeniesiony
-     * @param string|NULL $moved_from_name nazwa pokoju z ktorego srodek trwaly zostal przeniesiony
-     */
-    public function setPresent(bool $present)
-    {
-        $this->present = $present;
-    }
-
-    /**
-     * Zwraca id pokoju z ktorego srodek trwaly zostal przeniesiony
-     * @return integer|NULL id pokoju z ktorego srodek trwaly zostal przeniesiony
-     */
-    public function getMovedFromRoom()
-    {
-        return $this->moved_from_room;
-    }
-
-    /**
-     * Ustawia id pokoju z ktorego srodek trwaly zostal przeniesiony
-     * @param integer|NULL $previous_room id pokoju z ktorego srodek trwaly zostal przeniesiony
-     */
-    public function setMovedFromRoom(Room $moved_from_room): void
-    {
-        $this->moved_from_room = $moved_from_room;
     }
 
     /**
@@ -145,6 +110,24 @@ class ReportAsset implements JsonSerializable
     public function setPresent(bool $present)
     {
         $this->present = $present;
+    }
+
+    /**
+     * Zwraca pokoj z ktorego srodek trwaly zostal przeniesiony
+     * @return Room pokoj z ktorego srodek trwaly zostal przeniesiony
+     */
+    public function getMovedFromRoom()
+    {
+        return $this->moved_from_room;
+    }
+
+    /**
+     * Ustawia pokoj z ktorego srodek trwaly zostal przeniesiony
+     * @param Room $moved_from_room pokoj z ktorego srodek trwaly zostal przeniesiony
+     */
+    public function setMovedFromRoom(Room $moved_from_room): void
+    {
+        $this->moved_from_room = $moved_from_room;
     }
 
     /**

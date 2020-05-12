@@ -2,6 +2,7 @@
 include_once '../object/Room.php';
 include_once '../object/User.php';
 
+/** Klasa metadanych raportu */
 class ReportHeader implements JsonSerializable
 {
     /** integer id raportu  */
@@ -12,8 +13,14 @@ class ReportHeader implements JsonSerializable
 
     /** DateTime utworzenia raportu  */
     private $create_date;
+
+    /** User wlasciciel raportu */
     private $owner;
+
+    /** Room pokoj dla ktorego zostal utworzony raport */
     private $room;
+
+
     /**
      * Zwraca id raportu
      * @return integer id raportu
@@ -69,7 +76,8 @@ class ReportHeader implements JsonSerializable
     }
 
     /**
-     * @return User
+     * Zwraca wlasciciela raportu
+     * @return User wlasciciel raportu
      */
     public function getOwner()
     {
@@ -77,7 +85,8 @@ class ReportHeader implements JsonSerializable
     }
 
     /**
-     * @param User $owner
+     * Ustawia wlasciciela raportu
+     * @param User $owner wlasciciel raportu
      */
     public function setOwner(User $owner): void
     {
@@ -85,7 +94,8 @@ class ReportHeader implements JsonSerializable
     }
 
     /**
-     * @return Room
+     * Zwraca pokoj raportu
+     * @return Room pokoj raportu
      */
     public function getRoom()
     {
@@ -93,7 +103,8 @@ class ReportHeader implements JsonSerializable
     }
 
     /**
-     * @param Room $room
+     * Ustawia pokoj raportu
+     * @param Room $room pokoj raportu
      */
     public function setRoom(Room $room): void
     {
@@ -101,7 +112,8 @@ class ReportHeader implements JsonSerializable
     }
 
     /**
-     * @inheritDoc
+     * Zwraca metadane raportu w postaci JSON
+     * @return string metadane raportu w postaci JSON
      */
     public function jsonSerialize()
     {
