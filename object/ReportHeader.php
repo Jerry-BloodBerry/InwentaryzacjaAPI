@@ -1,6 +1,7 @@
 <?php
+include_once '../object/Room.php';
+include_once '../object/User.php';
 
-/** Klasa z metadanymi raportu */
 class ReportHeader implements JsonSerializable
 {
     /** integer id raportu  */
@@ -11,22 +12,8 @@ class ReportHeader implements JsonSerializable
 
     /** DateTime utworzenia raportu  */
     private $create_date;
-
-    /** id wlasciciela raportu */
-    private $owner_id;
-
-    /** string nazwa wlasciciela raportu */
-    private $owner_name;
-
-    /** string nazwa pokoju raportu */
-    private $room_name;
-
-    /** integer id pokoju raportu  */
-    private $room_id;
-
-    /** string nazwa budynku  */
-    private $building_name;
-
+    private $owner;
+    private $room;
     /**
      * Zwraca id raportu
      * @return integer id raportu
@@ -82,86 +69,35 @@ class ReportHeader implements JsonSerializable
     }
 
     /**
-     * Zwraca id wlascieciela
-     * @return integer id wlasciciela
+     * @return User
      */
-    public function getOwnerId()
+    public function getOwner()
     {
-        return $this->owner_id;
+        return $this->owner;
     }
 
     /**
-     * Ustawia id wlascieciela
-     * @param integer $owner_id id wlascieciela
+     * @param User $owner
      */
-    public function setOwnerId(int $owner_id)
+    public function setOwner(User $owner): void
     {
-        $this->owner_id = $owner_id;
+        $this->owner = $owner;
     }
 
     /**
-     * Zwraca nazwe wlasciciela
-     * @return string
+     * @return Room
      */
-    public function getOwnerName()
+    public function getRoom()
     {
-        return $this->owner_name;
+        return $this->room;
     }
 
     /**
-     * @param string $owner_name
+     * @param Room $room
      */
-    public function setOwnerName(string $owner_name)
+    public function setRoom(Room $room): void
     {
-        $this->owner_name = $owner_name;
-    }
-
-    /**
-     * @return string
-     */
-    public function getRoomName()
-    {
-        return $this->room_name;
-    }
-
-    /**
-     * @param string $room_name
-     */
-    public function setRoomName(string $room_name)
-    {
-        $this->room_name = $room_name;
-    }
-
-    /**
-     * @return string
-     */
-    public function getBuildingName()
-    {
-        return $this->building_name;
-    }
-
-    /**
-     * @param string $building_name
-     */
-    public function setBuildingName(string $building_name)
-    {
-        $this->building_name = $building_name;
-    }
-
-    /**
-     * @return integer
-     */
-    public function getRoomId()
-    {
-        return $this->room_id;
-    }
-
-    /**
-     * @param integer $room_id
-     */
-    public function setRoomId(int $room_id)
-    {
-        $this->room_id = $room_id;
+        $this->room = $room;
     }
 
     /**
@@ -173,10 +109,8 @@ class ReportHeader implements JsonSerializable
             "id" => (int)$this->id,
             "name" => $this->name,
             "create_date" => $this->create_date,
-            "owner_id" => $this->owner_id,
-            "owner_name" => $this->owner_name,
-            "room_name" => $this->room_name,
-            "building_name" => $this->building_name
+            "owner" => $this->owner->jsonSerializeNoHash(),
+            "room" => $this->room
         ];
     }
 }

@@ -27,7 +27,7 @@ class ReportAssetService
         }
     }
 
-    public static function getAssetsInReport($report_id)
+    public static function getPositionsInReport($report_id)
     {
         // get database connection
         $database = new Database();
@@ -36,8 +36,7 @@ class ReportAssetService
         // create a repository instance
         $rar = new ReportAssetRepository($db);
 
-        $report_assets = $rar->getAssetsInReport($report_id);
-        $report_assets = $report_assets['report_assets'];
+        $report_assets = $rar->getPositionsInReport($report_id);
 
         if(count($report_assets)>0)
         {

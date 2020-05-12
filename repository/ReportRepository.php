@@ -3,6 +3,7 @@ include_once '../interfaces/IRepository.php';
 include_once '../object/ReportHeader.php';
 include_once '../config/Database.php';
 include_once '../security/BearerToken.php';
+include_once '../object/Building.php';
 
 /** Klasa do obslugi tabeli raportow */
 class ReportRepository implements IRepository
@@ -41,7 +42,7 @@ class ReportRepository implements IRepository
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         if(!$row) return null;
 
-        return self::prepareReport($row);
+        return self::createReport($row);
     }
 
     /**
@@ -71,7 +72,7 @@ class ReportRepository implements IRepository
         $report_array = array();
         while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
-            $report_array [] = self::prepareReport($row);
+            $report_array [] = self::createReport($row);
         }
         return $report_array;
     }
@@ -114,19 +115,19 @@ class ReportRepository implements IRepository
         $assets = $report_data['assets'];
         //sanitize data
         $report->setName(htmlspecialchars(strip_tags($report->getName())));
-        $report->setRoomId(htmlspecialchars(strip_tags($report->getRoomId())));
+        $report->getRoom()->setId(htmlspecialchars(strip_tags($report->getRoom()->getId())));
         $this->setOwnerForReport($report);
 
         $query = "CALL addNewReport(:name,:room,:owner,:positions)";
         $stmt = $this->conn->prepare($query);
 
         $name = $report->getName();
-        $room = $report->getRoomId();
-        $owner = $report->getOwnerId();
+        $room_id = $report->getRoom()->getId();
+        $owner_id = $report->getOwner()->getId();
         $assets = json_encode($assets);
         $stmt->bindParam(':name', $name);
-        $stmt->bindParam(':room', $room);
-        $stmt->bindParam(':owner', $owner);
+        $stmt->bindParam(':room', $room_id);
+        $stmt->bindParam(':owner', $owner_id);
         $stmt->bindParam(':positions', $assets);
 
         $stmt->execute();
@@ -139,14 +140,18 @@ class ReportRepository implements IRepository
      */
     private function setOwnerForReport(ReportHeader $report)
     {
+        $query = "CALL getLoginSession(?)";
+        $stmt = $this->conn->prepare($query);
+
         $token = BearerToken::getBearerToken();
-        $stmt = $this->conn->query("
-        SELECT `user_id` FROM login_sessions
-        WHERE `token` = '{$token}'
-        ");
+        $stmt->bindParam(1,$token);
+
+        $stmt->execute();
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        $owner = $row['user_id'];
-        $report->setOwnerId($owner);
+
+        $owner = new User();
+        $owner->setId($row['user_id']);
+        $report->setOwner($owner);
     }
 
     /**
@@ -154,7 +159,7 @@ class ReportRepository implements IRepository
      * @param array $row wynik kwerendy fetch
      * @return ReportHeader utworzony naglowek raportu
      */
-    private static function prepareReport($row)
+    private static function createReport($row)
     {
         $report = new ReportHeader();
         $report->setId($row["id"]);
@@ -164,11 +169,21 @@ class ReportRepository implements IRepository
         } catch (Exception $e) {
             echo 'Exception thrown while setting CreateDate in ReportRepository on line 134: ' . $e->getMessage();
         }
-        $report->setOwnerId($row["owner_id"]);
-        $report->setOwnerName($row['owner_name']);
-        $report->setRoomName($row['room_name']);
-        $report->setBuildingName($row['building_name']);
+        $owner = new User();
+        $owner->setId($row['owner_id']);
+        $owner->setLogin($row['owner_name']);
+        $report->setOwner($owner);
 
+        $room = new Room();
+        $building = new Building();
+        $building->setName($row['building_name']);
+        $building->setId($row['building_id']);
+
+        $room->setName($row['room_name']);
+        $room->setId($row['room_id']);
+        $room->setBuilding($building);
+
+        $report->setRoom($room);
         return $report;
     }
 }

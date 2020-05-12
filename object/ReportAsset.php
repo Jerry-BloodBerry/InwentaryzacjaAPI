@@ -3,26 +3,17 @@
 /** Klasa srodka trwalego w raporcie */
 class ReportAsset implements JsonSerializable
 {
-    /** integer id srodka trwalego */
-    private $id;
+    /** Asset srodek trwaly */
+   private $asset;
 
-    /** integer typ srodka trwalego */
-    private $type;
-
-    /** string nazwa typu srodka trwalego  */
-    private $asset_type_name;
-
-    /** boolean czy nowy srodek trwaly */
+    /** boolean czy nowy srodek trwaly  */
     private $new_asset;
 
     /** boolean czy srodek trwaly zostal przeniesiony */
     private $moved;
 
-    /** integer id pokoju z ktorego srodek trwaly zostal przeniesiony */
-    private $moved_from_id;
-
-    /** string nazwa pokoju z ktorego srodek trwaly zostal przeniesiony */
-    private $moved_from_name;
+     /** Room pokoj z ktorego srodek trwaly zostal przeniesiony */
+   private $moved_from_room;
 
     /** integer id pokoju z ktorego srodek trwaly zostal przeniesiony? */
     private $previous_room;
@@ -32,62 +23,25 @@ class ReportAsset implements JsonSerializable
 
 
     /**
-     * Zwraca id srodka trwalego
-     * @return integer id srodka trwalego
+     * Zwraca srodek trwaly
+     * @return integer srodek trwaly
      */
-    public function getId()
+    public function getAsset()
     {
-        return (int) $this->id;
+        return $this->asset;
     }
 
     /**
-     * Ustawia id srodka trwalego
-     * @param integer $id id srodka trwalego
+     * Ustawia srodek trwaly
+     * @param Asset $asset srodek trwaly
      */
-    public function setId(int $id)
+    public function setAsset(Asset $asset): void
     {
-        $this->id = $id;
+        $this->asset = $asset;
     }
 
     /**
-     * Zwraca typ srodka trwalego
-     * @return integer typ srodka trwalego
-     */
-    public function getType()
-    {
-        return (int) $this->type;
-    }
-
-    /**
-     * Ustawia typ srodka trwalego
-     * @param integer $type typ srodka trwalego
-     */
-    public function setType(int $type)
-    {
-        $this->type = $type;
-    }
-
-    /**
-     * Zwraca nazwe typu srodka trwalego
-     * @return string nazwa typu srodka trwalego
-     */
-    public function getAssetTypeName()
-    {
-        return $this->asset_type_name;
-    }
-
-    /**
-     * Ustawia nazwe typu srodka trwalego
-     * @param string $asset_type_name nazwa typu srodka trwalego
-     */
-    public function setAssetTypeName(string $asset_type_name)
-    {
-        $this->asset_type_name = $asset_type_name;
-    }
-
-    /**
-     * Zwraca czy srodek trwaly jest nowy
-     * @return boolean czy nowy srodek trwaly
+     * @return boolean
      */
     public function getNewAsset()
     {
@@ -125,42 +79,6 @@ class ReportAsset implements JsonSerializable
      * Zwraca id pokoju z ktorego srodek trwaly zostal przeniesiony
      * @return integer|NULL id pokoju z ktorego srodek trwaly zostal przeniesiony
      */
-    public function getMovedFromId()
-    {
-        return $this->moved_from_id;
-    }
-
-    /**
-     * Ustawia id pokoju z ktorego srodek trwaly zostal przeniesiony
-     * @param integer|NULL $moved_from_id id pokoju z ktorego srodek trwaly zostal przeniesiony
-     */
-    public function setMovedFromId(?int $moved_from_id)
-    {
-        $this->moved_from_id = $moved_from_id;
-    }
-
-    /**
-     * Zwraca nazwe pokoju z ktorego srodek trwaly zostal przeniesiony
-     * @return string|NULL nazwa pokoju z ktorego srodek trwaly zostal przeniesiony
-     */
-    public function getMovedFromName()
-    {
-        return $this->moved_from_name;
-    }
-
-    /**
-     * Ustawia nazwe pokoju z ktorego srodek trwaly zostal przeniesiony
-     * @param string|NULL $moved_from_name nazwa pokoju z ktorego srodek trwaly zostal przeniesiony
-     */
-    public function setMovedFromName(?string $moved_from_name)
-    {
-        $this->moved_from_name = $moved_from_name;
-    }
-
-    /**
-     * Zwraca id pokoju z ktorego srodek trwaly zostal przeniesiony
-     * @return integer|NULL id pokoju z ktorego srodek trwaly zostal przeniesiony
-     */
     public function getPreviousRoom()
     {
         return $this->previous_room;
@@ -168,11 +86,47 @@ class ReportAsset implements JsonSerializable
 
     /**
      * Ustawia id pokoju z ktorego srodek trwaly zostal przeniesiony
-     * @param integer|NULL $previous_room id pokoju z ktorego srodek trwaly zostal przeniesiony
+     * @param integer|NULL $moved_from_id id pokoju z ktorego srodek trwaly zostal przeniesiony
      */
-    public function setPreviousRoom(?int $previous_room)
+    public function setPreviousRoom(?Room $previous_room)
     {
         $this->previous_room = $previous_room;
+    }
+
+    /**
+     * Zwraca nazwe pokoju z ktorego srodek trwaly zostal przeniesiony
+     * @return string|NULL nazwa pokoju z ktorego srodek trwaly zostal przeniesiony
+     */
+    public function getPresent()
+    {
+        return $this->present;
+    }
+
+    /**
+     * Ustawia nazwe pokoju z ktorego srodek trwaly zostal przeniesiony
+     * @param string|NULL $moved_from_name nazwa pokoju z ktorego srodek trwaly zostal przeniesiony
+     */
+    public function setPresent(bool $present)
+    {
+        $this->present = $present;
+    }
+
+    /**
+     * Zwraca id pokoju z ktorego srodek trwaly zostal przeniesiony
+     * @return integer|NULL id pokoju z ktorego srodek trwaly zostal przeniesiony
+     */
+    public function getMovedFromRoom()
+    {
+        return $this->moved_from_room;
+    }
+
+    /**
+     * Ustawia id pokoju z ktorego srodek trwaly zostal przeniesiony
+     * @param integer|NULL $previous_room id pokoju z ktorego srodek trwaly zostal przeniesiony
+     */
+    public function setMovedFromRoom(Room $moved_from_room): void
+    {
+        $this->moved_from_room = $moved_from_room;
     }
 
     /**
@@ -200,15 +154,9 @@ class ReportAsset implements JsonSerializable
     public function jsonSerialize()
     {
         return [
-            'id' => (int)$this->id,
-            'type' => $this->type,
-            'asset_type_name' => $this->asset_type_name,
-            'new_asset' => $this->new_asset,
-            'moved' => $this->moved,
-            'moved_from_id' => $this->moved_from_id,
-            'moved_from_name' => $this->moved_from_name,
-            'previous_room' => $this->previous_room,
-            'present' => $this->present
+            'asset' => $this->asset,
+            'present' => $this->present,
+            'previous_room' => $this->previous_room
         ];
     }
 }
