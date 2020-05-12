@@ -1,14 +1,20 @@
 <?php
 
-
+/** Klasa uzytkownika */
 class User implements JsonSerializable
 {
+    /** integer id uzytkownika */
     private $id;
+
+    /** string login uzytkownika */
     private $login;
+
+    /** string zahashowane haslo uzytkownika */
     private $hash;
 
     /**
-     * @return integer
+     * Zwraca id uzytkownika
+     * @return integer id uzytkownika
      */
     public function getId()
     {
@@ -16,7 +22,8 @@ class User implements JsonSerializable
     }
 
     /**
-     * @param integer $id
+     * Ustawia id uzytkownika
+     * @param integer $id id uzytkownika
      */
     public function setId(int $id)
     {
@@ -24,7 +31,8 @@ class User implements JsonSerializable
     }
 
     /**
-     * @return string
+     * Zwraca login uzytkownika
+     * @return string login uzytkownika
      */
     public function getLogin()
     {
@@ -32,7 +40,8 @@ class User implements JsonSerializable
     }
 
     /**
-     * @param string $login
+     * Ustawia login uzytkownika
+     * @param string $login login uzytkownika
      */
     public function setLogin(string $login)
     {
@@ -40,7 +49,8 @@ class User implements JsonSerializable
     }
 
     /**
-     * @return string
+     * Zwraca zahashowane haslo uzytkownika
+     * @return string zahashowane haslo uzytkownika
      */
     public function getHash()
     {
@@ -48,7 +58,8 @@ class User implements JsonSerializable
     }
 
     /**
-     * @param string $hash
+     * Ustawia zahashowane haslo uzytkownika
+     * @param string $hash zahashowane haslo uzytkownika
      */
     public function setHash(string $hash)
     {
@@ -56,7 +67,8 @@ class User implements JsonSerializable
     }
 
     /**
-     * @inheritDoc
+     * Zwraca uzytkownika w postaci JSON
+     * @return string uzytkownik w postaci JSON
      */
     public function jsonSerialize()
     {

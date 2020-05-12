@@ -1,13 +1,20 @@
 <?php
 
-
+/**
+ * Klasa budynek
+ */
 class Building implements JsonSerializable
 {
+    /** integer id budynku */
     private $id;
+
+    /** string nazwa budynku */
     private $name;
 
+
     /**
-     * @return integer
+     * Zwraca id budynku
+     * @return integer id budynku
      */
     public function getId()
     {
@@ -15,6 +22,7 @@ class Building implements JsonSerializable
     }
 
     /**
+     * Ustawia id budynku
      * @param integer $id
      */
     public function setId(int $id)
@@ -23,7 +31,8 @@ class Building implements JsonSerializable
     }
 
     /**
-     * @return string
+     * Zwraca nazwe budynku
+     * @return string nazwa budynku
      */
     public function getName()
     {
@@ -31,7 +40,8 @@ class Building implements JsonSerializable
     }
 
     /**
-     * @param string $name
+     * Ustawia nazwe budynku
+     * @param string $name nazwa budynku
      */
     public function setName(string $name)
     {
@@ -40,7 +50,8 @@ class Building implements JsonSerializable
 
 
     /**
-     * @inheritDoc
+     * Zwraca budynek w postaci JSON
+     * @return string budynek w postaci JSON
      */
     public function jsonSerialize()
     {

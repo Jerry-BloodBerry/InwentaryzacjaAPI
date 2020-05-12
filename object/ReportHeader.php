@@ -1,19 +1,35 @@
 <?php
 
-
+/** Klasa z metadanymi raportu */
 class ReportHeader implements JsonSerializable
 {
+    /** integer id raportu  */
     private $id;
+
+    /** string nazwa raportu */
     private $name;
+
+    /** DateTime utworzenia raportu  */
     private $create_date;
+
+    /** id wlasciciela raportu */
     private $owner_id;
+
+    /** string nazwa wlasciciela raportu */
     private $owner_name;
+
+    /** string nazwa pokoju raportu */
     private $room_name;
+
+    /** integer id pokoju raportu  */
     private $room_id;
+
+    /** string nazwa budynku  */
     private $building_name;
 
     /**
-     * @return integer
+     * Zwraca id raportu
+     * @return integer id raportu
      */
     public function getId()
     {
@@ -21,7 +37,8 @@ class ReportHeader implements JsonSerializable
     }
 
     /**
-     * @param integer $id
+     * Ustawia id raportu
+     * @param integer $id id raportu
      */
     public function setId(int $id)
     {
@@ -29,7 +46,8 @@ class ReportHeader implements JsonSerializable
     }
 
     /**
-     * @return string
+     * Zwraca nazwe raportu
+     * @return string nazwa raportu
      */
     public function getName()
     {
@@ -37,7 +55,8 @@ class ReportHeader implements JsonSerializable
     }
 
     /**
-     * @param string $name
+     * Ustawia nazwe raportu
+     * @param string $name nazwa raportu
      */
     public function setName(string $name)
     {
@@ -45,7 +64,8 @@ class ReportHeader implements JsonSerializable
     }
 
     /**
-     * @return DateTime
+     * Zwraca date utworzenia raportu
+     * @return DateTime data utworzenia raportu
      */
     public function getCreateDate()
     {
@@ -53,7 +73,8 @@ class ReportHeader implements JsonSerializable
     }
 
     /**
-     * @param DateTime $create_date
+     * Ustawia date utworzenia raportu
+     * @param DateTime $create_date data utworzenia raportu
      */
     public function setCreateDate(DateTime $create_date)
     {
@@ -61,7 +82,8 @@ class ReportHeader implements JsonSerializable
     }
 
     /**
-     * @return integer
+     * Zwraca id wlascieciela
+     * @return integer id wlasciciela
      */
     public function getOwnerId()
     {
@@ -69,7 +91,8 @@ class ReportHeader implements JsonSerializable
     }
 
     /**
-     * @param integer $owner_id
+     * Ustawia id wlascieciela
+     * @param integer $owner_id id wlascieciela
      */
     public function setOwnerId(int $owner_id)
     {
@@ -77,6 +100,7 @@ class ReportHeader implements JsonSerializable
     }
 
     /**
+     * Zwraca nazwe wlasciciela
      * @return string
      */
     public function getOwnerName()

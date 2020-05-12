@@ -1,14 +1,21 @@
 <?php
 
-
+/** Klasa typ srodka trwalego */
 class AssetType implements JsonSerializable
 {
+    /** integer id typu */
     private $id;
+
+    /** string litera przypisana typowi */
     private $letter;
+
+    /** string nazwa typu */
     private $name;
 
+
     /**
-     * @return integer
+     * Zwraca id typu
+     * @return integer id typu
      */
     public function getId()
     {
@@ -16,7 +23,8 @@ class AssetType implements JsonSerializable
     }
 
     /**
-     * @param integer $id
+     * Ustawia id typu
+     * @param integer $id id typu
      */
     public function setId(int $id)
     {
@@ -24,7 +32,8 @@ class AssetType implements JsonSerializable
     }
 
     /**
-     * @return string
+     * Zwraca litere typu
+     * @return string litera typu
      */
     public function getLetter()
     {
@@ -32,6 +41,7 @@ class AssetType implements JsonSerializable
     }
 
     /**
+     * Ustawia litere typu
      * @param string $letter
      */
     public function setLetter(string $letter)
@@ -40,7 +50,8 @@ class AssetType implements JsonSerializable
     }
 
     /**
-     * @return string
+     * Zwraca nazwe typu
+     * @return string nazwa typu
      */
     public function getName()
     {
@@ -48,7 +59,8 @@ class AssetType implements JsonSerializable
     }
 
     /**
-     * @param string $name
+     * Ustawia nazwe typu
+     * @param string $name nazwa typu
      */
     public function setName(string $name)
     {
@@ -56,7 +68,8 @@ class AssetType implements JsonSerializable
     }
 
     /**
-     * @inheritDoc
+     * Zwraca typ w postaci JSON
+     * @return string typ w postaci JSON
      */
     public function jsonSerialize()
     {

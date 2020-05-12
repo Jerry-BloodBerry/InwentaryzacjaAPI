@@ -1,22 +1,26 @@
 <?php
 include_once '../object/Room.php';
 
+/** Klasa do obslugi tabeli pokoi */
 class RoomRepository
 {
-    //database connection
-    /**
-     * @var PDO
-     */
+    /** PDO wartosc polaczenia z baza */
     private $conn;
 
+
+    /**
+     * konstrukor
+     * @param PDO $db polaczenie z baza
+     */
     public function __construct($db)
     {
         $this->conn = $db;
     }
 
     /**
-     * @param Room $room
-     * @return bool
+     * Dodaje nowy pokoj
+     * @param Room $room pokoj do dodania
+     * @return bool czy udalo sie dodac pokoj
      */
     function addNew($room)
     {

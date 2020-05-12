@@ -3,17 +3,32 @@ include_once '../interfaces/IRepository.php';
 include_once '../object/AssetType.php';
 include_once '../config/Database.php';
 
+/**
+ * Klasa do obslugi tabeli typow srodkow trwalych
+ */
 class AssetTypeRepository implements IRepository
 {
-    //database connection and table name
+    /** PDO wartosc polaczenia z baza */
     private $conn;
+
+    /** string nazwa tabeli */
     private $table_name = "asset_types";
 
+
+    /**
+     * konstrukor
+     * @param PDO $db polaczenie z baza
+     */
     public function __construct($db)
     {
         $this->conn = $db;
     }
 
+    /**
+     * Znajuje i zwraca typ o podanym id
+     * @param integer $id id typu
+     * @return AssetType typu
+     */
     function find($id)
     {
         $query = "SELECT 
@@ -41,6 +56,10 @@ class AssetTypeRepository implements IRepository
         return $asset_type;
     }
 
+    /**
+     * Zwraca tablice z wszystkimi typami i ich liczebnoscia
+     * @return array tablica z wszystkimi typami
+     */
     function findAll()
     {
         $query = "SELECT
@@ -63,6 +82,11 @@ class AssetTypeRepository implements IRepository
         return array("count" => $stmt->rowCount(), "asset_types" => $asset_type_array);
     }
 
+    /**
+     * Usuwa typ o podanym id
+     * @param integer $id id typu
+     * @return bool czy udalo sie usunac typ
+     */
     function deleteOne($id)
     {
         $query = "DELETE
@@ -85,8 +109,9 @@ class AssetTypeRepository implements IRepository
     }
 
     /**
-     * @param AssetType $asset_type
-     * @return bool
+     * Dodaje nowy typ do tabeli
+     * @param AssetType $asset_type typ do dodania
+     * @return bool czy udalo sie dodac typ
      */
     function addNew($asset_type)
     {

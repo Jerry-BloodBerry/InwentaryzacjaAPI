@@ -5,23 +5,29 @@ include_once '../object/Room.php';
 include_once '../object/AssetType.php';
 include_once '../object/Building.php';
 
+/** Klasa do obslugi tabeli srodkow trwalych */
 class AssetRepository
 {
-    //database connection and table name
-    /**
-     * @var PDO
-     */
+    /** PDO wartosc polaczenia z baza */
     private $conn;
+
+    /** string nazwa tabeli */
     private $table_name = "assets";
 
+
+    /**
+     * konstrukor
+     * @param PDO $db polaczenie z baza
+     */
     public function __construct($db)
     {
         $this->conn = $db;
     }
 
     /**
-     * @param integer $id
-     * @return Asset
+     * Znajuje i zwraca srodek trwaly o podanym id
+     * @param integer $id id srodka trwalego
+     * @return Asset znaleziony srodek trwaly
      */
     function find($id)
     {
@@ -40,8 +46,9 @@ class AssetRepository
     }
 
     /**
-     * @param integer $id
-     * @return bool
+     * Usuwa srodek trwaly o podanym id
+     * @param integer $id id srodka trwalego
+     * @return bool czy udalo sie usunac srodek trwaly
      */
     function deleteOne($id)
     {
@@ -65,8 +72,9 @@ class AssetRepository
     }
 
     /**
-     * @param Asset $asset
-     * @return bool
+     * Dodaje nowy srodek trwaly do tabeli
+     * @param Asset $asset srodek trwaly do dodania
+     * @return bool czy udalo sie dodac srodek trwaly
      */
     function addNew($asset)
     {
@@ -86,6 +94,11 @@ class AssetRepository
         return false;
     }
 
+    /**
+     * Tworzy i zwraca srodek trwaly na podstawie przekazanego wyniku kwerendy
+     * @param array $row wynik kwerendy fetch
+     * @return Asset utworzony srodek trwaly
+     */
     private static function CreateAssetInfo($row)
     {
         $asset = new Asset();
