@@ -1,8 +1,6 @@
 <?php
 
-/**
- * Klasa budynek
- */
+/** Klasa budynek */
 class Building implements JsonSerializable
 {
     /** integer id budynku */

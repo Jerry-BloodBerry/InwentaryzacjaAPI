@@ -42,7 +42,7 @@ class AssetType implements JsonSerializable
 
     /**
      * Ustawia litere typu
-     * @param string $letter
+     * @param string $letter litera typu
      */
     public function setLetter(string $letter)
     {
