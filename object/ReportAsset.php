@@ -3,62 +3,27 @@
 
 class ReportAsset implements JsonSerializable
 {
-   private $id;
-   private $type;
-   private $asset_type_name;
+   private $asset;
    private $new_asset;
    private $moved;
-   private $moved_from_id;
-   private $moved_from_name;
+   private $moved_from_room;
    private $previous_room;
    private $present;
 
     /**
-     * @return integer
+     * @return Asset
      */
-    public function getId()
+    public function getAsset()
     {
-        return (int) $this->id;
+        return $this->asset;
     }
 
     /**
-     * @param integer $id
+     * @param Asset $asset
      */
-    public function setId(int $id)
+    public function setAsset(Asset $asset): void
     {
-        $this->id = $id;
-    }
-
-    /**
-     * @return integer
-     */
-    public function getType()
-    {
-        return (int) $this->type;
-    }
-
-    /**
-     * @param integer $type
-     */
-    public function setType(int $type)
-    {
-        $this->type = $type;
-    }
-
-    /**
-     * @return string
-     */
-    public function getAssetTypeName()
-    {
-        return $this->asset_type_name;
-    }
-
-    /**
-     * @param string $asset_type_name
-     */
-    public function setAssetTypeName(string $asset_type_name)
-    {
-        $this->asset_type_name = $asset_type_name;
+        $this->asset = $asset;
     }
 
     /**
@@ -94,39 +59,7 @@ class ReportAsset implements JsonSerializable
     }
 
     /**
-     * @return integer|NULL
-     */
-    public function getMovedFromId()
-    {
-        return $this->moved_from_id;
-    }
-
-    /**
-     * @param integer|NULL $moved_from_id
-     */
-    public function setMovedFromId(?int $moved_from_id)
-    {
-        $this->moved_from_id = $moved_from_id;
-    }
-
-    /**
-     * @return string|NULL
-     */
-    public function getMovedFromName()
-    {
-        return $this->moved_from_name;
-    }
-
-    /**
-     * @param string|NULL $moved_from_name
-     */
-    public function setMovedFromName(?string $moved_from_name)
-    {
-        $this->moved_from_name = $moved_from_name;
-    }
-
-    /**
-     * @return integer|NULL
+     * @return Room|NULL
      */
     public function getPreviousRoom()
     {
@@ -134,9 +67,9 @@ class ReportAsset implements JsonSerializable
     }
 
     /**
-     * @param integer|NULL $previous_room
+     * @param Room|NULL $previous_room
      */
-    public function setPreviousRoom(?int $previous_room)
+    public function setPreviousRoom(?Room $previous_room)
     {
         $this->previous_room = $previous_room;
     }
@@ -158,18 +91,31 @@ class ReportAsset implements JsonSerializable
     }
 
     /**
+     * @return Room
+     */
+    public function getMovedFromRoom()
+    {
+        return $this->moved_from_room;
+    }
+
+    /**
+     * @param Room $moved_from_room
+     */
+    public function setMovedFromRoom(Room $moved_from_room): void
+    {
+        $this->moved_from_room = $moved_from_room;
+    }
+
+    /**
      * @inheritDoc
      */
     public function jsonSerialize()
     {
         return [
-            'id' => (int)$this->id,
-            'type' => $this->type,
-            'asset_type_name' => $this->asset_type_name,
+            'asset' => $this->asset,
             'new_asset' => $this->new_asset,
             'moved' => $this->moved,
-            'moved_from_id' => $this->moved_from_id,
-            'moved_from_name' => $this->moved_from_name,
+            'moved_from_room' => $this->moved_from_room,
             'previous_room' => $this->previous_room,
             'present' => $this->present
         ];

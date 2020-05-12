@@ -79,8 +79,11 @@ class ReportService implements IService
                 }
             }
             $report = new ReportHeader();
+            $room = new Room();
+            $room->setId($data->room);
+
             $report->setName($data->name);
-            $report->setRoomId($data->room);
+            $report->setRoom($room);
             $report->setCreateDate(new DateTime('now'));
 
             //init database

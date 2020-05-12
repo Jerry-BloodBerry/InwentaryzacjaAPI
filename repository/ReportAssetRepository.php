@@ -1,5 +1,9 @@
 <?php
 include_once '../object/ReportAsset.php';
+include_once '../object/Building.php';
+include_once '../object/Room.php';
+include_once '../object/AssetType.php';
+include_once '../object/Asset.php';
 
 class ReportAssetRepository
 {
@@ -35,9 +39,9 @@ class ReportAssetRepository
         return $room_assets;
     }
 
-    public function getAssetsInReport($report_id)
+    public function getPositionsInReport($report_id)
     {
-        $query = "CALL getAssetsInReport(?)";
+        $query = "CALL getPositionsInReport(?)";
 
         $stmt = $this->conn->prepare($query);
 
@@ -53,33 +57,70 @@ class ReportAssetRepository
 
             $report_assets [] = self::createReportAsset($row);
         }
-        return array("report_assets" => $report_assets);
+        return $report_assets;
     }
 
-    private static function createRoomAsset($row)
-    {
-        $room_asset = new ReportAsset();
-        $room_asset->setId($row['id']);
-        $room_asset->setType($row['type']);
-        $room_asset->setAssetTypeName($row['asset_type_name']);
-        $room_asset->setNewAsset($row['new_asset']);
-        $room_asset->setMoved($row['moved']);
-        $room_asset->setMovedFromId($row['moved_from_id']);
-        $room_asset->setMovedFromName($row['moved_from_name']);
-
-        return $room_asset;
-    }
-
-    private static function createReportAsset($row)
+    /**
+     * @param array $row
+     * @return ReportAsset
+     */
+    private static function createReportAsset(array $row)
     {
         $report_asset = new ReportAsset();
-        $report_asset->setId($row['asset_id']);
-        $report_asset->setPreviousRoom($row['previous_room']);
-        $report_asset->setPresent($row['present']);
-        $report_asset->setType($row['asset_type']);
-        $report_asset->setAssetTypeName($row['asset_type_name']);
 
+        $previous_building = new Building();
+        $previous_building->setId($row['previous_building_id']);
+        $previous_building->setName($row['previous_building_name']);
+
+        $previous_room = new Room();
+        $previous_room->setName($row['previous_name']);
+        $previous_room->setId($row['previous_id']);
+        $previous_room->setBuilding($previous_building);
+
+        $report_asset->setPreviousRoom($previous_room);
+        $report_asset->setPresent($row['present']);
+
+        $asset_type = new AssetType();
+        $asset_type->setId($row['type_id']);
+        $asset_type->setName($row['type_name']);
+        $asset_type->setLetter($row['type_letter']);
+
+        $asset = new Asset();
+        $asset->setId($row['asset_id']);
+        $asset->setAssetType($asset_type);
+
+        $report_asset->setAsset($asset);
         return $report_asset;
+    }
+
+    /**
+     * @param array $row
+     * @return ReportAsset
+     */
+    private static function createRoomAsset(array $row)
+    {
+        $report_asset = new ReportAsset();
+        $report_asset->setNewAsset($row['new_asset']);
+        $report_asset->setMoved($row['moved']);
+
+        if($row['moved'])
+        {
+            $moved_from_room = new Room();
+            $moved_from_room->setId($row['moved_from_id']);
+            $moved_from_room->setName($row['moved_from_name']);
+        }
+
+        $asset_type = new AssetType();
+        $asset_type->setId($row['type']);
+        $asset_type->setName($row['asset_type_name']);
+
+        $asset = new Asset();
+        $asset->setId($row['id']);
+        $asset->setAssetType($asset_type);
+
+        $report_asset->setAsset($asset);
+        return $report_asset;
+
     }
 
 }

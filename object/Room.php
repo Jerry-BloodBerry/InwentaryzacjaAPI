@@ -8,23 +8,23 @@ class Room implements JsonSerializable
     private $building;
 
     /**
-     * @return integer
+     * @return integer|NULL
      */
     public function getId()
     {
-        return (int) $this->id;
+        return $this->id;
     }
 
     /**
-     * @param integer $id
+     * @param integer|NULL $id
      */
-    public function setId(int $id)
+    public function setId(?int $id)
     {
         $this->id = $id;
     }
 
     /**
-     * @return string
+     * @return string|NULL
      */
     public function getName()
     {
@@ -32,9 +32,9 @@ class Room implements JsonSerializable
     }
 
     /**
-     * @param string $name
+     * @param string|NULL $name
      */
-    public function setName(string $name)
+    public function setName(?string $name)
     {
         $this->name = $name;
     }

@@ -12,5 +12,5 @@ $id = isset($_GET['id']) ? $_GET['id'] : die();
 
 if(Security::performAuthorization())
 {
-    ReportAssetService::getAssetsInReport($id);
+    ReportAssetService::getPositionsInReport($id);
 }

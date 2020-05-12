@@ -36,7 +36,7 @@ class AssetRepository
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         if(!$row) return null;
 
-        return self::CreateAssetInfo($row);
+        return self::createAssetInfo($row);
     }
 
     /**
@@ -86,7 +86,7 @@ class AssetRepository
         return false;
     }
 
-    private static function CreateAssetInfo($row)
+    private static function createAssetInfo($row)
     {
         $asset = new Asset();
         $asset_type = new AssetType();
