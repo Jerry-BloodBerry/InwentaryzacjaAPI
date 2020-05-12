@@ -7,7 +7,7 @@ class Building implements JsonSerializable
     private $name;
 
     /**
-     * @return integer
+     * @return NULL|integer
      */
     public function getId()
     {
@@ -15,15 +15,15 @@ class Building implements JsonSerializable
     }
 
     /**
-     * @param integer $id
+     * @param integer|NULL $id
      */
-    public function setId($id)
+    public function setId(?int $id)
     {
-        $this->id = $id;
+        $this->id = (int) $id;
     }
 
     /**
-     * @return string
+     * @return string|NULL
      */
     public function getName()
     {
@@ -31,9 +31,9 @@ class Building implements JsonSerializable
     }
 
     /**
-     * @param string $name
+     * @param string|NULL $name
      */
-    public function setName($name)
+    public function setName(?string $name)
     {
         $this->name = $name;
     }

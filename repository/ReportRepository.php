@@ -1,8 +1,9 @@
 <?php
 include_once '../interfaces/IRepository.php';
-include_once '../object/Report.php';
+include_once '../object/ReportHeader.php';
 include_once '../config/Database.php';
 include_once '../security/BearerToken.php';
+include_once '../object/Building.php';
 
 class ReportRepository implements IRepository
 {
@@ -20,14 +21,7 @@ class ReportRepository implements IRepository
 
     function find($id)
     {
-        $query = "SELECT 
-                r.id, r.name, r.room, r.create_date, r.owner 
-          FROM
-            " . $this->table_name . " r
-            WHERE
-                r.id = ?
-            LIMIT
-                0,1";
+        $query = "CALL getReportHeader(?)";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(1,$id);
 
@@ -38,37 +32,35 @@ class ReportRepository implements IRepository
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         if(!$row) return null;
 
-        $report = new Report();
-        $report->setId($id);
-        $report->setName($row["name"]);
-        $report->setRoom($row["room"]);
-        $report->setCreateDate($row["create_date"]);
-        $report->setOwner($row["owner"]);
-        return $report;
+        return self::createReport($row);
     }
 
     function findAll()
     {
-        $query = "SELECT
-                r.id, r.name, r.room, r.create_date, r.owner
-            FROM
-                " . $this->table_name . " r
-                ORDER BY r.id";
+        $query = "CALL getLoginSession(?)";
         $stmt = $this->conn->prepare($query);
+
+        $token = BearerToken::getBearerToken();
+        $stmt->bindParam(1,$token);
+
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $user_id = $row['user_id'];
+
+        $query = "CALL getReportsHeaders(?)";
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(1,$user_id);
 
         //execute query
         $stmt->execute();
         $report_array = array();
         while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $report = new Report();
-            $report->setId($row["id"]);
-            $report->setName($row["name"]);
-            $report->setRoom($row["room"]);
-            $report->setCreateDate($row["create_date"]);
-            $report->setOwner($row["owner"]);
-            $report_array [] = $report;
+
+            $report_array [] = self::createReport($row);
         }
-        return array("count" => $stmt->rowCount(), "reports" => $report_array);
+        return $report_array;
     }
 
     function deleteOne($id)
@@ -98,80 +90,71 @@ class ReportRepository implements IRepository
      */
     function addNew($report_data)
     {
-        /** @var Report $report */
+        /** @var ReportHeader $report */
         $report = $report_data['report'];
         $assets = $report_data['assets'];
         //sanitize data
         $report->setName(htmlspecialchars(strip_tags($report->getName())));
-        $report->setRoom(htmlspecialchars(strip_tags($report->getRoom())));
+        $report->getRoom()->setId(htmlspecialchars(strip_tags($report->getRoom()->getId())));
         $this->setOwnerForReport($report);
 
-        try {
-            $date = $report->getCreateDate()->format('Y-m-d H:i:s');
-            $this->conn->beginTransaction();
-            $this->insertReport($report,$date);
+        $query = "CALL addNewReport(:name,:room,:owner,:positions)";
+        $stmt = $this->conn->prepare($query);
 
-            $last_report_id = $this->getLastReportId();
-            $this->insertReportsAssets($assets,$report,$last_report_id);
+        $name = $report->getName();
+        $room_id = $report->getRoom()->getId();
+        $owner_id = $report->getOwner()->getId();
+        $assets = json_encode($assets);
+        $stmt->bindParam(':name', $name);
+        $stmt->bindParam(':room', $room_id);
+        $stmt->bindParam(':owner', $owner_id);
+        $stmt->bindParam(':positions', $assets);
 
-            $this->conn->commit();
-            return true;
-        } catch (Exception $e) {
-            error_log($e->getMessage());
-            $this->conn->rollBack();
-            return false;
-        }
+        $stmt->execute();
+        return true;
     }
 
-    private function setOwnerForReport($report)
+    private function setOwnerForReport(ReportHeader $report)
     {
+        $query = "CALL getLoginSession(?)";
+        $stmt = $this->conn->prepare($query);
+
         $token = BearerToken::getBearerToken();
-        $stmt = $this->conn->query("
-        SELECT `user_id` FROM login_sessions
-        WHERE `token` = '{$token}'
-        ");
+        $stmt->bindParam(1,$token);
+
+        $stmt->execute();
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        $owner = $row['user_id'];
+
+        $owner = new User();
+        $owner->setId($row['user_id']);
         $report->setOwner($owner);
     }
 
-    private function getLastReportId()
+    private static function createReport($row)
     {
-        $stmt = $this->conn->query("
-            SELECT `id` FROM `{$this->table_name}` ORDER BY `id` DESC LIMIT 1");
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $row['id'];
-    }
-
-    /**
-     * @param array $assets
-     * @param Report $report
-     * @param integer $last_report_id
-     */
-    private function insertReportsAssets($assets, $report, $last_report_id)
-    {
-        foreach ($assets as $asset)
-        {
-            $asset->setPreviousRoom($report->getRoom());
-            $asset->setReportId($last_report_id);
-            $this->conn->exec("
-                INSERT INTO `reports_assets`
-                SET
-                `report_id` = {$asset->getReportId()},
-                `asset_id` = {$asset->getAssetId()},
-                `previous_room` = {$asset->getPreviousRoom()} 
-                ");
+        $report = new ReportHeader();
+        $report->setId($row["id"]);
+        $report->setName($row["name"]);
+        try {
+            $report->setCreateDate(new DateTime($row["create_date"]));
+        } catch (Exception $e) {
+            echo 'Exception thrown while setting CreateDate in ReportRepository on line 134: ' . $e->getMessage();
         }
-    }
-    private function insertReport($report, $date)
-    {
-        $this->conn->exec("
-            INSERT INTO `{$this->table_name}` 
-            SET 
-            `name` = '{$report->getName()}', 
-            `room` = {$report->getRoom()},
-            `create_date` = '{$date}',
-            `owner` = {$report->getOwner()}
-            ");
+        $owner = new User();
+        $owner->setId($row['owner_id']);
+        $owner->setLogin($row['owner_name']);
+        $report->setOwner($owner);
+
+        $room = new Room();
+        $building = new Building();
+        $building->setName($row['building_name']);
+        $building->setId($row['building_id']);
+
+        $room->setName($row['room_name']);
+        $room->setId($row['room_id']);
+        $room->setBuilding($building);
+
+        $report->setRoom($room);
+        return $report;
     }
 }

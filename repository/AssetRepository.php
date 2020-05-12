@@ -1,11 +1,16 @@
 <?php
 include_once '../config/Database.php';
-include_once '../interfaces/IRepository.php';
 include_once '../object/Asset.php';
+include_once '../object/Room.php';
+include_once '../object/AssetType.php';
+include_once '../object/Building.php';
 
-class AssetRepository implements IRepository
+class AssetRepository
 {
     //database connection and table name
+    /**
+     * @var PDO
+     */
     private $conn;
     private $table_name = "assets";
 
@@ -20,17 +25,7 @@ class AssetRepository implements IRepository
      */
     function find($id)
     {
-        $query = "SELECT 
-                a.id, a.name, a.asset_type 
-          FROM
-            " . $this->table_name . " a
-            LEFT JOIN 
-                asset_types ast
-                    ON a.asset_type = ast.id
-            WHERE
-                a.id = ?
-            LIMIT
-                0,1";
+        $query = "CALL getAssetInfo(?)";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(1,$id);
 
@@ -41,40 +36,7 @@ class AssetRepository implements IRepository
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         if(!$row) return null;
 
-        $asset = new Asset();
-        $asset->setAssetType($row["asset_type"]);
-        $asset->setId($id);
-        $asset->setName($row["name"]);
-
-        return $asset;
-    }
-
-    /**
-     * @return array
-     */
-    function findAll()
-    {
-        $query = "SELECT
-                a.id, a.name, a.asset_type
-            FROM
-                " . $this->table_name . " a
-                LEFT JOIN
-                    asset_types ast
-                        ON a.asset_type = ast.id
-                ORDER BY a.id";
-        $stmt = $this->conn->prepare($query);
-
-        //execute query
-        $stmt->execute();
-        $asset_array = array();
-        while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $asset = new Asset();
-            $asset->setId($row["id"]);
-            $asset->setName($row["name"]);
-            $asset->setAssetType($row["asset_type"]);
-            $asset_array [] = $asset;
-        }
-        return array("count" => $stmt->rowCount(), "assets" => $asset_array);
+        return self::createAssetInfo($row);
     }
 
     /**
@@ -108,21 +70,12 @@ class AssetRepository implements IRepository
      */
     function addNew($asset)
     {
-        $query = "INSERT
-                INTO " . $this->table_name . "
-                SET
-                    name=:name, asset_type=:type_id";
+        $query = "CALL addNewAsset(:type_id)";
         $stmt = $this->conn->prepare($query);
 
-        //sanitize data
-        $asset->setName(htmlspecialchars(strip_tags($asset->getName())));
-        $asset->setAssetType(htmlspecialchars(strip_tags($asset->getAssetType())));
-
         //bind params
-        $name = $asset->getName();
-        $type = $asset->getAssetType();
+        $type = htmlspecialchars(strip_tags($asset->getAssetType()->getId()));
 
-        $stmt->bindParam(":name",$name);
         $stmt->bindParam(":type_id",$type);
 
         //execute query
@@ -131,5 +84,31 @@ class AssetRepository implements IRepository
             return true;
         }
         return false;
+    }
+
+    private static function createAssetInfo($row)
+    {
+        $asset = new Asset();
+        $asset_type = new AssetType();
+        $building = new Building();
+        $room = new Room();
+
+        $asset->setId($row['id']);
+
+        $asset_type->setId($row['type']);
+        $asset_type->setName($row['asset_type_name']);
+        $asset_type->setLetter($row['letter']);
+
+        $building->setName($row['building_name']);
+        $building->setId($row['building_id']);
+
+        $room->setId($row['room_id']);
+        $room->setName($row['room_name']);
+        $room->setBuilding($building);
+
+        $asset->setAssetType($asset_type);
+        $asset->setRoom($room);
+
+        return $asset;
     }
 }

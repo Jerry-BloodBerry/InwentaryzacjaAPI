@@ -19,17 +19,15 @@ $conn = $db;
 $query = "INSERT
                 INTO users
                 SET
-                    login=:login, salt=:salt, hash=:hash";
+                    login=:login, hash=:hash";
 $stmt = $conn->prepare($query);
 
 //bind params
 $login = $user->getLogin();
 $hash = $user->getHash();
-$salt = "none";
 
 $stmt->bindParam(":login",$login);
 $stmt->bindParam(":hash",$hash);
-$stmt->bindParam(":salt",$salt);
 
 //execute query
 if($stmt->execute())

@@ -1,47 +1,33 @@
 <?php
-
+include_once 'Building.php';
+include_once 'AssetType.php';
+include_once 'Room.php';
 
 class Asset implements JsonSerializable
 {
     //fields
     private $id;
-    private $name;
     private $assetType;
+    private $room;
 
     /**
      * @return integer
      */
     public function getId()
     {
-        return $this->id;
+        return (int) $this->id;
     }
 
     /**
      * @param integer $id
      */
-    public function setId($id)
+    public function setId(int $id)
     {
-        $this->id = $id;
+        $this->id = (int) $id;
     }
 
     /**
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param string $name
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-    }
-
-    /**
-     * @return integer
+     * @return AssetType
      */
     public function getAssetType()
     {
@@ -49,11 +35,27 @@ class Asset implements JsonSerializable
     }
 
     /**
-     * @param integer $assetType
+     * @param AssetType $assetType
      */
-    public function setAssetType($assetType)
+    public function setAssetType(AssetType $assetType)
     {
         $this->assetType = $assetType;
+    }
+
+    /**
+     * @return Room
+     */
+    public function getRoom()
+    {
+        return $this->room;
+    }
+
+    /**
+     * @param Room $room
+     */
+    public function setRoom(Room $room)
+    {
+        $this->room = $room;
     }
 
     /**
@@ -61,10 +63,11 @@ class Asset implements JsonSerializable
      */
     public function jsonSerialize()
     {
-        return [
-            'id' => $this->id,
-            'assetType' => $this->assetType,
-            'name' => $this->name
-        ];
+        $json = array();
+        $json['id'] = (int) $this->id;
+        $json['type'] = $this->assetType;
+        if($this->room != null)
+            $json['room'] = $this->room;
+        return $json;
     }
 }

@@ -1,12 +1,13 @@
 <?php
 include_once '../config/Database.php';
-include_once '../interfaces/IRepository.php';
 include_once '../object/Session.php';
 
-class SessionRepository implements IRepository
+class SessionRepository
 {
+    /**
+     * @var PDO
+     */
     private $conn;
-    private $table_name = 'login_sessions';
 
     public function __construct($db)
     {
@@ -14,87 +15,21 @@ class SessionRepository implements IRepository
     }
 
     /**
-     * @param $id
-     * @return Session|null
-     */
-    public function find($id)
-    {
-        $query = "SELECT 
-                s.id, s.user_id, s.token, s.expiration_date, s.create_date 
-          FROM
-            " . $this->table_name . " s
-            LEFT JOIN 
-                users u
-                    ON s.user_id = u.id
-            WHERE
-                s.id = ?
-            LIMIT
-                0,1";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(1,$id);
-
-        //execute query
-        $stmt->execute();
-
-        //fetch row
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        if(!$row) return null;
-
-        $session = new Session();
-        $session->setId($row["id"]);
-        $session->setCreateDate($row["create_date"]);
-        $session->setToken($row["token"]);
-        $session->setExpirationDate($row["expiration_date"]);
-        $session->setUserId($row["user_id"]);
-
-        return $session;
-    }
-
-    public function findAll()
-    {
-        $query = "SELECT 
-                s.id, s.user_id, s.token, s.expiration_date, s.create_date 
-          FROM
-            " . $this->table_name . " s
-            LEFT JOIN 
-                users u
-                    ON s.user_id = u.id
-            ORDER BY s.id";
-        $stmt = $this->conn->prepare($query);
-
-        //execute query
-        $stmt->execute();
-
-        $session_array = array();
-        while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $session = new Session();
-            $session->setId($row["id"]);
-            $session->setToken($row["token"]);
-            $session->setUserId($row["user_id"]);
-            $session->setCreateDate($row["create_date"]);
-            $session->setExpirationDate($row["expiration_date"]);
-            $session_array [] = $session;
-        }
-        return array("count" => $stmt->rowCount(), "assets" => $session_array);
-    }
-
-    /**
-     * @param $id
+     * @param string $token
      * @return bool
      */
-    public function deleteOne($id)
+    public function deleteOneByToken($token)
     {
-        $query = "DELETE
-                FROM " . $this->table_name . "
-                WHERE id = ?";
+        $query = "CALL deleteLoginSession(?)";
+
         //prepare_query
         $stmt = $this->conn->prepare($query);
 
         //sanitize data
-        $id = htmlspecialchars(strip_tags($id));
+        $token = htmlspecialchars(strip_tags($token));
 
         //bind parameter
-        $stmt->bindParam(1,$id);
+        $stmt->bindParam(1,$token);
 
         if($stmt->execute() && $stmt->rowCount()>0)
         {
@@ -110,27 +45,22 @@ class SessionRepository implements IRepository
      */
     public function addNew($session)
     {
-        $query = "INSERT
-                INTO " . $this->table_name . "
-                SET
-                    user_id=:u_id, token=:token, expiration_date=:exp_date, create_date=:crt_date";
+        $query = "CALL addLoginSession(:u_id,:exp_date,:token)";
         $stmt = $this->conn->prepare($query);
 
         //sanitize data
         $session->setUserId(htmlspecialchars(strip_tags($session->getUserId())));
         $session->setToken(htmlspecialchars(strip_tags($session->getToken())));
 
-        //bind params
+        //prepare params
         $user_id = $session->getUserId();
         $token = $session->getToken();
         $exp_date = $session->getExpirationDate()->format('Y-m-d H:i:s');
-        $crt_date = $session->getCreateDate()->format('Y-m-d H:i:s');
 
         //bind params
         $stmt->bindParam(":u_id",$user_id);
         $stmt->bindParam(":token",$token);
         $stmt->bindParam(":exp_date",$exp_date);
-        $stmt->bindParam(":crt_date",$crt_date);
 
         //execute query
         if($stmt->execute())
@@ -142,17 +72,7 @@ class SessionRepository implements IRepository
 
     public function findOneByToken($token)
     {
-        $query = "SELECT 
-                s.id, s.user_id, s.token, s.expiration_date, s.create_date 
-          FROM
-            " . $this->table_name . " s
-            LEFT JOIN 
-                users u
-                    ON s.user_id = u.id
-            WHERE
-                s.token = ?
-            LIMIT
-                0,1";
+        $query = "CALL getLoginSession(?)";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(1,$token);
 
@@ -165,10 +85,14 @@ class SessionRepository implements IRepository
 
         $session = new Session();
         $session->setId($row["id"]);
-        $session->setCreateDate($row["create_date"]);
-        $session->setToken($row["token"]);
-        $session->setExpirationDate($row["expiration_date"]);
         $session->setUserId($row["user_id"]);
+        try {
+            $session->setExpirationDate(new DateTime($row["expiration_date"]));
+        } catch (Exception $e) {
+            echo 'Error while setting expirationDate for Session: ' . $e->getMessage();
+        }
+        $session->setToken($row["token"]);
+        $session->setExpired($row['expired']);
 
         return $session;
     }

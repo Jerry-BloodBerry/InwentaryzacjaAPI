@@ -3,44 +3,63 @@
 
 class ReportAsset implements JsonSerializable
 {
-    private $report_id;
-    private $asset_id;
-    private $previous_room;
+   private $asset;
+   private $new_asset;
+   private $moved;
+   private $moved_from_room;
+   private $previous_room;
+   private $present;
 
     /**
-     * @return integer
+     * @return Asset
      */
-    public function getReportId()
+    public function getAsset()
     {
-        return $this->report_id;
+        return $this->asset;
     }
 
     /**
-     * @param integer $report_id
+     * @param Asset $asset
      */
-    public function setReportId($report_id)
+    public function setAsset(Asset $asset): void
     {
-        $this->report_id = $report_id;
+        $this->asset = $asset;
     }
 
     /**
-     * @return integer
+     * @return boolean
      */
-    public function getAssetId()
+    public function getNewAsset()
     {
-        return $this->asset_id;
+        return $this->new_asset;
     }
 
     /**
-     * @param integer $asset_id
+     * @param boolean $new_asset
      */
-    public function setAssetId($asset_id)
+    public function setNewAsset(bool $new_asset)
     {
-        $this->asset_id = $asset_id;
+        $this->new_asset = $new_asset;
     }
 
     /**
-     * @return integer
+     * @return boolean
+     */
+    public function getMoved()
+    {
+        return $this->moved;
+    }
+
+    /**
+     * @param boolean $moved
+     */
+    public function setMoved(bool $moved)
+    {
+        $this->moved = $moved;
+    }
+
+    /**
+     * @return Room|NULL
      */
     public function getPreviousRoom()
     {
@@ -48,13 +67,44 @@ class ReportAsset implements JsonSerializable
     }
 
     /**
-     * @param integer $previous_room
+     * @param Room|NULL $previous_room
      */
-    public function setPreviousRoom($previous_room)
+    public function setPreviousRoom(?Room $previous_room)
     {
         $this->previous_room = $previous_room;
     }
 
+    /**
+     * @return boolean
+     */
+    public function getPresent()
+    {
+        return $this->present;
+    }
+
+    /**
+     * @param boolean $present
+     */
+    public function setPresent(bool $present)
+    {
+        $this->present = $present;
+    }
+
+    /**
+     * @return Room
+     */
+    public function getMovedFromRoom()
+    {
+        return $this->moved_from_room;
+    }
+
+    /**
+     * @param Room $moved_from_room
+     */
+    public function setMovedFromRoom(Room $moved_from_room): void
+    {
+        $this->moved_from_room = $moved_from_room;
+    }
 
     /**
      * @inheritDoc
@@ -62,8 +112,8 @@ class ReportAsset implements JsonSerializable
     public function jsonSerialize()
     {
         return [
-            'report_id' => $this->report_id,
-            'asset_id' => $this->asset_id,
+            'asset' => $this->asset,
+            'present' => $this->present,
             'previous_room' => $this->previous_room
         ];
     }

@@ -8,6 +8,7 @@ class Session
     private $token;
     private $expiration_date;
     private $create_date;
+    private $expired;
 
     /**
      * @return integer
@@ -20,7 +21,7 @@ class Session
     /**
      * @param integer $id
      */
-    public function setId($id)
+    public function setId(int $id)
     {
         $this->id = $id;
     }
@@ -30,13 +31,13 @@ class Session
      */
     public function getUserId()
     {
-        return $this->user_id;
+        return (int) $this->user_id;
     }
 
     /**
      * @param integer $user_id
      */
-    public function setUserId($user_id)
+    public function setUserId(int $user_id)
     {
         $this->user_id = $user_id;
     }
@@ -52,7 +53,7 @@ class Session
     /**
      * @param string $token
      */
-    public function setToken($token)
+    public function setToken(string $token)
     {
         $this->token = $token;
     }
@@ -68,7 +69,7 @@ class Session
     /**
      * @param datetime $expiration_date
      */
-    public function setExpirationDate($expiration_date)
+    public function setExpirationDate(DateTime $expiration_date)
     {
         $this->expiration_date = $expiration_date;
     }
@@ -84,10 +85,28 @@ class Session
     /**
      * @param datetime $create_date
      */
-    public function setCreateDate($create_date)
+    public function setCreateDate(DateTime $create_date)
     {
         $this->create_date = $create_date;
     }
+
+    /**
+     * @return boolean
+     */
+    public function getExpired()
+    {
+        return $this->expired;
+    }
+
+    /**
+     * @param boolean $expired
+     */
+    public function setExpired(bool $expired)
+    {
+        $this->expired = $expired;
+    }
+
+
 
 
 }

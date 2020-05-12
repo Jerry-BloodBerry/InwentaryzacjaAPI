@@ -1,15 +1,17 @@
 <?php
 include_once '../repository/AssetRepository.php';
-include_once '../interfaces/IService.php';
 include_once '../config/Database.php';
+
 
 /**
  * Klasa zarzadzajaca srodkami trwalymi
  * 
  */
-class AssetService implements IService
-{
 
+
+class AssetService
+
+{
     /**
      * Funkcja znajduje element (srodek trwaly) w bazie po jego id
      * @param $id - id szukanego elementu w bazie
@@ -36,6 +38,7 @@ class AssetService implements IService
             echo json_encode(["message" => "Asset does not exist"]);
         }
     }
+
 
    /**
     * Funkcja wyszukujaca wszystkie elementy (srodki trwale) w bazie
@@ -70,13 +73,13 @@ class AssetService implements IService
     static function addNew($data)
     {
         if(
-            !empty($data->name) &&
-            !empty($data->asset_type)
+            !empty($data->type)
         )
         {
             $asset = new Asset();
-            $asset->setName($data->name);
-            $asset->setAssetType($data->asset_type);
+            $asset_type = new AssetType();
+            $asset_type->setId($data->type);
+            $asset->setAssetType($asset_type);
 
             //init database
             $database = new Database();
@@ -106,7 +109,7 @@ class AssetService implements IService
      * Funkcja usuwajaca srodek trwaly po jego id
      * @param $id - id srodka trwalego
      */
-    static function deleteOneById($id)
+    public static function deleteOneById($id)
     {
         // get database connection
         $database = new Database();
