@@ -4,6 +4,8 @@ include_once '../object/ReportHeader.php';
 include_once '../config/Database.php';
 include_once '../repository/ReportRepository.php';
 include_once '../object/ReportAsset.php';
+include_once '../repository/ReportAssetRepository.php';
+include_once '../object/Report.php';
 
 class ReportService implements IService
 {
@@ -133,6 +135,27 @@ class ReportService implements IService
         else {
             http_response_code(503);
             echo json_encode(array("message" => "Unable to delete report. Service temporarily unavailable."));
+        }
+    }
+
+    static function getFullReportData($id)
+    {
+        // get database connection
+        $database = new Database();
+        $db = $database->getConnection();
+
+        // create a repository instance
+        $rr = new ReportRepository($db);
+
+        $report_header = $rr->find($id);
+        if($report_header!=null)
+        {
+            $rar = new ReportAssetRepository($db);
+            $positions = $rar->getPositionsInReport($id);
+            return new Report($report_header,$positions);
+        }
+        else {
+            return null;
         }
     }
 }
