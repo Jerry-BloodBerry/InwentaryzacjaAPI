@@ -35,7 +35,7 @@ to make requests listed below.
    with the specified id in JSON format.
   * /report/addNewReport - when passed complete data it creates
    a Report object and persists it in the database.
-  * /report/getPositionsInReport/{id} - returns all assets
+  * /report/getReportPositions/{id} - returns all assets
     of type ReportAsset, that were inside the report with the given
     id, in JSON format
   ### Room
