@@ -13,8 +13,9 @@ class Database
     public $conn;
 /**
  * Funkcja nawiazujaca polaczenie pomiedzy userem a baza danych 
- * @return polaczenie z baza danych
+ * @return PDO - (obiekt klasy PDO) zwraca polaczenie z baza danych
  */
+
     public function getConnection()
     {
         $this->conn = null;

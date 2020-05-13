@@ -11,9 +11,11 @@ include_once '../config/Database.php';
 class BuildingService implements IService
 {
     /**
-     * Funkcja znajdujaca wszystkie pokoje w budynku po jego id
-     * @param $building_id - id budynku
+     * Funkcja prosi repozytorium aby odpytalo baze, czy zawiera w sobie element o danym id.
+     * Jeżeli zawiera, to repozytorium zwraca funkcji obiekt (pokoje z budynku o danym id), a funkcja zwraca go jako json
+     * @param $building_id - (integer) id budynku
      */
+
     public static function findAllRooms($building_id)
     {
         // get database connection
@@ -38,8 +40,10 @@ class BuildingService implements IService
     }
 
     /**
-     * Funkcja wyszukujaca budynek w bazie danych po jego id
-     * @param $id - id szukanego budynku
+     * Funkcja prosi repozytorium aby odpytalo baze, czy zawiera w sobie element o danym id.
+     * Jeżeli zawiera, to repozytorium zwraca funkcji obiekt (budynek), a funkcja zwraca go jako json
+     * @param $id - (integer) id szukanego budynku
+     * @return mixed|void - zwraca obiekt (budynek) z bazy
      */
     static function findOneById($id)
     {
@@ -65,7 +69,9 @@ class BuildingService implements IService
     }
 
     /**
-     * Funkcja znajdujaca wszystkie budynki w bazie danych
+     * Funkcja prosi repozytorium aby odpytalo baze, o wszystkie elementy.
+     * Repozytorium zwraca funkcji wszystkie obiekty (budynki), a funkcja zwraca je jako json
+     * @return mixed|void - zwraca obiekty (budynki) z bazy
      */
     static function findAll()
     {
@@ -91,7 +97,7 @@ class BuildingService implements IService
     }
 
     /**
-     * Funkcja dodajaca nowy budynek do bazy danych
+     * Funkcja prosi repozytorium aby dodalo nowy budynek do bazy
      * @param $data - dane dodawanego obiektu (budynku)
      */
     static function addNew($data)
@@ -126,8 +132,9 @@ class BuildingService implements IService
     }
 
     /**
-     * Funkcja usuwajaca dany budynek z bazy danych na podstawie id
-     * @param $id - id usuwanego obiektu 
+     * Funkcja prosi repozytorium aby odpytalo baze, czy zawiera w sobie element o danym id.
+     * Jeżeli zawiera, to repozytorium usuwa z bazy danych ten element (budynek).
+     * @param $id - (integer) id usuwanego obiektu
      */
     static function deleteOneById($id)
     {

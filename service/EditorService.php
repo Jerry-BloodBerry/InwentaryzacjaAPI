@@ -8,10 +8,11 @@ include_once '../interfaces/IService.php';
 class EditorService
 {
     /**
-     * Funkcja tworzaca (dodajaca) cos do bazy danych
+     * Funkcja prosi repozytorium aby stworzylo/dodalo cos do bazy
      * @param $service - usluga zwiazana z tym czyms, okresla co chce dodac
      * @param $data - dane obiektu dodawanego do bazy danych
      */
+
     public static function Create(IService $service, $data)
     {
         if(Security::performAuthorization())
@@ -19,11 +20,12 @@ class EditorService
             $service::addNew($data);
         }
     }
-/**
- * Funkcja usuwajaca cos z bazy danych
- * @param $service - usluga zwiazana z tym czyms, okresla co chce usunac
- * @param $data - dane obiektu usuwanego z bazy danych
- */
+    /**
+     * Funkcja prosi repozytorium aby odpytalo baze, czy zawiera w sobie element o danym id.
+     * Jeżeli zawiera, to repozytorium usuwa z bazy danych ten element.
+     * @param $service - usluga zwiazana z tym czyms, okresla co chce usunac
+     * @param $data - dane obiektu usuwanego z bazy danych
+     */
     public static function Delete(IService $service, $data)
     {
         if(Security::performAuthorization())

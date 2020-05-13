@@ -9,9 +9,12 @@ include_once '../repository/ReportAssetRepository.php';
 class ReportAssetService
 {
     /**
-     * Funkcja sprawdzajaca srodki trwale w pokoju (na podstawie jego id) na podstawie ostatniego raportu
-     * @param $room_id - id pokoju ktory jest sprawdzany
+     * Funkcja prosi repozytorium aby odpytalo baze, czy zawiera w sobie element o danym id.
+     * (srodki trwale w pokoju na podstawie ostatniego raportu)
+     * Jeżeli zawiera, to repozytorium zwraca funkcji obiekt (srodki trwale), a funkcja zwraca go jako json.
+     * @param $room_id - (integer) id pokoju ktory jest sprawdzany
      */
+
     public static function getAssetsInRoom($room_id)
     {
         // get database connection
@@ -35,8 +38,10 @@ class ReportAssetService
         }
     }
     /**
-     * Funkcja sprawdzajaca pozycje (srodki trwale) raportu na podstawie jego id
-     * @param $report_id - id raportu
+     * Funkcja prosi repozytorium aby odpytalo baze, czy zawiera w sobie element o danym id.
+     * (Sprawdza pozycje (srodki trwale) raportu na podstawie jego id)
+     * Jeżeli zawiera, to repozytorium zwraca funkcji obiekt (srodki trwale z raportu), a funkcja zwraca go jako json
+     * @param $report_id - (integer) id raportu
      */
     public static function getPositionsInReport($report_id)
     {

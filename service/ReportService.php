@@ -11,8 +11,10 @@ include_once '../object/ReportAsset.php';
 class ReportService implements IService
 {
     /**
-     * Funkcja znajdujaca srodek trwaly po jego id
-     * @param $id - id szukanego srodka trwalego
+     * Funkcja prosi repozytorium aby odpytalo baze, czy zawiera w sobie element o danym id.
+     * Jeżeli zawiera, to repozytorium zwraca funkcji obiekt (raport), a funkcja zwraca go jako json
+     * @param $id - (integer) id szukanego raportu
+     * @return mixed|void - zwraca raport jezeli jest w bazie
      */
     static function findOneById($id)
     {
@@ -38,7 +40,9 @@ class ReportService implements IService
     }
 
     /**
-     * Funkcja znajdujaca wszystkie srodki trwale
+     * Funkcja prosi repozytorium aby odpytalo baze, o wszystkie elementy.
+     * Repozytorium zwraca funkcji wszystkie obiekty (raporty), a funkcja zwraca je jako json
+     * @return mixed|void - zwraca wszystkie raporty
      */
     static function findAll()
     {
@@ -64,9 +68,10 @@ class ReportService implements IService
     }
 
     /**
-     * Funkcja dodajaca nowy srodek trwaly
-     * @param $data - dane dodawanego srodka trwalego
+     * Funkcja prosi repozytorium aby dodalo nowy raport na podstawie jego danych do bazy
+     * @param $data - dane dodawanego raportu
      */
+
     static function addNew($data)
     {
         if(
@@ -119,9 +124,11 @@ class ReportService implements IService
     }
 
     /**
-     * Funkcja usuwajaca srodek trwaly po jego id
-     * @param $id - id usuwanego srodka trwalego
+     * Funkcja prosi repozytorium aby odpytalo baze, czy zawiera w sobie element o danym id.
+     * Jeżeli zawiera, to repozytorium usuwa z bazy danych ten element (raport).
+     * @param $id - id usuwanego raportu
      */
+
     static function deleteOneById($id)
     {
         // get database connection

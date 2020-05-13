@@ -12,6 +12,7 @@ class Login
 {
     /**
      * Funkcja nawiazujaca polaczenie z baza danych, logujaca uzytkownika
+     * @param $data - (obiekt klasy data) - dane logowania uzytkownika
      */
    static function userLogin($data)
    {

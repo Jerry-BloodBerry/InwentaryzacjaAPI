@@ -40,7 +40,8 @@ class Security
     /**
      * 
      * Funkcja sprawdza czy Token przekazany przez uzytkownika nadal jest wazny
-     * @return true jezeli nadal wazny, a false jezeli juz wygasl 
+     * @param $session - obiekt typu session
+     * @return bool w zaleznosci od tego czy jest nadal wazny, czy wygasl
      */
     private static function validateTokenExpiry($session)
     {
@@ -48,7 +49,7 @@ class Security
     }
     /**
      * Funkcja przeprowadzajaca autoryzacje uzytkownika
-     * 
+     * @return bool w zaleznosci od tego czy autoryzacja powiodla sie
      */
 
     public static function performAuthorization()

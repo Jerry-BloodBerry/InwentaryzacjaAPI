@@ -4,23 +4,27 @@
 interface IRepository
 {
     /**
-     * Funkcja wyszukuje element w bazie Repozytorium i go zwraca
-     * @param $id - id szukanego elementu
+     * Funkcja wyszukuje pojedynczy element w bazie po jego id i go zwraca
+     * @param $id - (integer) id szukanego elementu
+     *
+     * @return mixed - zwraca element z bazy o podanym id
      */
+
     function find($id);
     /**
-     * Funkcja wyszukuje wszystkie elementy w bazie Repozytorium i je zwraca
+     * Funkcja wyszukuje wszystkie elementy w bazie  i je zwraca
      *
+     * @return mixed - zwraca wszystkie elementy z bazy
      */
     function findAll();
     /**
-     * Funkcja usuwa element z bazy repozytorium
-     *  @param $id - id usuwanego elementu
+     * Funkcja usuwa pojedynczy element z bazy po jego id
+     *  @param $id - (integer) id usuwanego elementu
      */
     function deleteOne($id);
     /**
-     * Funkcja dodaje element do bazy repozytorium
-     * @param $object - element dodawany
+     * Funkcja dodaje pojedynczy element do bazy
+     * @param $object - (typ zaleznie od tego co implementuje interfejs) element dodawany
      */
     function addNew($object);
 }

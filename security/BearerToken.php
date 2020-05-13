@@ -5,8 +5,8 @@ class BearerToken
 {
     /**
      * Funkcja pobierajaca naglowki autoryzacyjne
-     * @return naglowki autoryzacyjne
-     * */
+     * @return string|null - naglowki autoryzacyjne
+     */
     static function getAuthorizationHeader(){
         $headers = null;
         if (isset($_SERVER['Authorization'])) {
@@ -30,8 +30,9 @@ class BearerToken
         return $headers;
     }
     /**
-     * Funkcja pobierajaca token dostepu od uzytkownika
-     * */
+     * Funkcja pobierajaca token dostepu z headera, poprzez wywolanie metody getAuthorizationHeader()
+     * @return mixed|null -  token dostepu
+     */
     static function getBearerToken() {
         $headers = self::getAuthorizationHeader();
         // HEADER: Get the access token from the header
