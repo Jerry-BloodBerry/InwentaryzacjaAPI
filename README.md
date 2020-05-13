@@ -26,7 +26,7 @@ to make requests listed below.
  format.
  * /building/addNewBuilding - when passed complete data it creates
   a Building object and persists it in the database.
- * /building/getRooms - returns all objects of type 
+ * /building/getRooms/{id} - returns all objects of type 
    Room belonging to the building with the specified id in JSON format.
  ### ReportHeader
   * /report/getReportsHeaders - returns all objects of type ReportHeader
@@ -41,7 +41,7 @@ to make requests listed below.
   ### Room
   * /room/addNewRoom - when passed complete data it creates
   a Room object and persists it in the database.
-  * /room/getAssetsInRoom - returns all objects
+  * /room/getAssetsInRoom/{id} - returns all objects
     of type ReportAsset belonging to room with the specified id 
     in JSON format 
   ### UserCreator <- Just for testing!
