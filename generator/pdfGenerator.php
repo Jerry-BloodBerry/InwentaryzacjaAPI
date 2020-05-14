@@ -1,6 +1,10 @@
 <?php
-require __DIR__.'/vendor/autoload.php';
+include_once '../service/RoomService.php';
+include_once '../object/Report.php';
+include_once '../object/ReportAsset.php';
+include_once '../object/ReportHeader.php';
 
+require '../vendor/autoload.php';
 use Spipu\Html2Pdf\Html2Pdf;
 
 //Strona
@@ -44,6 +48,7 @@ function ReturnCurrentHTML()
     return ob_get_clean();
 }
 
+$raport = ReportService::getFullReportData(2);
 
 $html2pdf = new Html2Pdf();
 $html2pdf->writeHTML(ReturnCurrentHTML());
