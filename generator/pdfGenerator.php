@@ -7,7 +7,6 @@ include_once '../object/Room.php';
 require '../vendor/autoload.php';
 use Spipu\Html2Pdf\Html2Pdf;
 
-$reportID = $_GET["id"];
 $report = null;
 
 function Title(string $name, int $nr, string $room, $date)
@@ -22,7 +21,7 @@ function ReturnCurrentHTML()
 }
 function CheckIfReportExists(int $id) : bool
 {
-    $report = ReportService::getFullReportData(6);
+    $report = ReportService::getFullReportData($id);
     if ($report == null)
     {
         return false;
@@ -103,16 +102,18 @@ function Content(Report $report) :void
     }
     echo "</table>";
 }
-$report = ReportService::getFullReportData($reportID);
-if (empty($repotID))
+
+
+if (isset($_GET["id"]))
 {
+    $reportID = $_GET["id"];
     if (CheckIfReportExists($reportID))
     {
-        $report = ReportService::getFullReportData(6);
+        $report = ReportService::getFullReportData($reportID);
     }
     else
     {
-        echo "Id: ".$reportID."is invaild!!!";
+        echo "Id: ".$reportID." is invaild!!!";
         exit();
     }
 }
