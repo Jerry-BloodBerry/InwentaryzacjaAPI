@@ -3,20 +3,30 @@ include_once '../interfaces/IRepository.php';
 include_once '../object/Building.php';
 include_once '../object/Room.php';
 
+/** Klasa do obslugi tabeli budynkow */
 class BuildingRepository implements IRepository
 {
-    //database connection and table name
-    /**
-     * @var PDO
-     */
+    /** PDO wartosc polaczenia z baza */
     private $conn;
+
+    /** string nazwa tabeli */
     private $table_name = "buildings";
 
+
+    /**
+     * konstrukor
+     * @param PDO $db polaczenie z baza
+     */
     public function __construct($db)
     {
         $this->conn = $db;
     }
 
+    /**
+     * Zwraca tablice z wszystkimi pokojami w podanym budynku i ich liczebnoscia
+     * @param integer $building_id id budynku
+     * @return array tablica z wszystkimi pokojami w podanym budynku
+     */
     function findAllRooms($building_id)
     {
         $query = "CALL getRooms(?)";
@@ -45,6 +55,11 @@ class BuildingRepository implements IRepository
         return array("count" => $stmt->rowCount(), "rooms" => $room_array);
     }
 
+    /**
+     * Zwraca budynek o podanym id
+     * @param integer $id id budynku
+     * @return Building|null znaleziony budynek
+     */
     function find($id)
     {
         $query = "SELECT 
@@ -72,6 +87,10 @@ class BuildingRepository implements IRepository
         return $building;
     }
 
+    /**
+     * Zwraca tablice z wszystkimi budynkami i ich liczebnoscia
+     * @return array tablica z wszystkimi budynkami
+     */
     function findAll()
     {
         $query = "CALL getBuildings()";
@@ -90,6 +109,11 @@ class BuildingRepository implements IRepository
         return array("count" => $stmt->rowCount(), "buildings" => $building_array);
     }
 
+    /**
+     * Usuwa budynek o podanym id
+     * @param integer $id id budynku do usuniecia
+     * @return bool czy udalo sie usunac budynek
+     */
     function deleteOne($id)
     {
         $query = "DELETE
@@ -112,8 +136,9 @@ class BuildingRepository implements IRepository
     }
 
     /**
-     * @param Building $building
-     * @return bool
+     * Dodaje nowy budynek
+     * @param Building $building budynek do dodania
+     * @return bool czy udalo sie dodac budynek
      */
     function addNew($building)
     {

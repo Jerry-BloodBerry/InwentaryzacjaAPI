@@ -8,17 +8,24 @@ include_once '../object/RoomAsset.php';
 
 class ReportAssetRepository
 {
-    //database connection and table name
-    /**
-     * @var PDO
-     */
+    /** PDO wartosc polaczenia z baza */
     private $conn;
 
+
+    /**
+     * konstrukor
+     * @param PDO $db polaczenie z baza
+     */
     public function __construct($db)
     {
         $this->conn = $db;
     }
 
+    /**
+     * Zwraca tablice srodkow trwalych w podanym pokoju
+     * @param $room_id id pokoju
+     * @return array tablica srodkow trwalych
+     */
     public function getAssetsInRoom($room_id)
     {
         $query = "CALL getAssetsInRoom(?)";
@@ -40,6 +47,11 @@ class ReportAssetRepository
         return $room_assets;
     }
 
+    /**
+     * Zwraca tablice srodkow trwalych raportu w podanym raporcie
+     * @param $report_id id raportu
+     * @return array[] tablica srodkow trwalych raportu
+     */
     public function getPositionsInReport($report_id)
     {
         $query = "CALL getPositionsInReport(?)";
@@ -62,8 +74,9 @@ class ReportAssetRepository
     }
 
     /**
-     * @param array $row
-     * @return ReportAsset
+     * Tworzy i zwraca srodek trwaly raportu na podstawie przekazanego wyniku kwerendy
+     * @param array $row wynik kwerendy fetch
+     * @return ReportAsset utworzony srodek trwaly raportu
      */
     private static function createReportAsset(array $row)
     {
@@ -98,8 +111,9 @@ class ReportAssetRepository
     }
 
     /**
-     * @param array $row
-     * @return Asset
+     * Tworzy i zwraca srodek trwaly pokoju na podstawie przekazanego wyniku kwerendy
+     * @param array $row wynik kwerendy fetch
+     * @return RoomAsset utworzony srodek trwaly pokoju
      */
     private static function createRoomAsset(array $row)
     {

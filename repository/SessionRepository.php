@@ -2,21 +2,25 @@
 include_once '../config/Database.php';
 include_once '../object/Session.php';
 
+/** Klasa do obslugi tabeli sesji */
 class SessionRepository
 {
-    /**
-     * @var PDO
-     */
+    /** PDO wartosc polaczenia z baza */
     private $conn;
 
+    /**
+     * konstrukor
+     * @param PDO $db polaczenie z baza
+     */
     public function __construct($db)
     {
         $this->conn = $db;
     }
 
     /**
-     * @param string $token
-     * @return bool
+     * Usun sesje o podanym tokenie
+     * @param string $token token
+     * @return bool czy udalo sie usunac sesje
      */
     public function deleteOneByToken($token)
     {
@@ -39,9 +43,9 @@ class SessionRepository
     }
 
     /**
-     * @param Session $session
-     * @return bool
-     * @throws Exception
+     * Dodaj nowa sesje
+     * @param Session $session sesja do dodania
+     * @return bool czy udalo sie dodac sesje
      */
     public function addNew($session)
     {
@@ -70,6 +74,11 @@ class SessionRepository
         return false;
     }
 
+    /**
+     * Znajdz i zwroc sesje o podanym tokenie
+     * @param string $token token
+     * @return Session|null znaleziona sesja
+     */
     public function findOneByToken($token)
     {
         $query = "CALL getLoginSession(?)";

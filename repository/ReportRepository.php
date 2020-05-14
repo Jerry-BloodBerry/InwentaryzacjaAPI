@@ -5,20 +5,30 @@ include_once '../config/Database.php';
 include_once '../security/BearerToken.php';
 include_once '../object/Building.php';
 
+/** Klasa do obslugi tabeli raportow */
 class ReportRepository implements IRepository
 {
-    //database connection and table name
-    /**
-     * @var PDO
-     */
+    /** PDO wartosc polaczenia z baza */
     private $conn;
+
+    /** string nazwa tabeli */
     private $table_name = "reports";
 
+
+    /**
+     * konstrukor
+     * @param PDO $db polaczenie z baza
+     */
     public function __construct($db)
     {
         $this->conn = $db;
     }
 
+    /**
+     * Zwraca raport o podanym id
+     * @param integer $id id raportu
+     * @return ReportHeader|null znaleziony raport
+     */
     function find($id)
     {
         $query = "CALL getReportHeader(?)";
@@ -35,6 +45,10 @@ class ReportRepository implements IRepository
         return self::createReport($row);
     }
 
+    /**
+     * Zwraca tablice z wszystkimi raportami
+     * @return array tablica z wszystkimi raportami
+     */
     function findAll()
     {
         $query = "CALL getLoginSession(?)";
@@ -63,6 +77,11 @@ class ReportRepository implements IRepository
         return $report_array;
     }
 
+    /**
+     * Usuwa raport o podanym id
+     * @param integer $id id raportu do usuniecia
+     * @return bool czy udalo sie usunac raport
+     */
     function deleteOne($id)
     {
         $query = "DELETE
@@ -85,8 +104,9 @@ class ReportRepository implements IRepository
     }
 
     /**
-     * @param mixed $report_data
-     * @return bool
+     * Dodaj nowy raport
+     * @param ReportHeader $report_data raport do dodania
+     * @return bool czy udalo sie dodac raport
      */
     function addNew($report_data)
     {
@@ -114,6 +134,10 @@ class ReportRepository implements IRepository
         return true;
     }
 
+    /**
+     * Ustawia wlasciciela podanego raportu na obecnie zalogowanego uzytkownika
+     * @param ReportHeader $report raport
+     */
     private function setOwnerForReport(ReportHeader $report)
     {
         $query = "CALL getLoginSession(?)";
@@ -130,6 +154,11 @@ class ReportRepository implements IRepository
         $report->setOwner($owner);
     }
 
+    /**
+     * Tworzy i zwraca metadane raportu (naglowek) na podstawie przekazanego wyniku kwerendy
+     * @param array $row wynik kwerendy fetch
+     * @return ReportHeader utworzony naglowek raportu
+     */
     private static function createReport($row)
     {
         $report = new ReportHeader();

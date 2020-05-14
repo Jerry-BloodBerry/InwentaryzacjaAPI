@@ -2,19 +2,26 @@
 include_once '../config/Database.php';
 include_once '../object/User.php';
 
+/** Klasa do obslugi tabeli uzytkownikow */
 class UserRepository
 {
-    //database connection and table name
-    /**
-     * @var PDO
-     */
+    /** PDO wartosc polaczenia z baza */
     private $conn;
 
+    /**
+     * konstrukor
+     * @param PDO $db polaczenie z baza
+     */
     public function __construct($db)
     {
         $this->conn = $db;
     }
 
+    /**
+     * Znajuje i zwraca uzytkownika o podanym id
+     * @param integer $id id szukanego uzytkownika
+     * @return User|null znaleziony uzytkownik
+     */
     public function find($id)
     {
         $query = "CALL getUser(?)";
@@ -36,6 +43,11 @@ class UserRepository
         return $user;
     }
 
+    /**
+     * Znajuje i zwraca uzytkownika o podanym loginie
+     * @param $login login szukanego uzytkownika
+     * @return User|null znaleziony uzytkownik
+     */
     public function findOneByLogin($login)
     {
         $query = "CALL getUserByLogin(?)";
