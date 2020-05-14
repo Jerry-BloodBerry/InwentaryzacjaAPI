@@ -117,17 +117,6 @@ class ReportAssetRepository
      */
     private static function createRoomAsset(array $row)
     {
-        $report_asset = new RoomAsset();
-        $report_asset->setNewAsset($row['new_asset']);
-        $report_asset->setMoved($row['moved']);
-
-        if($row['moved'])
-        {
-            $moved_from_room = new Room();
-            $moved_from_room->setId($row['moved_from_id']);
-            $moved_from_room->setName($row['moved_from_name']);
-        }
-
         $asset_type = new AssetType();
         $asset_type->setId($row['type']);
         $asset_type->setName($row['asset_type_name']);
@@ -137,9 +126,7 @@ class ReportAssetRepository
         $asset->setId($row['id']);
         $asset->setAssetType($asset_type);
 
-        $report_asset->setAsset($asset);
-        return $report_asset;
-
+        return $asset;
     }
 
 }
