@@ -5,6 +5,8 @@ include_once '../object/ReportAsset.php';
 include_once '../object/ReportHeader.php';
 include_once '../object/Room.php';
 require '../vendor/autoload.php';
+
+use MongoDB\Driver\Command;
 use Spipu\Html2Pdf\Html2Pdf;
 
 $report = null;
@@ -27,10 +29,11 @@ function AddStyle() :void
         </style>";
     echo $style;
 }
-function Title(string $name, int $nr, string $room, $date)
+function Title(string $name, int $nr, string $building, string $room, $date)
 {
     echo "<h4 style='text-align: right'>".$date->format('d-m-Y')."</h4>";
     echo "<h1 style='text-align: center'> Raport nr ".$nr."</h1>";
+    echo "<h2 style='text-align: center'> Budynek: ".$building."</h2>";
     echo "<h2 style='text-align: center'> Sala: ".$room."</h2>";
     echo "<BR><BR><BR>";
 }
@@ -41,7 +44,7 @@ function Content(Report $report) :void
     ShowTableHeader();
     foreach ($report->getReportAssets() as $reportAsset)
     {
-        ShowTableReportAssets($reportAsset);
+        ShowTableReportAssets($reportAsset, $report->getReportHeader()->getRoom());
     }
     echo "</table>";
     echo "</div>";
@@ -63,7 +66,7 @@ function CheckIfReportExists(int $id) : bool
 }
 function GetAssetLetter_Id(ReportAsset $asset) :string
 {
-    $ret = "id: ";
+    $ret = "";
     $ret .= $asset->getAsset()->getAssetType()->getLetter();
     $ret .= $asset->getAsset()->getId();
     return $ret;
@@ -72,25 +75,74 @@ function GetAssetName(ReportAsset $asset) :string
 {
     return $asset->getAsset()->getAssetType()->getName();
 }
-function IsMovedAsset(ReportAsset $asset) : string
+function StatusOfItem(ReportAsset $asset, $aRoom) : int
 {
-    if ($asset->getMoved())
+    if ($asset->getPresent())
     {
-        return "Tak";
+        if($asset->getPreviousRoom() == $aRoom)
+        {
+            return 0;
+        }
+        else
+        {
+            return 1;
+        }
     }
     else
-        return "Nie";
-}
-function FromWhereMoved(ReportAsset $asset) :string
-{
-    if ($asset->getMoved())
     {
-        return $asset->getPreviousRoom()->getName();
+        if ($asset->getPreviousRoom() == $aRoom)
+        {
+            return -1;
+        }
+        else
+        {
+            return -2;
+        }
+    }
+
+}
+function InformationOfItemStatus(int $status) :string
+{
+    switch ($status)
+    {
+        case 0:
+            return "-";
+        case 1:
+            return "Przeniesiono z innego pokoju";
+        case -1:
+            return "Przeniesiono do magazynu";
+        case -2:
+            return "Pojawił się podczas skanowania w innym pokoju";
+    }
+}
+function ShowStatusOfItem(ReportAsset $asset, Room $aRoom) :string
+{
+    return InformationOfItemStatus(StatusOfItem($asset, $aRoom));
+}
+function FromWhereMoved(int $status, Room $aRoom) :string
+{
+    if($status == 1)
+    {
+        return $aRoom->getName();
     }
     else
-        return "-";
+    {
+        return '-';
+    }
 }
-function ShowTableReportAssets(ReportAsset $reportAsset) :void
+function GetBuildingName(Report $report) :string
+{
+    //host = "localhost.inwentaryzacja.com";
+    $room = $report->getReportHeader()->getRoom()->getId();
+    $dataBase = new PDO("mysql:host=localhost; dbname=inwentaryzacja_db", "root", "");
+    $quarry = "Select buildings.name From buildings JOIN rooms ON rooms.building = buildings.id WHERE rooms.id=".$room;
+    $line = $dataBase->query($quarry);
+    foreach ($line as $value)
+    {
+        return $value[0];
+    }
+}
+function ShowTableReportAssets(ReportAsset $reportAsset, Room $aRoom) :void
 {
     echo "<tr>";
     echo "<td>";
@@ -105,12 +157,12 @@ function ShowTableReportAssets(ReportAsset $reportAsset) :void
     echo "</td>";
     echo "<td>";
     echo "<div class='position'>";
-    echo IsMovedAsset($reportAsset);
+    echo ShowStatusOfItem($reportAsset, $aRoom);
     echo "</div>";
     echo "</td>";
     echo "<td>";
     echo "<div class='position'>";
-    echo FromWhereMoved($reportAsset);
+    echo FromWhereMoved(StatusOfItem($reportAsset, $aRoom), $reportAsset->getPreviousRoom());
     echo "</div>";
     echo "</td>";
     echo "</tr>";
@@ -130,12 +182,12 @@ function ShowTableHeader() :void
     echo "</td>";
     echo "<td>";
     echo "<div class='position'>";
-    echo "Przeniesiony?";
+    echo "Status";
     echo "</div>";
     echo "</td>";
     echo "<td>";
     echo "<div class='position'>";
-    echo "Gdzie przeniesiony?";
+    echo "Sala";
     echo "</div>";
     echo "</td>";
     echo "</tr>";
@@ -161,7 +213,9 @@ else
 }
 AddStyle();
 Title($report->getReportHeader()->getName(), $report->getReportHeader()->getId(),
-    $report->getReportHeader()->getRoom()->getName(), $report->getReportHeader()->getCreateDate());
+    GetBuildingName($report),
+    $report->getReportHeader()->getRoom()->getName(),
+    $report->getReportHeader()->getCreateDate());
 Content($report);
 
 $html2pdf = new Html2Pdf("P","A4","pl","UTF-8");
