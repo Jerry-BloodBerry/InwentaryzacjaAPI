@@ -132,9 +132,8 @@ function FromWhereMoved(int $status, Room $aRoom) :string
 }
 function GetBuildingName(Report $report) :string
 {
-    //host = "localhost.inwentaryzacja.com";
     $room = $report->getReportHeader()->getRoom()->getId();
-    $dataBase = new PDO("mysql:host=localhost; dbname=inwentaryzacja_db", "root", "");
+    $dataBase = new PDO("mysql:host=localhost.inwentaryzacja.com; dbname=inwentaryzacja_db", "root", "");
     $quarry = "Select buildings.name From buildings JOIN rooms ON rooms.building = buildings.id WHERE rooms.id=".$room;
     $line = $dataBase->query($quarry);
     foreach ($line as $value)
