@@ -1,6 +1,4 @@
 <?php
-
-
 class ReportAsset implements JsonSerializable
 {
    private $asset;
