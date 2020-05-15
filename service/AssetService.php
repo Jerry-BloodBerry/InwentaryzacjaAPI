@@ -66,16 +66,23 @@ class AssetService
 
             $ar = new AssetRepository($db);
 
-            if($ar->addNew($asset))
+            $resp =$ar->addNew($asset);
+
+            if($resp['id']!=null)
             {
-                $id = $ar->getLastAssetID();
+                $id = (int)$resp['id'];
                 http_response_code(201);
                 echo json_encode(array("message" => "Asset created successfully", "id" => $id));
+            }
+            else if($resp['message']!=null)
+            {
+                http_response_code(503);
+                echo json_encode(array("message" => $resp['message'], "id" => null));
             }
             else
             {
                 http_response_code(503);
-                echo json_encode(array("message" => "Unable to create asset. Service temporarily unavailable."));
+                echo json_encode(array("message" => "Unable to create asset. Service temporarily unavailable.", "id" => null));
             }
         }
         else

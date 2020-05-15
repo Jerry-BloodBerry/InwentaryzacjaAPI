@@ -74,7 +74,7 @@ class AssetRepository
     /**
      * Dodaje nowy srodek trwaly do tabeli
      * @param Asset $asset srodek trwaly do dodania
-     * @return bool czy udalo sie dodac srodek trwaly
+     * @return array czy udalo sie dodac srodek trwaly i jakie jest jego id
      */
     function addNew($asset)
     {
@@ -89,9 +89,16 @@ class AssetRepository
         //execute query
         if($stmt->execute())
         {
-            return true;
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            return [
+                'message' => $row['message'],
+                'id' => $row['id']
+            ];
         }
-        return false;
+        return [
+            'message' => null,
+            'id' => null
+        ];
     }
 
     /**

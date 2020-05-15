@@ -106,7 +106,7 @@ class ReportRepository implements IRepository
     /**
      * Dodaj nowy raport
      * @param array $report_data raport do dodania
-     * @return bool czy udalo sie dodac raport
+     * @return array czy udalo sie dodac raport
      */
     function addNew($report_data)
     {
@@ -130,8 +130,16 @@ class ReportRepository implements IRepository
         $stmt->bindParam(':owner', $owner_id);
         $stmt->bindParam(':positions', $assets);
 
-        $stmt->execute();
-        return true;
+        if($stmt->execute())
+        {
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            return [
+                'message' => $row['message'],
+                'id' => $row['id']
+            ];
+        }
+        return ["message" => null, "id" => null];
+
     }
 
     /**

@@ -138,7 +138,7 @@ class BuildingRepository implements IRepository
     /**
      * Dodaje nowy budynek
      * @param Building $building budynek do dodania
-     * @return bool czy udalo sie dodac budynek
+     * @return array wiadomosc czy udalo sie dodac budynek i id dodanego budynku
      */
     function addNew($building)
     {
@@ -156,9 +156,13 @@ class BuildingRepository implements IRepository
         //execute query
         if($stmt->execute())
         {
-            return true;
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            return [
+                "id" => $row['id'],
+                "message" => $row['message']
+            ];
         }
-        return false;
+        return ["id" => null, "message" => null];
     }
 
     /**

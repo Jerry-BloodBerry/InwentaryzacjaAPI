@@ -20,7 +20,7 @@ class RoomRepository
     /**
      * Dodaje nowy pokoj
      * @param Room $room pokoj do dodania
-     * @return bool czy udalo sie dodac pokoj
+     * @return array czy udalo sie dodac pokoj
      */
     function addNew($room)
     {
@@ -38,9 +38,14 @@ class RoomRepository
         if($stmt->execute())
         {
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            $room->setId($row['id']);
-            return true;
+            return [
+                'message' => $row['message'],
+                'id' => $row['id']
+            ];
         }
-        return false;
+        return [
+            'message' => null,
+            'id' => null
+        ];
     }
 }

@@ -107,16 +107,22 @@ class ReportService implements IService
                 'report' => $report,
                 'assets' => $assets
             ];
-            if($rr->addNew($report_data))
+            $resp = $rr->addNew($report_data);
+            if($resp['id']!=null)
             {
-                $id = (int)$rr->getLastReportID();
+                $id = (int)$resp['id'];
                 http_response_code(201);
                 echo json_encode(array("message" => "ReportHeader created successfully", "id" => $id));
+            }
+            else if($resp['message']!=null)
+            {
+                http_response_code(503);
+                echo json_encode(array("message" => $resp['message'], "id"=> null));
             }
             else
             {
                 http_response_code(503);
-                echo json_encode(array("message" => "Unable to create report. Service temporarily unavailable."));
+                echo json_encode(array("message" => "Unable to create report. Service fatal error.", "id" => null));
             }
         }
         else

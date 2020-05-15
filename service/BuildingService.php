@@ -112,17 +112,22 @@ class BuildingService implements IService
             $db = $database->getConnection();
 
             $br = new BuildingRepository($db);
-
-            if($br->addNew($building))
+            $resp = $br->addNew($building);
+            if($resp['id'] != null)
             {
-                $id = (int)$br->getLastBuildingID();
+                $id = (int)$resp['id'];
                 http_response_code(201);
                 echo json_encode(array("message" => "Building created successfully", "id" => $id));
+            }
+            else if ($resp['message']!=null)
+            {
+                http_response_code(503);
+                echo json_encode(array("message" => $resp['message'], "id" => null));
             }
             else
             {
                 http_response_code(503);
-                echo json_encode(array("message" => "Unable to create building. Service temporarily unavailable."));
+                echo json_encode(array("message" => "Unable to create building. Service fatal error.", "id" => null));
             }
         }
         else

@@ -35,15 +35,22 @@ class RoomService
 
             $rr = new RoomRepository($db);
 
-            if($rr->addNew($room))
+            $resp = $rr->addNew($room);
+            if($resp['id']!=null)
             {
+                $id = (int)$resp['id'];
                 http_response_code(201);
-                echo json_encode(array("message" => "Room created successfully", "id" => $room->getId()));
+                echo json_encode(array("message" => "Room created successfully", "id" => $id));
+            }
+            else if($resp['message']!=null)
+            {
+                http_response_code(503);
+                echo json_encode(array("message" => $resp['message'], "id" => null));
             }
             else
             {
                 http_response_code(503);
-                echo json_encode(array("message" => "Unable to create room. Service temporarily unavailable."));
+                echo json_encode(array("message" => "Unable to create room. Service fatal error.", "id" => null));
             }
         }
         else
