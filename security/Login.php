@@ -12,7 +12,7 @@ class Login
 {
     /**
      * Funkcja nawiazujaca polaczenie z baza danych, logujaca uzytkownika
-     * @param $data - array - dane logowania uzytkownika
+     * @param array $data dane logowania uzytkownika
      */
    static function userLogin($data)
    {

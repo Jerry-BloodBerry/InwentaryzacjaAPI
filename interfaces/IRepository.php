@@ -5,7 +5,7 @@ interface IRepository
 {
     /**
      * Funkcja wyszukuje pojedynczy element w bazie po jego id i go zwraca
-     * @param $id - integer - id szukanego elementu
+     * @param integer $id id szukanego elementu
      *
      * @return mixed - zwraca element z bazy o podanym id
      */
@@ -19,7 +19,7 @@ interface IRepository
     function findAll();
     /**
      * Funkcja usuwa pojedynczy element z bazy po jego id
-     *  @param $id - integer - id usuwanego elementu
+     *  @param integer $id id usuwanego elementu
      */
     function deleteOne($id);
     /**

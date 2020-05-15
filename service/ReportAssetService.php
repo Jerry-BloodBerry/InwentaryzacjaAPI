@@ -12,7 +12,7 @@ class ReportAssetService
      * Funkcja prosi repozytorium aby odpytalo baze, czy zawiera w sobie element o danym id.
      * (srodki trwale w pokoju na podstawie ostatniego raportu)
      * Jeżeli zawiera, to repozytorium zwraca funkcji obiekt (srodki trwale), a funkcja zwraca go jako json.
-     * @param $room_id - integer - id pokoju ktory jest sprawdzany
+     * @param integer $room_id id pokoju ktory jest sprawdzany
      */
 
     public static function getAssetsInRoom($room_id)
@@ -41,7 +41,7 @@ class ReportAssetService
      * Funkcja prosi repozytorium aby odpytalo baze, czy zawiera w sobie element o danym id.
      * (Sprawdza pozycje (srodki trwale) raportu na podstawie jego id)
      * Jeżeli zawiera, to repozytorium zwraca funkcji obiekt (srodki trwale z raportu), a funkcja zwraca go jako json
-     * @param $report_id - integer - id raportu
+     * @param integer $report_id id raportu
      */
     public static function getPositionsInReport($report_id)
     {

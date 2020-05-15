@@ -10,7 +10,7 @@ class RetrieverService
     /**
      * Funkcja wywoluje na usludze implementujacej interfejs IService odpowiednia metode.
      * @param $service - usluga do obiektu, okresla co chce zwrocic
-     * @param $id - integer - id zwracanego obiektu
+     * @param integer $id id zwracanego obiektu
      */
 
     public static function RetrieveObject(IService $service, $id)

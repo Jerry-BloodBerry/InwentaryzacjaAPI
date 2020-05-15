@@ -11,10 +11,9 @@ class Security
 
     /**
      * Funkcja autoryzujaca uzytkownika podczas logowania
-     * @param $token - token reprezentujacy zalogowanego uzytkownika w sesji
-     * 
+     * @param string $token token reprezentujacy zalogowanego uzytkownika w sesji
+     * @return bool w zaleznosci od tego czy sie powiodlo
      */
-    
     private static function authorizeUser($token)
 
     {
