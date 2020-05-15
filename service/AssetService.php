@@ -2,11 +2,22 @@
 include_once '../repository/AssetRepository.php';
 include_once '../config/Database.php';
 
+
+/**
+ * Klasa zarzadzajaca srodkami trwalymi
+ * 
+ */
+
+
 class AssetService
+
 {
     /**
-     * @inheritDoc
+     * Funkcja prosi repozytorium aby odpytalo baze, czy zawiera w sobie element o danym id.
+     * Jeżeli zawiera, to repozytorium zwraca funkcji obiekt (srodek trwaly), a funkcja zwraca go jako json
+     * @param integer $id id szukanego elementu w bazie
      */
+
     static function findOneById($id)
     {
         // get database connection
@@ -30,9 +41,14 @@ class AssetService
         }
     }
 
+
+   
+
     /**
-     * @inheritDoc
+     * Funkcja prosi repozytorium aby dodalo nowy srodek trwaly do bazy
+     * @param array $data dane nowego elementu
      */
+
     static function addNew($data)
     {
         if(
@@ -70,7 +86,9 @@ class AssetService
     }
 
     /**
-     * @inheritDoc
+     * Funkcja prosi repozytorium aby odpytalo baze, czy zawiera w sobie element o danym id.
+     * Jeżeli zawiera, to repozytorium usuwa z bazy danych ten element (srodek trwaly).
+     * @param integer $id id srodka trwalego
      */
     public static function deleteOneById($id)
     {

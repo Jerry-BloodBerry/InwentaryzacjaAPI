@@ -7,10 +7,16 @@ include_once '../object/ReportAsset.php';
 include_once '../repository/ReportAssetRepository.php';
 include_once '../object/Report.php';
 
+/**
+ * Klasa posrednia pomiedzy otrzymaniem danych a wstawieniem ich do bazy danych
+ */
 class ReportService implements IService
 {
     /**
-     * @inheritDoc
+     * Funkcja prosi repozytorium aby odpytalo baze, czy zawiera w sobie element o danym id.
+     * Jeżeli zawiera, to repozytorium zwraca funkcji obiekt (raport), a funkcja zwraca go jako json
+     * @param integer $id id szukanego raportu
+     * @return mixed|void - zwraca raport jezeli jest w bazie
      */
     static function findOneById($id)
     {
@@ -36,7 +42,9 @@ class ReportService implements IService
     }
 
     /**
-     * @inheritDoc
+     * Funkcja prosi repozytorium aby odpytalo baze, o wszystkie elementy.
+     * Repozytorium zwraca funkcji wszystkie obiekty (raporty), a funkcja zwraca je jako json
+     * @return mixed|void - zwraca wszystkie raporty
      */
     static function findAll()
     {
@@ -62,8 +70,10 @@ class ReportService implements IService
     }
 
     /**
-     * @inheritDoc
+     * Funkcja prosi repozytorium aby dodalo nowy raport na podstawie jego danych do bazy
+     * @param array $data dane dodawanego raportu
      */
+
     static function addNew($data)
     {
         if(
@@ -117,8 +127,11 @@ class ReportService implements IService
     }
 
     /**
-     * @inheritDoc
+     * Funkcja prosi repozytorium aby odpytalo baze, czy zawiera w sobie element o danym id.
+     * Jeżeli zawiera, to repozytorium usuwa z bazy danych ten element (raport).
+     * @param integer $id id usuwanego raportu
      */
+
     static function deleteOneById($id)
     {
         // get database connection

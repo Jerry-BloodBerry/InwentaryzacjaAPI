@@ -5,8 +5,15 @@ include_once '../repository/SessionRepository.php';
 include_once '../config/Database.php';
 include_once '../object/Session.php';
 
+/**
+ * Klasa tworzaca sesje dla uzytkownika
+ */
 class Login
 {
+    /**
+     * Funkcja nawiazujaca polaczenie z baza danych, logujaca uzytkownika
+     * @param array $data dane logowania uzytkownika
+     */
    static function userLogin($data)
    {
        // get database connection

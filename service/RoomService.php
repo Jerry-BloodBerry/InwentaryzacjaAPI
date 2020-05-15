@@ -4,11 +4,19 @@ include_once '../config/Database.php';
 include_once '../object/Room.php';
 include_once '../object/Building.php';
 
+/**
+ * Klasa posrednia pomiedzy otrzymaniem danych a wstawieniem ich do bazy danych
+ * Obsluguje wszystko zwiazane z pokojami
+ */
+
 class RoomService
 {
+
     /**
-     * @inheritDoc
+     * Funkcja prosi repozytorium aby dodalo nowy pokoj do bazy
+     * @param array $data dane dodawanego pokoju
      */
+
     public static function addNew($data)
     {
         if(!empty($data->name) && !empty($data->building))
@@ -44,4 +52,6 @@ class RoomService
             echo json_encode(array("message" => "Unable to create room. The data is incomplete."));
         }
     }
+
+
 }

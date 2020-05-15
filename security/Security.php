@@ -3,9 +3,19 @@ include_once '../repository/SessionRepository.php';
 include_once '../object/Session.php';
 include_once 'BearerToken.php';
 
+/**
+ * Klasa majaca za zadanie autoryzacje uzytkownika podczas logowania
+ */
 class Security
 {
+
+    /**
+     * Funkcja autoryzujaca uzytkownika podczas logowania
+     * @param string $token token reprezentujacy zalogowanego uzytkownika w sesji
+     * @return bool w zaleznosci od tego czy sie powiodlo
+     */
     private static function authorizeUser($token)
+
     {
 
         // get database connection
@@ -27,14 +37,19 @@ class Security
     }
 
     /**
-     * @param Session $session
-     * @return bool
-     * @throws Exception
+     * 
+     * Funkcja sprawdza czy Token przekazany przez uzytkownika nadal jest wazny
+     * @param $session - obiekt typu session
+     * @return bool w zaleznosci od tego czy jest nadal wazny, czy wygasl
      */
     private static function validateTokenExpiry($session)
     {
         return ($session->getExpirationDate()>new DateTime('now'));
     }
+    /**
+     * Funkcja przeprowadzajaca autoryzacje uzytkownika
+     * @return bool w zaleznosci od tego czy autoryzacja powiodla sie
+     */
 
     public static function performAuthorization()
     {

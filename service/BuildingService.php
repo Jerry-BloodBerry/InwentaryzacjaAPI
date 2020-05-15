@@ -4,11 +4,18 @@ include_once '../object/Building.php';
 include_once '../repository/BuildingRepository.php';
 include_once '../config/Database.php';
 
+/**
+ * Klasa zarzadzajaca ustawieniami budynkow w bazie danych
+ * 
+ */
 class BuildingService implements IService
 {
     /**
-     * @inheritDoc
+     * Funkcja prosi repozytorium aby odpytalo baze, czy zawiera w sobie element o danym id.
+     * Jeżeli zawiera, to repozytorium zwraca funkcji obiekt (pokoje z budynku o danym id), a funkcja zwraca go jako json
+     * @param integer $building_id id budynku
      */
+
     public static function findAllRooms($building_id)
     {
         // get database connection
@@ -33,7 +40,10 @@ class BuildingService implements IService
     }
 
     /**
-     * @inheritDoc
+     * Funkcja prosi repozytorium aby odpytalo baze, czy zawiera w sobie element o danym id.
+     * Jeżeli zawiera, to repozytorium zwraca funkcji obiekt (budynek), a funkcja zwraca go jako json
+     * @param integer $id id szukanego budynku
+     * @return mixed|void - zwraca obiekt (budynek) z bazy
      */
     static function findOneById($id)
     {
@@ -59,7 +69,9 @@ class BuildingService implements IService
     }
 
     /**
-     * @inheritDoc
+     * Funkcja prosi repozytorium aby odpytalo baze, o wszystkie elementy.
+     * Repozytorium zwraca funkcji wszystkie obiekty (budynki), a funkcja zwraca je jako json
+     * @return mixed|void - zwraca obiekty (budynki) z bazy
      */
     static function findAll()
     {
@@ -85,7 +97,8 @@ class BuildingService implements IService
     }
 
     /**
-     * @inheritDoc
+     * Funkcja prosi repozytorium aby dodalo nowy budynek do bazy
+     * @param array $data dane dodawanego obiektu (budynku)
      */
     static function addNew($data)
     {
@@ -120,7 +133,9 @@ class BuildingService implements IService
     }
 
     /**
-     * @inheritDoc
+     * Funkcja prosi repozytorium aby odpytalo baze, czy zawiera w sobie element o danym id.
+     * Jeżeli zawiera, to repozytorium usuwa z bazy danych ten element (budynek).
+     * @param integer $id id usuwanego obiektu
      */
     static function deleteOneById($id)
     {

@@ -4,11 +4,18 @@ include_once '../object/AssetType.php';
 include_once '../config/Database.php';
 include_once '../repository/AssetTypeRepository.php';
 
+/**
+ * Klasa zarzadzajaca srodkami trwalymi
+ * 
+ */
 class AssetTypeService implements IService
 {
 
     /**
-     * @inheritDoc
+     * Funkcja prosi repozytorium aby odpytalo baze, czy zawiera w sobie element o danym id.
+     * Jeżeli zawiera, to repozytorium zwraca funkcji obiekt (typ srodka trwalego), a funkcja zwraca go jako json
+     * @param integer $id id szukanego elementu w bazie
+     * @return mixed|void - json - obiekt z bazy danych
      */
     static function findOneById($id)
     {
@@ -34,7 +41,9 @@ class AssetTypeService implements IService
     }
 
     /**
-     * @inheritDoc
+    * Funkcja prosi repozytorium aby odpytalo baze, o wszystkie elementy.
+     * Repozytorium zwraca funkcji wszystkie obiekty (typy srodkow trwalych), a funkcja zwraca je jako json
+     * @return mixed|void json - obiekty z bazy danych
      */
     static function findAll()
     {
@@ -60,8 +69,10 @@ class AssetTypeService implements IService
     }
 
     /**
-     * @inheritDoc
+     * Funkcja prosi repozytorium aby dodalo nowy typ srodka trwalego do bazy
+     * @param array $data dane nowego elementu
      */
+
     static function addNew($data)
     {
         if(!empty($data->letter) && !empty($data->name))
@@ -95,7 +106,9 @@ class AssetTypeService implements IService
     }
 
     /**
-     * @inheritDoc
+     * Funkcja prosi repozytorium aby odpytalo baze, czy zawiera w sobie element o danym id.
+     * Jeżeli zawiera, to repozytorium usuwa z bazy danych ten element (typ srodka trwalego).
+     * @param integer $id id srodka trwalego
      */
     static function deleteOneById($id)
     {
