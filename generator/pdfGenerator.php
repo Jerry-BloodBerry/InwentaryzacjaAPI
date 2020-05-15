@@ -114,7 +114,11 @@ function StatusOfItem(ReportAsset $asset, $aRoom) : int
 {
     if ($asset->getPresent())
     {
-        if($asset->getPreviousRoom() == $aRoom)
+        if($asset->getPreviousRoom() == null)
+        {
+            return -3;
+        }
+        else if($asset->getPreviousRoom() == $aRoom)
         {
             return 0;
         }
@@ -143,22 +147,24 @@ function InformationOfItemStatus(int $status) :string
         case 0:
             return "-";
         case 1:
-            return "Przeniesiono z innego pokoju";
+            return "Przeniesiono z innego miejsca";
         case -1:
             return "Przeniesiono do magazynu";
         case -2:
             return "Pojawił się podczas skanowania w innym pokoju";
+        case -3:
+            return "Nowy środek";
     }
 }
 function ShowStatusOfItem(ReportAsset $asset, Room $aRoom) :string
 {
     return InformationOfItemStatus(StatusOfItem($asset, $aRoom));
 }
-function FromWhereMoved(int $status, Room $aRoom) :string
+function FromWhereMoved(int $status, $room) :string
 {
     if($status == 1)
     {
-        return $aRoom->getName();
+        return $room->getName();
     }
     else
     {
@@ -221,7 +227,7 @@ function ShowTableHeader() :void
     echo "</td>";
     echo "<td>";
     echo "<div class='room'>";
-    echo "Sala";
+    echo "Miejsce";
     echo "</div>";
     echo "</td>";
     echo "</tr>";
