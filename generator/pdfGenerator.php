@@ -14,17 +14,52 @@ function AddStyle() :void
 {
     $style =
         "<style>
-            #container
+            table
             {
-                text-align: center;
+            border-collapse: collapse;
+            }
+            tr
+            {
+            }            
+            td
+            {
+            border: solid 1px #000000;
+            }
+            #container
+            {               
                 display: inline-block;
             }
-            .position
+            .item
             {
-                text-align: left;            
+                text-align: center;            
                 margin-right: 10px;
                 margin-left: 15px;
-                font-size: 20px;             
+                font-size: 20px;    
+                width: 90px; 
+            }             
+            .id
+            {
+                text-align: center;            
+                margin-right: 10px;
+                margin-left: 15px;
+                font-size: 20px;    
+                width: 45px; 
+            }             
+            .status
+            {
+                text-align: center;            
+                margin-right: 10px;
+                margin-left: 15px;
+                font-size: 20px;    
+                width: 450px; 
+            }             
+            .room
+            {
+                text-align: center;            
+                margin-right: 10px;
+                margin-left: 15px;
+                font-size: 20px;    
+                width: 65px; 
             }     
         </style>";
     echo $style;
@@ -133,7 +168,7 @@ function FromWhereMoved(int $status, Room $aRoom) :string
 function GetBuildingName(Report $report) :string
 {
     $room = $report->getReportHeader()->getRoom()->getId();
-    $dataBase = new PDO("mysql:host=localhost.inwentaryzacja.com; dbname=inwentaryzacja_db", "root", "");
+    $dataBase = new PDO("mysql:host=localhost; dbname=inwentaryzacja_db", "root", "");
     $quarry = "Select buildings.name From buildings JOIN rooms ON rooms.building = buildings.id WHERE rooms.id=".$room;
     $line = $dataBase->query($quarry);
     foreach ($line as $value)
@@ -145,22 +180,22 @@ function ShowTableReportAssets(ReportAsset $reportAsset, Room $aRoom) :void
 {
     echo "<tr>";
     echo "<td>";
-    echo "<div class='position'>";
+    echo "<div class='item'>";
     echo GetAssetName($reportAsset);
     echo "</div>";
     echo "</td>";
     echo "<td>";
-    echo "<div class='position'>";
+    echo "<div class='id'>";
     echo GetAssetLetter_Id($reportAsset);
     echo "</div>";
     echo "</td>";
     echo "<td>";
-    echo "<div class='position'>";
+    echo "<div class='status'>";
     echo ShowStatusOfItem($reportAsset, $aRoom);
     echo "</div>";
     echo "</td>";
     echo "<td>";
-    echo "<div class='position'>";
+    echo "<div class='room'>";
     echo FromWhereMoved(StatusOfItem($reportAsset, $aRoom), $reportAsset->getPreviousRoom());
     echo "</div>";
     echo "</td>";
@@ -170,22 +205,22 @@ function ShowTableHeader() :void
 {
     echo "<tr>";
     echo "<td>";
-    echo "<div class='position'>";
+    echo "<div class='item'>";
     echo "Przedmiot";
     echo "</div>";
     echo "</td>";
     echo "<td>";
-    echo "<div class='position'>";
+    echo "<div class='id'>";
     echo "ID";
     echo "</div>";
     echo "</td>";
     echo "<td>";
-    echo "<div class='position'>";
+    echo "<div class='status'>";
     echo "Status";
     echo "</div>";
     echo "</td>";
     echo "<td>";
-    echo "<div class='position'>";
+    echo "<div class='room'>";
     echo "Sala";
     echo "</div>";
     echo "</td>";
