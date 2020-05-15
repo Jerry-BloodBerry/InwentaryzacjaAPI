@@ -99,7 +99,7 @@ class ReportService implements IService
             ];
             if($rr->addNew($report_data))
             {
-                $id = $rr->getLastReportID();
+                $id = (int)$rr->getLastReportID();
                 http_response_code(201);
                 echo json_encode(array("message" => "ReportHeader created successfully", "id" => $id));
             }
