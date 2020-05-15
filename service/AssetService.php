@@ -15,7 +15,7 @@ class AssetService
     /**
      * Funkcja prosi repozytorium aby odpytalo baze, czy zawiera w sobie element o danym id.
      * Jeżeli zawiera, to repozytorium zwraca funkcji obiekt (srodek trwaly), a funkcja zwraca go jako json
-     * @param $id - (integer) id szukanego elementu w bazie
+     * @param $id - integer - id szukanego elementu w bazie
      */
 
     static function findOneById($id)
@@ -46,7 +46,7 @@ class AssetService
 
     /**
      * Funkcja prosi repozytorium aby dodalo nowy srodek trwaly do bazy
-     * @param $data - dane nowego elementu
+     * @param $data - array - dane nowego elementu
      */
 
     static function addNew($data)
@@ -87,7 +87,7 @@ class AssetService
     /**
      * Funkcja prosi repozytorium aby odpytalo baze, czy zawiera w sobie element o danym id.
      * Jeżeli zawiera, to repozytorium usuwa z bazy danych ten element (srodek trwaly).
-     * @param $id - (integer) id srodka trwalego
+     * @param $id - integer - id srodka trwalego
      */
     public static function deleteOneById($id)
     {

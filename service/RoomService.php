@@ -14,7 +14,7 @@ class RoomService
 
     /**
      * Funkcja prosi repozytorium aby dodalo nowy pokoj do bazy
-     * @param $data - dane dodawanego pokoju
+     * @param $data - array - dane dodawanego pokoju
      */
 
     public static function addNew($data)

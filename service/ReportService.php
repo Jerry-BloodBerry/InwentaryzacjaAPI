@@ -13,7 +13,7 @@ class ReportService implements IService
     /**
      * Funkcja prosi repozytorium aby odpytalo baze, czy zawiera w sobie element o danym id.
      * Jeżeli zawiera, to repozytorium zwraca funkcji obiekt (raport), a funkcja zwraca go jako json
-     * @param $id - (integer) id szukanego raportu
+     * @param $id - integer - id szukanego raportu
      * @return mixed|void - zwraca raport jezeli jest w bazie
      */
     static function findOneById($id)
@@ -69,7 +69,7 @@ class ReportService implements IService
 
     /**
      * Funkcja prosi repozytorium aby dodalo nowy raport na podstawie jego danych do bazy
-     * @param $data - dane dodawanego raportu
+     * @param $data - array - dane dodawanego raportu
      */
 
     static function addNew($data)
@@ -126,7 +126,7 @@ class ReportService implements IService
     /**
      * Funkcja prosi repozytorium aby odpytalo baze, czy zawiera w sobie element o danym id.
      * Jeżeli zawiera, to repozytorium usuwa z bazy danych ten element (raport).
-     * @param $id - id usuwanego raportu
+     * @param $id - integer - id usuwanego raportu
      */
 
     static function deleteOneById($id)

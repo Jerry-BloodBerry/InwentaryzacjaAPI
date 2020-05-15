@@ -5,7 +5,7 @@ class Token
 {
     /**
      * Funkcja generujaca token
-     * @param $length - (integer) dlugosc generowanego tokenu
+     * @param $length - integer - dlugosc generowanego tokenu
      * @return string - token
      * @throws Exception
      */

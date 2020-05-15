@@ -8,9 +8,9 @@ include_once '../interfaces/IService.php';
 class EditorService
 {
     /**
-     * Funkcja prosi repozytorium aby stworzylo/dodalo cos do bazy
+     * Funkcja wywoluje na usludze implementujacej interfejs IService odpowiednia metode.
      * @param $service - usluga zwiazana z tym czyms, okresla co chce dodac
-     * @param $data - dane obiektu dodawanego do bazy danych
+     * @param $data - array - dane obiektu dodawanego do bazy danych
      */
 
     public static function Create(IService $service, $data)
@@ -21,10 +21,9 @@ class EditorService
         }
     }
     /**
-     * Funkcja prosi repozytorium aby odpytalo baze, czy zawiera w sobie element o danym id.
-     * Jeżeli zawiera, to repozytorium usuwa z bazy danych ten element.
+     * Funkcja wywoluje na usludze implementujacej interfejs IService odpowiednia metode.
      * @param $service - usluga zwiazana z tym czyms, okresla co chce usunac
-     * @param $data - dane obiektu usuwanego z bazy danych
+     * @param $data - array - dane obiektu usuwanego z bazy danych
      */
     public static function Delete(IService $service, $data)
     {
