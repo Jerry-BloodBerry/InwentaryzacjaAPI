@@ -160,4 +160,13 @@ class BuildingRepository implements IRepository
         }
         return false;
     }
+
+    public function getLastBuildingID()
+    {
+        $query = "SELECT MAX(id) AS id FROM buildings";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row['id'];
+    }
 }

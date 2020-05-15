@@ -102,8 +102,9 @@ class BuildingService implements IService
 
             if($br->addNew($building))
             {
+                $id = $br->getLastBuildingID();
                 http_response_code(201);
-                echo json_encode(array("message" => "Building created successfully"));
+                echo json_encode(array("message" => "Building created successfully", "id" => $id));
             }
             else
             {

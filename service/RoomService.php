@@ -30,7 +30,7 @@ class RoomService
             if($rr->addNew($room))
             {
                 http_response_code(201);
-                echo json_encode(array("message" => "Room created successfully"));
+                echo json_encode(array("message" => "Room created successfully", "id" => $room->getId()));
             }
             else
             {

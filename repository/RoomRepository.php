@@ -37,6 +37,8 @@ class RoomRepository
         //execute query
         if($stmt->execute())
         {
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            $room->setId($row['id']);
             return true;
         }
         return false;

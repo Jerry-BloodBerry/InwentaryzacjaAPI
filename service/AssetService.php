@@ -52,8 +52,9 @@ class AssetService
 
             if($ar->addNew($asset))
             {
+                $id = $ar->getLastAssetID();
                 http_response_code(201);
-                echo json_encode(array("message" => "Asset created successfully"));
+                echo json_encode(array("message" => "Asset created successfully", "id" => $id));
             }
             else
             {

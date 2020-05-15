@@ -124,4 +124,12 @@ class AssetRepository
 
         return $asset;
     }
+    public function getLastAssetID()
+    {
+        $query = "SELECT MAX(id) AS id FROM assets";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row['id'];
+    }
 }

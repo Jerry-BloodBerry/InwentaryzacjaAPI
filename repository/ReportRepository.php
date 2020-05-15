@@ -105,7 +105,7 @@ class ReportRepository implements IRepository
 
     /**
      * Dodaj nowy raport
-     * @param ReportHeader $report_data raport do dodania
+     * @param array $report_data raport do dodania
      * @return bool czy udalo sie dodac raport
      */
     function addNew($report_data)
@@ -185,5 +185,13 @@ class ReportRepository implements IRepository
 
         $report->setRoom($room);
         return $report;
+    }
+    public function getLastReportID()
+    {
+        $query = "SELECT MAX(id) AS id FROM reports";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row['id'];
     }
 }
