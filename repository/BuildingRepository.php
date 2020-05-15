@@ -161,6 +161,10 @@ class BuildingRepository implements IRepository
         return false;
     }
 
+    /**
+     * Zwraca id ostatniego budynku w tabeli
+     * @return integer id ostatniego budynku w tabeli
+     */
     public function getLastBuildingID()
     {
         $query = "SELECT MAX(id) AS id FROM buildings";

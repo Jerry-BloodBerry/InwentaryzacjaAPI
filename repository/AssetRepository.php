@@ -124,6 +124,11 @@ class AssetRepository
 
         return $asset;
     }
+
+    /**
+     * Zwraca id ostatniego srodka trwalego w tabeli
+     * @return integer id ostatniego srodka trwalego w tabeli
+     */
     public function getLastAssetID()
     {
         $query = "SELECT MAX(id) AS id FROM assets";

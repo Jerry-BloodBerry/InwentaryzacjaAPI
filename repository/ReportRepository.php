@@ -186,6 +186,11 @@ class ReportRepository implements IRepository
         $report->setRoom($room);
         return $report;
     }
+
+    /**
+     * Zwraca id ostatniego naglowka raportu w tabeli
+     * @return integer id ostatniego naglowka raportu w tabeli
+     */
     public function getLastReportID()
     {
         $query = "SELECT MAX(id) AS id FROM reports";
