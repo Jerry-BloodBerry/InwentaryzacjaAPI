@@ -9,6 +9,8 @@ require '../vendor/autoload.php';
 use MongoDB\Driver\Command;
 use Spipu\Html2Pdf\Html2Pdf;
 
+ob_start();
+
 $report = null;
 function AddStyle() :void
 {
@@ -171,17 +173,12 @@ function FromWhereMoved(int $status, $room) :string
         return '-';
     }
 }
-function GetBuildingName(Report $report) :string
+
+function GetBuildingName(Report $report): string
 {
-    $room = $report->getReportHeader()->getRoom()->getId();
-    $dataBase = new PDO("mysql:host=localhost.inwentaryzacja.com; dbname=inwentaryzacja_db", "root", "");
-    $quarry = "Select buildings.name From buildings JOIN rooms ON rooms.building = buildings.id WHERE rooms.id=".$room;
-    $line = $dataBase->query($quarry);
-    foreach ($line as $value)
-    {
-        return $value[0];
-    }
+    return $report->getReportHeader()->getRoom()->getBuilding()->getName();
 }
+
 function ShowTableReportAssets(ReportAsset $reportAsset, Room $aRoom) :void
 {
     echo "<tr>";
