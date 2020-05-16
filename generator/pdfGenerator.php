@@ -4,6 +4,7 @@ include_once '../object/Report.php';
 include_once '../object/ReportAsset.php';
 include_once '../object/ReportHeader.php';
 include_once '../object/Room.php';
+include_once '../Router/Router.php';
 require '../vendor/autoload.php';
 
 use MongoDB\Driver\Command;
@@ -66,7 +67,7 @@ function AddStyle() :void
         </style>";
     echo $style;
 }
-function Title(string $name, int $nr, string $building, string $room, $date)
+function Title(int $nr, string $building, string $room, $date)
 {
     echo "<h4 style='text-align: right'>".$date->format('d-m-Y')."</h4>";
     echo "<h1 style='text-align: center'> Raport nr ".$nr."</h1>";
@@ -173,12 +174,10 @@ function FromWhereMoved(int $status, $room) :string
         return '-';
     }
 }
-
 function GetBuildingName(Report $report): string
 {
     return $report->getReportHeader()->getRoom()->getBuilding()->getName();
 }
-
 function ShowTableReportAssets(ReportAsset $reportAsset, Room $aRoom) :void
 {
     echo "<tr>";
@@ -229,6 +228,47 @@ function ShowTableHeader() :void
     echo "</td>";
     echo "</tr>";
 }
+function LoadHTML(Report $report) :void
+{
+    AddStyle();
+    Title($report->getReportHeader()->getId(),
+        GetBuildingName($report),
+        $report->getReportHeader()->getRoom()->getName(),
+        $report->getReportHeader()->getCreateDate());
+    Content($report);
+}
+function Load(int $i, Report $report, string $fileName) :void
+{
+    if ($i == 1)
+    {
+        LoadHTML($report);
+        CreatePDFShow($fileName);
+    }
+    else if ($i == 2)
+    {
+        LoadHTML($report);
+        CreatePDFForceDownload($fileName);
+
+    }
+    else
+    {
+        echo "Bad load parameter!";
+    }
+}
+function CreatePDFShow($fileName) :void
+{
+    $html2pdf = new Html2Pdf("P","A4","pl","UTF-8");
+    $html2pdf->setDefaultFont("freesans");
+    $html2pdf->writeHTML(ReturnCurrentHTML());
+    $html2pdf->output($fileName);
+}
+function CreatePDFForceDownload($fileName) :void
+{
+    $html2pdf = new Html2Pdf("P","A4","pl","UTF-8");
+    $html2pdf->setDefaultFont("freesans");
+    $html2pdf->writeHTML(ReturnCurrentHTML());
+    $html2pdf->output($fileName, 'D');
+}
 
 if (isset($_GET["id"]))
 {
@@ -248,17 +288,11 @@ else
     echo "No Id given!";
     exit();
 }
-AddStyle();
-Title($report->getReportHeader()->getName(), $report->getReportHeader()->getId(),
-    GetBuildingName($report),
-    $report->getReportHeader()->getRoom()->getName(),
-    $report->getReportHeader()->getCreateDate());
-Content($report);
+$fileName = "raport_id-".$reportID.".pdf";
+Load($routeParams[1], $report, $fileName);
 
-$html2pdf = new Html2Pdf("P","A4","pl","UTF-8");
-$html2pdf->setDefaultFont("freesans");
-$html2pdf->writeHTML(ReturnCurrentHTML());
-$html2pdf->output();
+
+
 
 
 
