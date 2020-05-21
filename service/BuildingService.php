@@ -34,8 +34,8 @@ class BuildingService implements IService
         }
         else
         {
-            http_response_code(404);
-            echo json_encode(array("message" => "No rooms were found"));
+            http_response_code(200);
+            echo json_encode(array());
         }
     }
 

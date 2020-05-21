@@ -23,7 +23,7 @@ class ReportAssetRepository
 
     /**
      * Zwraca tablice srodkow trwalych w podanym pokoju
-     * @param $room_id id pokoju
+     * @param integer $room_id id pokoju
      * @return array tablica srodkow trwalych
      */
     public function getAssetsInRoom($room_id)
@@ -49,7 +49,7 @@ class ReportAssetRepository
 
     /**
      * Zwraca tablice srodkow trwalych raportu w podanym raporcie
-     * @param $report_id id raportu
+     * @param integer $report_id id raportu
      * @return array[] tablica srodkow trwalych raportu
      */
     public function getPositionsInReport($report_id)
@@ -113,7 +113,7 @@ class ReportAssetRepository
     /**
      * Tworzy i zwraca srodek trwaly pokoju na podstawie przekazanego wyniku kwerendy
      * @param array $row wynik kwerendy fetch
-     * @return RoomAsset utworzony srodek trwaly pokoju
+     * @return Asset utworzony srodek trwaly pokoju
      */
     private static function createRoomAsset(array $row)
     {

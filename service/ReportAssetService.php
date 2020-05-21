@@ -33,8 +33,8 @@ class ReportAssetService
             echo json_encode($room_assets);
         }
         else {
-            http_response_code(404); // last report for room was not found
-            echo json_encode(["message" => "Room with the given id does not exist in the database."]);
+            http_response_code(200); // last report for room was not found
+            echo json_encode([]);
         }
     }
     /**
