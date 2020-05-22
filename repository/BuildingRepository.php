@@ -25,7 +25,7 @@ class BuildingRepository implements IRepository
     /**
      * Zwraca tablice z wszystkimi pokojami w podanym budynku i ich liczebnoscia
      * @param integer $building_id id budynku
-     * @return array tablica z wszystkimi pokojami w podanym budynku
+     * @return array|string tablica z wszystkimi pokojami w podanym budynku, lub wiadomość o błędzie zwrócona przez bazę
      */
     function findAllRooms($building_id)
     {
@@ -41,6 +41,10 @@ class BuildingRepository implements IRepository
         $stmt->execute();
         $room_array = array();
         while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            if($row['message'] != null)
+            {
+                return $row['message'];
+            }
             $room = new Room();
             $room->setId($row["id"]);
             $room->setName($row["name"]);
@@ -52,7 +56,7 @@ class BuildingRepository implements IRepository
             $room->setBuilding($building);
             $room_array [] = $room;
         }
-        return array("count" => $stmt->rowCount(), "rooms" => $room_array);
+        return $room_array;
     }
 
     /**

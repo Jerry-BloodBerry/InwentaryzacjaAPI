@@ -25,17 +25,16 @@ class BuildingService implements IService
         // create a repository instance
         $rr = new BuildingRepository($db);
 
-        $rooms = $rr->findAllRooms($building_id);
-
-        if($rooms['count']>0)
+        $response = $rr->findAllRooms($building_id);
+        if(is_string($response))
         {
-            http_response_code(200);
-            echo json_encode($rooms["rooms"]);
+            http_response_code(404);
+            echo json_encode(array("message" => $response));
         }
         else
         {
             http_response_code(200);
-            echo json_encode(array());
+            echo json_encode($response);
         }
     }
 

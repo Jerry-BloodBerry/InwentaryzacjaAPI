@@ -16,7 +16,7 @@ class ReportService implements IService
      * Funkcja prosi repozytorium aby odpytalo baze, czy zawiera w sobie element o danym id.
      * Jeżeli zawiera, to repozytorium zwraca funkcji obiekt (raport), a funkcja zwraca go jako json
      * @param integer $id id szukanego raportu
-     * @return mixed|void - zwraca raport jezeli jest w bazie
+     * @return void - zwraca raport w formacie JSON jezeli jest w bazie
      */
     static function findOneById($id)
     {
@@ -27,17 +27,16 @@ class ReportService implements IService
         // create a repository instance
         $rr = new ReportRepository($db);
 
-        $report = $rr->find($id);
+        $response = $rr->find($id);
 
-        if($report!=null)
+        if(!is_string($response))
         {
-            //everything went OK, asset was found
             http_response_code(200);
-            echo json_encode($report);
+            echo json_encode($response);
         }
         else {
-            http_response_code(404); // asset was not found
-            echo json_encode(["message" => "ReportHeader does not exist"]);
+            http_response_code(404);
+            echo json_encode(["message" => $response]);
         }
     }
 
@@ -55,17 +54,15 @@ class ReportService implements IService
         // create a repository instance
         $rr = new ReportRepository($db);
 
-        $reports = $rr->findAll();
-
-        if(count($reports)>0)
+        $response = $rr->findAll();
+        if(is_string($response))
         {
-            http_response_code(200);
-            echo json_encode($reports);
+            echo json_encode(array("message" => $response));
         }
         else
         {
-            http_response_code(404);
-            echo json_encode(array("message" => "No reports were found"));
+            http_response_code(200);
+            echo json_encode($response);
         }
     }
 

@@ -11,7 +11,8 @@ class ReportAssetService
     /**
      * Funkcja prosi repozytorium aby odpytalo baze, czy zawiera w sobie element o danym id.
      * (srodki trwale w pokoju na podstawie ostatniego raportu)
-     * Jeżeli zawiera, to repozytorium zwraca funkcji obiekt (srodki trwale), a funkcja zwraca go jako json.
+     * Jeżeli zawiera, to repozytorium zwraca funkcji obiekt (srodki trwale),a funkcja zwraca go jako json.
+     * Jeżeli nie, to zwracany jest błąd (string)
      * @param integer $room_id id pokoju ktory jest sprawdzany
      */
 
@@ -24,13 +25,17 @@ class ReportAssetService
         // create a repository instance
         $rar = new ReportAssetRepository($db);
 
-        $room_assets = $rar->getAssetsInRoom($room_id);
-
-        if(count($room_assets)>0)
+        $response = $rar->getAssetsInRoom($room_id);
+        if(is_string($response))
+        {
+            http_response_code(404);
+            echo json_encode(array("message" => $response));
+        }
+        else if(count($response)>0)
         {
             //everything went OK, assets were found
             http_response_code(200);
-            echo json_encode($room_assets);
+            echo json_encode($response);
         }
         else {
             http_response_code(200); // last report for room was not found
@@ -52,17 +57,16 @@ class ReportAssetService
         // create a repository instance
         $rar = new ReportAssetRepository($db);
 
-        $report_assets = $rar->getPositionsInReport($report_id);
-
-        if(count($report_assets)>0)
+        $response = $rar->getPositionsInReport($report_id);
+        if(is_string($response))
         {
-            //everything went OK, asset was found
-            http_response_code(200);
-            echo json_encode($report_assets);
+            http_response_code(404);
+            echo json_encode(array("message" => $response));
         }
-        else {
-            http_response_code(404); // last report for room was not found
-            echo json_encode(["message" => "Report with the given id does not exist in the database."]);
+        else
+        {
+            http_response_code(200);
+            echo json_encode($response);
         }
 
     }

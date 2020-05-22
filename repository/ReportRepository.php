@@ -27,7 +27,7 @@ class ReportRepository implements IRepository
     /**
      * Zwraca raport o podanym id
      * @param integer $id id raportu
-     * @return ReportHeader|null znaleziony raport
+     * @return ReportHeader|string znaleziony raport, lub błąd zwrócony przez bazę danych
      */
     function find($id)
     {
@@ -40,14 +40,16 @@ class ReportRepository implements IRepository
 
         //fetch row
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        if(!$row) return null;
+        if($row['message'] != null){
+            return $row['message'];
+        }
 
         return self::createReport($row);
     }
 
     /**
      * Zwraca tablice z wszystkimi raportami
-     * @return array tablica z wszystkimi raportami
+     * @return array|string tablica z wszystkimi raportami, lub błąd zwrócony przez bazę danych
      */
     function findAll()
     {
@@ -71,7 +73,10 @@ class ReportRepository implements IRepository
         $stmt->execute();
         $report_array = array();
         while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-
+            if($row['message']!=null)
+            {
+                return $row['message'];
+            }
             $report_array [] = self::createReport($row);
         }
         return $report_array;

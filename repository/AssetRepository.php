@@ -27,7 +27,7 @@ class AssetRepository
     /**
      * Znajuje i zwraca srodek trwaly o podanym id
      * @param integer $id id srodka trwalego
-     * @return Asset znaleziony srodek trwaly
+     * @return Asset|string znaleziony srodek trwaly lub błąd zwrócony przez bazę danych
      */
     function find($id)
     {
@@ -40,7 +40,10 @@ class AssetRepository
 
         //fetch row
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        if(!$row) return null;
+        if($row['message']!=null)
+        {
+            return $row['message'];
+        }
 
         return self::createAssetInfo($row);
     }

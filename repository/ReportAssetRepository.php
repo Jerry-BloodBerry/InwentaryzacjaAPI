@@ -41,7 +41,10 @@ class ReportAssetRepository
 
         $room_assets = array();
         while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-
+            if($row['message'] != null)
+            {
+                return $row['message'];
+            }
             $room_assets [] = self::createRoomAsset($row);
         }
         return $room_assets;
@@ -50,7 +53,7 @@ class ReportAssetRepository
     /**
      * Zwraca tablice srodkow trwalych raportu w podanym raporcie
      * @param integer $report_id id raportu
-     * @return array[] tablica srodkow trwalych raportu
+     * @return array[]|string tablica srodkow trwalych raportu, lub błąd zwrócony przez bazę danych
      */
     public function getPositionsInReport($report_id)
     {
@@ -67,7 +70,10 @@ class ReportAssetRepository
 
         $report_assets = array();
         while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-
+            if($row['message'] != null)
+            {
+                return $row['message'];
+            }
             $report_assets [] = self::createReportAsset($row);
         }
         return $report_assets;

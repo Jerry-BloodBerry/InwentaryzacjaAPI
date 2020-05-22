@@ -27,17 +27,17 @@ class AssetService
         // create a repository instance
         $ar = new AssetRepository($db);
 
-        $asset = $ar->find($id);
+        $response = $ar->find($id);
 
-        if($asset!=null)
+        if(!is_string($response))
         {
-            //everything went OK, asset was found
+            //everything went OK, response was found
             http_response_code(200);
-            echo json_encode($asset);
+            echo json_encode($response);
         }
         else {
-            http_response_code(404); // asset was not found
-            echo json_encode(["message" => "Asset does not exist"]);
+            http_response_code(404); // response was not found
+            echo json_encode(["message" => $response]);
         }
     }
 
