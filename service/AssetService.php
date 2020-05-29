@@ -72,23 +72,23 @@ class AssetService
             {
                 $id = (int)$resp['id'];
                 http_response_code(201);
-                echo json_encode(array("message" => "Asset created successfully", "id" => $id));
+                echo json_encode(array("message" => "Środek trwały został utworzony.", "id" => $id));
             }
             else if($resp['message']!=null)
             {
-                http_response_code(503);
+                http_response_code(409);
                 echo json_encode(array("message" => $resp['message'], "id" => null));
             }
             else
             {
                 http_response_code(503);
-                echo json_encode(array("message" => "Unable to create asset. Service temporarily unavailable.", "id" => null));
+                echo json_encode(array("message" => "Niepowodzenie. Usługa chwilowo niedostępna.", "id" => null));
             }
         }
         else
         {
             http_response_code(400);
-            echo json_encode(array("message" => "Unable to create asset. The data is incomplete."));
+            echo json_encode(array("message" => "Niepowodzenie. Przekazano niekompletne dane."));
         }
     }
 
@@ -109,11 +109,11 @@ class AssetService
         if($ar->deleteOne($id))
         {
             http_response_code(200);
-            echo json_encode(array("message" => "Asset was deleted"));
+            echo json_encode(array("message" => "Środek został usunięty."));
         }
         else {
-            http_response_code(503);
-            echo json_encode(array("message" => "Unable to delete asset. Service temporarily unavailable."));
+            http_response_code(404);
+            echo json_encode(array("message" => "Nie znaleziono środka w bazie."));
         }
     }
 }

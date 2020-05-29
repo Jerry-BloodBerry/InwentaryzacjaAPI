@@ -30,7 +30,7 @@ class Security
             try {
                 return (self::validateTokenExpiry($session));
             } catch (Exception $e) {
-                echo "Exception was thrown while validating token expiry: " . $e->getMessage();
+                echo "Podczas walidacji ważności tokena zgłoszony został wyjątek: " . $e->getMessage();
             }
         }
         return false;
@@ -39,7 +39,7 @@ class Security
     /**
      * 
      * Funkcja sprawdza czy Token przekazany przez uzytkownika nadal jest wazny
-     * @param $session - obiekt typu session
+     * @param Session $session - obiekt typu session
      * @return bool w zaleznosci od tego czy jest nadal wazny, czy wygasl
      */
     private static function validateTokenExpiry($session)
@@ -59,13 +59,13 @@ class Security
             }
             else {
                 http_response_code(503);
-                echo json_encode(array("message" => "User authentication failed. Invalid or expired token", "auth" => false));
+                echo json_encode(array("message" => "Autoryzacja nieudana. Niepoprawny, lub nieważny token.", "auth" => false));
                 return false;
             }
         }
         else {
             http_response_code(400);
-            echo json_encode(array("message" => "Authentication failed. Auth token missing.", "auth" => false));
+            echo json_encode(array("message" => "Autoryzacja nieudana. Brak tokena.", "auth" => false));
             return false;
         }
     }

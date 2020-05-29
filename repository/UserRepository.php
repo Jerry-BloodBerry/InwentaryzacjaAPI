@@ -45,7 +45,7 @@ class UserRepository
 
     /**
      * Znajuje i zwraca uzytkownika o podanym loginie
-     * @param $login login szukanego uzytkownika
+     * @param string $login login szukanego uzytkownika
      * @return User|null znaleziony uzytkownik
      */
     public function findOneByLogin($login)

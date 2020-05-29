@@ -62,8 +62,8 @@ class BuildingService implements IService
             echo json_encode($building);
         }
         else {
-            http_response_code(404); // asset was not found
-            echo json_encode(["message" => "Building does not exist"]);
+            http_response_code(404); // building was not found
+            echo json_encode(["message" => "Budynek nie istnieje"]);
         }
     }
 
@@ -91,7 +91,7 @@ class BuildingService implements IService
         else
         {
             http_response_code(404);
-            echo json_encode(array("message" => "No buildings were found"));
+            echo json_encode(array("message" => "Nie znaleziono żadnych budynków"));
         }
     }
 
@@ -116,23 +116,23 @@ class BuildingService implements IService
             {
                 $id = (int)$resp['id'];
                 http_response_code(201);
-                echo json_encode(array("message" => "Building created successfully", "id" => $id));
+                echo json_encode(array("message" => "Budynek został utworzony", "id" => $id));
             }
             else if ($resp['message']!=null)
             {
-                http_response_code(503);
+                http_response_code(409);
                 echo json_encode(array("message" => $resp['message'], "id" => null));
             }
             else
             {
                 http_response_code(503);
-                echo json_encode(array("message" => "Unable to create building. Service fatal error.", "id" => null));
+                echo json_encode(array("message" => "Niepowodzenie. Usługa chwilowo niedostępna.", "id" => null));
             }
         }
         else
         {
             http_response_code(400);
-            echo json_encode(array("message" => "Unable to create building. The data is incomplete."));
+            echo json_encode(array("message" => "Niepowodzenie. Przekazano niekompletne dane."));
         }
     }
 
@@ -153,11 +153,11 @@ class BuildingService implements IService
         if($br->deleteOne($id))
         {
             http_response_code(200);
-            echo json_encode(array("message" => "Building was deleted"));
+            echo json_encode(array("message" => "Budynek został usunięty."));
         }
         else {
             http_response_code(503);
-            echo json_encode(array("message" => "Unable to delete building. Service temporarily unavailable."));
+            echo json_encode(array("message" => "Niepowodzenie. Usługa chwilowo niedostępna."));
         }
     }
 }

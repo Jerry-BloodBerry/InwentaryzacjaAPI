@@ -109,23 +109,23 @@ class ReportService implements IService
             {
                 $id = (int)$resp['id'];
                 http_response_code(201);
-                echo json_encode(array("message" => "ReportHeader created successfully", "id" => $id));
+                echo json_encode(array("message" => "Raport został utworzony.", "id" => $id));
             }
             else if($resp['message']!=null)
             {
-                http_response_code(503);
+                http_response_code(409);
                 echo json_encode(array("message" => $resp['message'], "id"=> null));
             }
             else
             {
                 http_response_code(503);
-                echo json_encode(array("message" => "Unable to create report. Service fatal error.", "id" => null));
+                echo json_encode(array("message" => "Niepowodzenie. Usługa chwilowo niedostępna.", "id" => null));
             }
         }
         else
         {
             http_response_code(400);
-            echo json_encode(array("message" => "Unable to create report. The data is incomplete."));
+            echo json_encode(array("message" => "Niepowodzenie. Przekazano niekompletne dane."));
         }
     }
 
@@ -147,11 +147,11 @@ class ReportService implements IService
         if($rr->deleteOne($id))
         {
             http_response_code(200);
-            echo json_encode(array("message" => "ReportHeader was deleted"));
+            echo json_encode(array("message" => "Raport został usunięty."));
         }
         else {
             http_response_code(503);
-            echo json_encode(array("message" => "Unable to delete report. Service temporarily unavailable."));
+            echo json_encode(array("message" => "Niepowodzenie. Usługa chwilowo niedostępna."));
         }
     }
 

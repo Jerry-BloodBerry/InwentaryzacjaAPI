@@ -40,23 +40,23 @@ class RoomService
             {
                 $id = (int)$resp['id'];
                 http_response_code(201);
-                echo json_encode(array("message" => "Room created successfully", "id" => $id));
+                echo json_encode(array("message" => "Sala została utworzona.", "id" => $id));
             }
             else if($resp['message']!=null)
             {
-                http_response_code(503);
+                http_response_code(409);
                 echo json_encode(array("message" => $resp['message'], "id" => null));
             }
             else
             {
                 http_response_code(503);
-                echo json_encode(array("message" => "Unable to create room. Service fatal error.", "id" => null));
+                echo json_encode(array("message" => "Niepowodzenie. Usługa chwilowo niedostępna.", "id" => null));
             }
         }
         else
         {
             http_response_code(400);
-            echo json_encode(array("message" => "Unable to create room. The data is incomplete."));
+            echo json_encode(array("message" => "Niepowodzenie. Przekazano niekompletne dane."));
         }
     }
 
