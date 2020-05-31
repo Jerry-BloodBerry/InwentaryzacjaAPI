@@ -25,7 +25,11 @@ $resources = [
   'getReportHeader' => '../report/getReportHeader.php',
   'getReportsHeaders' => '../report/getReportsHeaders.php',
   'getReportPositions' => '../report/getPositionsInReport.php',
-  'addNewReport' => '../report/addNewReport.php'
+  'addNewReport' => '../report/addNewReport.php',
+  'getScans' => '../scan/getScans.php',
+  'addScan' => '../scan/addScan.php',
+  'deleteScan' => '../scan/deleteScan.php',
+  'updateScan' => '../scan/updateScan.php'
 ];
 
 foreach ($resources as $name => $path) {

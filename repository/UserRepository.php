@@ -1,5 +1,6 @@
 <?php
 include_once '../config/Database.php';
+include_once '../security/BearerToken.php';
 include_once '../object/User.php';
 
 /** Klasa do obslugi tabeli uzytkownikow */
@@ -27,11 +28,10 @@ class UserRepository
         $query = "CALL getUser(?)";
         $stmt = $this->conn->prepare($query);
 
-        $stmt->bindParam(1,$id);
+        $stmt->bindParam(1, $id);
 
         $stmt->execute();
 
-        //fetch row
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         if(!$row) return null;
 
@@ -67,5 +67,21 @@ class UserRepository
         $user->setHash($row["hash"]);
 
         return $user;
+    }
+
+    public function findCurrentUser()
+    {
+        $query = "CALL getLoginSession(?)";
+        $stmt = $this->conn->prepare($query);
+
+        $token = BearerToken::getBearerToken();
+        $stmt->bindParam(1,$token);
+
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $stmt->closeCursor();
+
+        $user_id = $row['user_id'];
+        return $this->find((int)$user_id);
     }
 }
