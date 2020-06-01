@@ -93,7 +93,7 @@ class ScanService
         if(!empty($data->id) && !empty($data->positions)) {
             $positions = $data->positions;
             foreach ($positions as $position) {
-                if (empty($position->id)) {
+                if (empty($position->asset) || empty($position->state)) {
                     http_response_code(400);
                     echo json_encode(array("message" => "Niepowodzenie. Przekazano niekompletne dane."));
                     exit();
