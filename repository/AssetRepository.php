@@ -113,8 +113,7 @@ class AssetRepository
     {
         $asset = new Asset();
         $asset_type = new AssetType();
-        $building = new Building();
-        $room = new Room();
+
 
         $asset->setId($row['id']);
 
@@ -122,16 +121,21 @@ class AssetRepository
         $asset_type->setName($row['asset_type_name']);
         $asset_type->setLetter($row['letter']);
 
-        $building->setName($row['building_name']);
-        $building->setId($row['building_id']);
+        if($row['room_id'])
+        {
+            $building = new Building();
+            $room = new Room();
+            $building->setName($row['building_name']);
+            $building->setId($row['building_id']);
 
-        $room->setId($row['room_id']);
-        $room->setName($row['room_name']);
-        $room->setBuilding($building);
+            $room->setId($row['room_id']);
+            $room->setName($row['room_name']);
+            $room->setBuilding($building);
+
+            $asset->setRoom($room);
+        }
 
         $asset->setAssetType($asset_type);
-        $asset->setRoom($room);
-
         return $asset;
     }
 

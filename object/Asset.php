@@ -72,7 +72,7 @@ class Asset implements JsonSerializable
 
     /**
      * Zwraca srodkek trwaly w postaci JSON
-     * @return string srodkek trwaly w postaci JSON
+     * @return array srodkek trwaly w postaci JSON
      */
     public function jsonSerialize()
     {
@@ -81,6 +81,7 @@ class Asset implements JsonSerializable
         $json['type'] = $this->assetType;
         if($this->room != null)
             $json['room'] = $this->room;
+        else $json['room'] = null;
         return $json;
     }
 }
