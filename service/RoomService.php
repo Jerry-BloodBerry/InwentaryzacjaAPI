@@ -14,12 +14,12 @@ class RoomService
 
     /**
      * Funkcja prosi repozytorium aby dodalo nowy pokoj do bazy
-     * @param array $data dane dodawanego pokoju
+     * @param object $data dane dodawanego pokoju
      */
 
     public static function addNew($data)
     {
-        if(!empty($data->name) && !empty($data->building))
+        if(property_exists($data, 'name') && property_exists($data, 'building'))
         {
             $room = new Room();
             $room->setName($data->name);

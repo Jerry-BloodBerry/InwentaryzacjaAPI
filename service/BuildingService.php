@@ -97,11 +97,11 @@ class BuildingService implements IService
 
     /**
      * Funkcja prosi repozytorium aby dodalo nowy budynek do bazy
-     * @param array $data dane dodawanego obiektu (budynku)
+     * @param object $data dane dodawanego obiektu (budynku)
      */
     static function addNew($data)
     {
-        if(!empty($data->name))
+        if(property_exists($data, 'name'))
         {
             $building = new Building();
             $building->setName($data->name);

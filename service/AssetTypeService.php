@@ -70,12 +70,12 @@ class AssetTypeService implements IService
 
     /**
      * Funkcja prosi repozytorium aby dodalo nowy typ srodka trwalego do bazy
-     * @param array $data dane nowego elementu
+     * @param object $data dane nowego elementu
      */
 
     static function addNew($data)
     {
-        if(!empty($data->letter) && !empty($data->name))
+        if(property_exists($data, 'letter') && property_exists($data, 'name'))
         {
             $asset_type = new AssetType();
             $asset_type->setName($data->name);

@@ -69,20 +69,21 @@ class ReportService implements IService
 
     /**
      * Funkcja prosi repozytorium aby dodalo nowy raport na podstawie jego danych do bazy
-     * @param array $data dane dodawanego raportu
+     * @param object $data dane dodawanego raportu
      */
 
     static function addNew($data)
     {
         if(
-            !empty($data->name)&&
-            !empty($data->room)&&
-            !empty($data->assets))
+            property_exists($data, 'name') &&
+            property_exists($data, 'room') &&
+            property_exists($data, 'assets')
+        )
         {
             $assets = $data->assets;
             foreach ($data->assets as $asset)
             {
-                if(empty($asset->id) || empty($asset->present)) {
+                if(!property_exists($asset, 'id') || !property_exists($asset, 'present')) {
                     http_response_code(400);
                     echo json_encode(array("message" => "Niepowodzenie. Przekazano niekompletne dane."));
                     exit();

@@ -46,13 +46,13 @@ class AssetService
 
     /**
      * Funkcja prosi repozytorium aby dodalo nowy srodek trwaly do bazy
-     * @param array $data dane nowego elementu
+     * @param object $data dane nowego elementu
      */
 
     static function addNew($data)
     {
         if(
-            !empty($data->type)
+            property_exists($data, 'type')
         )
         {
             $asset = new Asset();

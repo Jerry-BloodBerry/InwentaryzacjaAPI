@@ -32,7 +32,7 @@ class ScanService
 
     static function addNew($data)
     {
-        if(!empty($data->room))
+        if(property_exists($data,'room'))
         {
             //init database
             $database = new Database();
@@ -90,15 +90,21 @@ class ScanService
 
     public static function updateScan($data)
     {
-        if(!empty($data->id) && !empty($data->positions)) {
+        if(property_exists($data,'id') && property_exists($data,'positions')) {
             $positions = $data->positions;
             foreach ($positions as $position) {
-                if (empty($position->asset) || empty($position->state)) {
+                if (!property_exists($position,'asset') || !property_exists($position,'state')) {
                     http_response_code(400);
                     echo json_encode(array("message" => "Niepowodzenie. Przekazano niekompletne dane."));
                     exit();
                 }
             }
+        }
+        else
+        {
+            http_response_code(400);
+            echo json_encode(array("message" => "Niepowodzenie. Przekazano niekompletne dane."));
+            exit();
         }
 
         //init database
