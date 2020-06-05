@@ -21,7 +21,7 @@ class Login
        $db = $database->getConnection();
 
        //check if complete data was passed
-       if(property_exists($data, 'login') && property_exists($data, 'password'))
+       if(!property_exists($data, 'login') || !property_exists($data, 'password'))
        {
            http_response_code(400);
            echo json_encode(array("message" => "Incomplete data. Request could not be processed"));
