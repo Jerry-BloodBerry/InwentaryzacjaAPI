@@ -79,6 +79,32 @@ to make requests listed below.
   * /room/getAssetsInRoom/{id} - returns all objects
     of type ReportAsset belonging to room with the specified id 
     in JSON format 
+  ### Scan
+  * /scan/getScans - returns all objects of type Scan in JSON format
+  * /scan/addScan - when passed complete data it creates a Scan object and persists it in the database.
+```json
+{
+  "room_id": 3,
+  "owner": 5
+}
+```
+  * /scan/deleteScan/{id} - deletes the Scan with the specified id
+  * /scan/updateScan - when passed complete data it adds a new Asset to the specified Scan object in the database.
+```json
+{
+  "id": 3,
+  "positions": [
+  {
+    "asset": 1,
+    "state": 2
+  },
+  {
+    "asset": 3,
+    "state": 1
+  }
+  ]
+}
+```
   ### UserCreator <- Just for testing!
   * /creator/user_creator - creates a User object with 
  the specified login and password and persists it to database.
