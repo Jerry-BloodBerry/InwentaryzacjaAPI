@@ -69,6 +69,10 @@ class UserRepository
         return $user;
     }
 
+    /**
+     * Funkcja wyszukuje i zwraca aktualnie zalogowanego uzytkownika
+     * @return User|null uzytkownik jezeli jakis jest zalogowany
+     */
     public function findCurrentUser()
     {
         $query = "CALL getLoginSession(?)";
