@@ -2,8 +2,15 @@
 include_once '../repository/ScanRepository.php';
 include_once '../repository/UserRepository.php';
 
+/**
+ * Klasa zarzadzajaca skanami
+ */
 class ScanService
 {
+    /**
+     * Funkcja prosi repozytorium aby odpytalo baze, o wszystkie skany.
+     * Repozytorium zwraca funkcji obiekt (skany),a funkcja zwraca go jako json.
+     */
     public static function getScans()
     {
         // get database connection
@@ -29,6 +36,10 @@ class ScanService
             echo json_encode(array("message" => $response));
         }
     }
+    /**
+     * Funkcja prosi repozytorium aby dodalo nowy skan do bazy
+     * @param object $data dane nowego elementu (skanu)
+     */
 
     static function addNew($data)
     {
@@ -69,6 +80,11 @@ class ScanService
         }
     }
 
+    /**
+     * Funkcja prosi repozytorium aby odpytalo baze, czy zawiera w sobie element o danym id.
+     * Jeżeli zawiera, to repozytorium usuwa z bazy danych ten element (skan).
+     * @param integer $id id skanu
+     */
     public static function deleteOne($id)
     {
         //init database
@@ -87,6 +103,10 @@ class ScanService
             echo json_encode(array("message" => "Niepowodzenie. Usługa chwilowo niedostępna."));
         }
     }
+    /**
+     * Funkcja prosi repozytorium aby odpytalo baze, aby zaktualizowac dany skan.
+     * @param object $data dane skanu do zaktualizowania
+     */
 
     public static function updateScan($data)
     {
