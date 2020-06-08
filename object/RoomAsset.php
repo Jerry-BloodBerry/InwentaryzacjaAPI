@@ -1,15 +1,23 @@
 <?php
 
-
+/** Klasa srodka trwalego w pokoju */
 class RoomAsset implements JsonSerializable
 {
+    /** Asset srodek trwaly */
     private $asset;
+
+    /** boolean czy nowy srodek trwaly  */
     private $new_asset;
+
+    /** boolean czy srodek trwaly zostal przeniesiony */
     private $moved;
+
+    /** Room pokoj z ktorego srodek trwaly zostal przeniesiony */
     private $moved_from_room;
 
     /**
-     * @return Asset
+     * Zwraca srodek trwaly
+     * @return Asset srodek trwaly
      */
     public function getAsset()
     {
@@ -17,7 +25,8 @@ class RoomAsset implements JsonSerializable
     }
 
     /**
-     * @param Asset $asset
+     * Ustawia srodek trwaly
+     * @param Asset $asset srodek trwaly
      */
     public function setAsset(Asset $asset): void
     {
@@ -25,7 +34,8 @@ class RoomAsset implements JsonSerializable
     }
 
     /**
-     * @return boolean
+     * Zwraca czy srodek trwaly jest nowy
+     * @return boolean czy nowy srodek trwaly
      */
     public function getNewAsset()
     {
@@ -33,7 +43,8 @@ class RoomAsset implements JsonSerializable
     }
 
     /**
-     * @param boolean $new_asset
+     * Ustawia czy srodek trwaly jest nowy
+     * @param boolean $new_asset czy nowy srodek trwaly
      */
     public function setNewAsset(bool $new_asset): void
     {
@@ -41,7 +52,8 @@ class RoomAsset implements JsonSerializable
     }
 
     /**
-     * @return boolean
+     * Zwraca czy srodek trwaly zostal przeniesiony
+     * @return boolean czy srodek trwaly zostal przeniesiony
      */
     public function getMoved()
     {
@@ -49,7 +61,8 @@ class RoomAsset implements JsonSerializable
     }
 
     /**
-     * @param boolean $moved
+     * Ustawia czy srodek trwaly zostal przeniesiony
+     * @param boolean $moved czy srodek trwaly zostal przeniesiony
      */
     public function setMoved(bool $moved): void
     {
@@ -57,7 +70,8 @@ class RoomAsset implements JsonSerializable
     }
 
     /**
-     * @return Room|NULL
+     * Zwraca pokoj z ktorego srodek trwaly zostal przeniesiony
+     * @return Room|NULL pokoj z ktorego srodek trwaly zostal przeniesiony
      */
     public function getMovedFromRoom()
     {
@@ -65,7 +79,8 @@ class RoomAsset implements JsonSerializable
     }
 
     /**
-     * @param Room|NULL $moved_from_room
+     * Ustawia pokoj z ktorego srodek trwaly zostal przeniesiony
+     * @param Room|NULL $moved_from_room pokoj z ktorego srodek trwaly zostal przeniesiony
      */
     public function setMovedFromRoom(?Room $moved_from_room): void
     {
@@ -73,7 +88,8 @@ class RoomAsset implements JsonSerializable
     }
 
     /**
-     * @inheritDoc
+     * Zwraca srodek trwaly w pokoju w postaci JSON
+     * @return string srodek trwaly w pokoju w postaci JSON
      */
     public function jsonSerialize()
     {
