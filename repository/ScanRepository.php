@@ -5,19 +5,27 @@ include_once '../object/User.php';
 include_once '../object/Building.php';
 include_once '../config/Database.php';
 
+/**
+ * Klasa odpowiadajaca za obsluge skanowania
+ */
 class ScanRepository
 {
     private $conn;
 
     /**
      * ScanRepository constructor.
-     * @param PDO $db połączenie z bazą
+     * @param PDO $db polaczenie z bazą
      */
     public function __construct($db)
     {
         $this->conn = $db;
     }
 
+    /**
+     * Funkcja znajduje i zwraca wszystkie dotychczasowe skany danego uzytkownika po jego id
+     * @param integer $user_id  id uzytkownika dla ktorego funkcja wyszukuje i zwraca skany
+     * @return array|mixed  tablica skanow
+     */
     public function getScans($user_id)
     {
         $query = "CALL getScans(?)";
@@ -37,6 +45,11 @@ class ScanRepository
         return $scans_array;
     }
 
+    /**
+     * Funkcja tworzy i zwraca skan na podstawie przekazanego wyniku kwerendy
+     * @param array $row wynik kwerendy fetch
+     * @return Scan utworzony skan
+     */
     private static function createScan($row)
     {
         $scan = new Scan();
@@ -62,6 +75,12 @@ class ScanRepository
         return $scan;
     }
 
+    /**
+     * Funkcja dodaje nowy skan do tabeli
+     * @param integer $room_id id pokoju ktorego skan dotyczy
+     * @param integer $user_id id uzytkownika ktorego skan dotyczy
+     * @return array|null[] dodany skan
+     */
     public function addScan($room_id, $user_id)
     {
         $query = "CALL addScan(:room_id,:owner)";
@@ -80,6 +99,11 @@ class ScanRepository
         return ["message" => null, "id" => null];
     }
 
+    /**
+     * Funkcja usuwa skan o danym id
+     * @param integer $id id usuwanego skanu
+     * @return bool czy udalo sie usunac skan
+     */
     public function deleteScan($id)
     {
         $query = "CALL deleteScan(?)";
@@ -89,6 +113,12 @@ class ScanRepository
         return $stmt->execute();
     }
 
+    /**
+     * Funkcja aktualizujaca dany skan po jego id
+     * @param integer $scan_id id aktualizowanego skanu
+     * @param array $positions tablica pozycji (srodkow trwalych) ktore chcemy w danym skanie zaktualizowac
+     * @return bool czy udalo sie zaktualizowac skan
+     */
     public function updateScan($scan_id, $positions)
     {
         $query = "CALL updateScan(:id,:positions)";

@@ -1,6 +1,8 @@
 <?php
 
-
+/**
+ * Klasa odpowiadajaca za obsluge skanowania
+ */
 class Scan implements JsonSerializable
 {
     private $id;
@@ -9,7 +11,8 @@ class Scan implements JsonSerializable
     private $create_date;
 
     /**
-     * @return int
+     * Funkcja zwraca id skanu
+     * @return integer id skanu
      */
     public function getId()
     {
@@ -17,7 +20,8 @@ class Scan implements JsonSerializable
     }
 
     /**
-     * @param int $id
+     * Funkcja ustawia id skanu
+     * @param integer $id id skanu
      */
     public function setId($id): void
     {
@@ -25,7 +29,8 @@ class Scan implements JsonSerializable
     }
 
     /**
-     * @return Room
+     * Funkcja zwraca skanowany pokoj
+     * @return Room skanowany pokoj
      */
     public function getRoom()
     {
@@ -33,7 +38,8 @@ class Scan implements JsonSerializable
     }
 
     /**
-     * @param Room $room
+     * Funkcja ustawia skanowany pokoj
+     * @param Room $room skanowany pokoj
      */
     public function setRoom($room): void
     {
@@ -41,7 +47,8 @@ class Scan implements JsonSerializable
     }
 
     /**
-     * @return User
+     * Funkcja zwraca wlasciciela skanu (uzytkownika)
+     * @return User wlasciciel skanu
      */
     public function getOwner()
     {
@@ -49,7 +56,8 @@ class Scan implements JsonSerializable
     }
 
     /**
-     * @param User $owner
+     * Funkcja ustawia wlasciciela skanu (uzytkownika)
+     * @param User $owner wlasciciel skanu
      */
     public function setOwner($owner): void
     {
@@ -57,7 +65,8 @@ class Scan implements JsonSerializable
     }
 
     /**
-     * @return DateTime
+     * Funkcja zwraca date skanu
+     * @return DateTime data skanu
      */
     public function getCreateDate()
     {
@@ -65,7 +74,8 @@ class Scan implements JsonSerializable
     }
 
     /**
-     * @param DateTime $create_date
+     * Funkcja tworzy date skanu
+     * @param DateTime $create_date data skanu
      */
     public function setCreateDate($create_date): void
     {
@@ -73,7 +83,8 @@ class Scan implements JsonSerializable
     }
 
     /**
-     * @inheritDoc
+     * Funkcja zwraca skan w postaci JSON
+     * @return string skan w postaci JSON
      */
     public function jsonSerialize()
     {
