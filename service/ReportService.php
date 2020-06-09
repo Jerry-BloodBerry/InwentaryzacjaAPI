@@ -83,10 +83,14 @@ class ReportService implements IService
             $assets = $data->assets;
             foreach ($data->assets as $asset)
             {
-                if(!property_exists($asset, 'id') || !property_exists($asset, 'present')) {
+                if(!property_exists($asset, 'id') || !property_exists($asset, 'present') || !property_exists($asset, 'previous')) {
                     http_response_code(400);
                     echo json_encode(array("message" => "Niepowodzenie. Przekazano niekompletne dane."));
                     exit();
+                }
+                if($asset->previous == -1)
+                {
+                    $asset->previous = null;
                 }
             }
             $report = new ReportHeader();
