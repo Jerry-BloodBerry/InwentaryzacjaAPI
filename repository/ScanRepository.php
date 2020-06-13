@@ -132,16 +132,19 @@ class ScanRepository
         $scan = new Scan();
         $scan->setId($row['id']);
 
-        $building = new Building();
-        $building->setId($row['building_id']);
-        $building->setName($row['building_name']);
+        if($row['room_id'])
+        {
+            $building = new Building();
+            $building->setId($row['building_id']);
+            $building->setName($row['building_name']);
 
-        $room = new Room();
-        $room->setId($row['room_id']);
-        $room->setName($row['room_name']);
-        $room->setBuilding($building);
+            $room = new Room();
+            $room->setId($row['room_id']);
+            $room->setName($row['room_name']);
+            $room->setBuilding($building);
 
-        $scan->setRoom($room);
+            $scan->setRoom($room);
+        }
 
         $owner = new User();
         $owner->setId($row['owner_id']);
@@ -158,23 +161,27 @@ class ScanRepository
 
         $asset = new Asset();
         $asset_type = new AssetType();
-        $building = new Building();
-        $room = new Room();
 
         $asset_type->setId($row['type']);
         $asset_type->setLetter($row['letter']);
         $asset_type->setName($row['asset_type_name']);
 
-        $building->setId($row['building_id']);
-        $building->setName($row['building_name']);
+        if($row['room_id'])
+        {
+            $building = new Building();
+            $room = new Room();
 
-        $room->setId($row['room_id']);
-        $room->setName($row['room_name']);
-        $room->setBuilding($building);
+            $building->setId($row['building_id']);
+            $building->setName($row['building_name']);
 
+            $room->setId($row['room_id']);
+            $room->setName($row['room_name']);
+            $room->setBuilding($building);
+
+            $asset->setRoom($room);
+        }
         $asset->setId($row['id']);
         $asset->setAssetType($asset_type);
-        $asset->setRoom($room);
 
         $scan_pos->setAsset($asset);
         $scan_pos->setState($row['state']);
