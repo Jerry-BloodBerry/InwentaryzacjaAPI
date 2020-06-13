@@ -1,16 +1,35 @@
 <?php
 $url = trim($_SERVER['REQUEST_URI'], '/');
 
-$request = explode('/', $url);
+/**
+ * Route params array
+ * @var string[]
+ */
+$routeParams = explode('/', $url);
+if($routeParams === false) $routeParams = [];
 
-$length = count($request);
+/**
+ * Route params Length
+ * @var int
+ */
+$routeParamsLength = count($routeParams);
 
-if($length <= 1) exit("Incorrect request");
+if($routeParamsLength <= 1) {
+  exit(json_encode(["message" => "Incorrect request, require /api/script-name/param1?/param2?"]));
+}
 
-$requestedScript = $request[1];
+array_shift($routeParams); // /api
+$routeParamsLength--;
 
-if($length >= 3) {
-  $_GET['id'] = intval($request[2]);
+$requestedScript = array_shift($routeParams); // /api/path
+$routeParamsLength--;
+
+if($routeParamsLength >= 1) {
+  $_GET['id'] = $routeParams[0];
+}
+
+if($routeParamsLength >= 2) {
+  $_GET['type'] = $routeParams[1];
 }
 
 $resources = [
@@ -31,6 +50,7 @@ $resources = [
   'deleteScan' => '../scan/deleteScan.php',
   'updateScan' => '../scan/updateScan.php',
   'getScanPositions' => '../scan/getScanPositions.php'
+  'pdfGenerator'=>'../generator/pdfGenerator.php'
 ];
 
 foreach ($resources as $name => $path) {
