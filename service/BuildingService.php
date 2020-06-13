@@ -4,11 +4,18 @@ include_once '../object/Building.php';
 include_once '../repository/BuildingRepository.php';
 include_once '../config/Database.php';
 
+/**
+ * Klasa zarzadzajaca ustawieniami budynkow w bazie danych
+ * 
+ */
 class BuildingService implements IService
 {
     /**
-     * @inheritDoc
+     * Funkcja prosi repozytorium aby odpytalo baze, czy zawiera w sobie element o danym id.
+     * Jeżeli zawiera, to repozytorium zwraca funkcji obiekt (pokoje z budynku o danym id), a funkcja zwraca go jako json
+     * @param integer $building_id id budynku
      */
+
     public static function findAllRooms($building_id)
     {
         // get database connection
@@ -18,22 +25,24 @@ class BuildingService implements IService
         // create a repository instance
         $rr = new BuildingRepository($db);
 
-        $rooms = $rr->findAllRooms($building_id);
-
-        if($rooms['count']>0)
+        $response = $rr->findAllRooms($building_id);
+        if(is_string($response))
         {
-            http_response_code(200);
-            echo json_encode($rooms["rooms"]);
+            http_response_code(404);
+            echo json_encode(array("message" => $response));
         }
         else
         {
-            http_response_code(404);
-            echo json_encode(array("message" => "No rooms were found"));
+            http_response_code(200);
+            echo json_encode($response);
         }
     }
 
     /**
-     * @inheritDoc
+     * Funkcja prosi repozytorium aby odpytalo baze, czy zawiera w sobie element o danym id.
+     * Jeżeli zawiera, to repozytorium zwraca funkcji obiekt (budynek), a funkcja zwraca go jako json
+     * @param integer $id id szukanego budynku
+     * @return mixed|void - zwraca obiekt (budynek) z bazy
      */
     static function findOneById($id)
     {
@@ -53,13 +62,15 @@ class BuildingService implements IService
             echo json_encode($building);
         }
         else {
-            http_response_code(404); // asset was not found
-            echo json_encode(["message" => "Building does not exist"]);
+            http_response_code(404); // building was not found
+            echo json_encode(["message" => "Budynek nie istnieje"]);
         }
     }
 
     /**
-     * @inheritDoc
+     * Funkcja prosi repozytorium aby odpytalo baze, o wszystkie elementy.
+     * Repozytorium zwraca funkcji wszystkie obiekty (budynki), a funkcja zwraca je jako json
+     * @return mixed|void - zwraca obiekty (budynki) z bazy
      */
     static function findAll()
     {
@@ -80,16 +91,17 @@ class BuildingService implements IService
         else
         {
             http_response_code(404);
-            echo json_encode(array("message" => "No buildings were found"));
+            echo json_encode(array("message" => "Nie znaleziono żadnych budynków"));
         }
     }
 
     /**
-     * @inheritDoc
+     * Funkcja prosi repozytorium aby dodalo nowy budynek do bazy
+     * @param object $data dane dodawanego obiektu (budynku)
      */
     static function addNew($data)
     {
-        if(!empty($data->name))
+        if(property_exists($data, 'name'))
         {
             $building = new Building();
             $building->setName($data->name);
@@ -99,27 +111,35 @@ class BuildingService implements IService
             $db = $database->getConnection();
 
             $br = new BuildingRepository($db);
-
-            if($br->addNew($building))
+            $resp = $br->addNew($building);
+            if($resp['id'] != null)
             {
+                $id = (int)$resp['id'];
                 http_response_code(201);
-                echo json_encode(array("message" => "Building created successfully"));
+                echo json_encode(array("message" => "Budynek został utworzony", "id" => $id));
+            }
+            else if ($resp['message']!=null)
+            {
+                http_response_code(409);
+                echo json_encode(array("message" => $resp['message'], "id" => null));
             }
             else
             {
                 http_response_code(503);
-                echo json_encode(array("message" => "Unable to create building. Service temporarily unavailable."));
+                echo json_encode(array("message" => "Niepowodzenie. Usługa chwilowo niedostępna.", "id" => null));
             }
         }
         else
         {
             http_response_code(400);
-            echo json_encode(array("message" => "Unable to create building. The data is incomplete."));
+            echo json_encode(array("message" => "Niepowodzenie. Przekazano niekompletne dane."));
         }
     }
 
     /**
-     * @inheritDoc
+     * Funkcja prosi repozytorium aby odpytalo baze, czy zawiera w sobie element o danym id.
+     * Jeżeli zawiera, to repozytorium usuwa z bazy danych ten element (budynek).
+     * @param integer $id id usuwanego obiektu
      */
     static function deleteOneById($id)
     {
@@ -133,11 +153,11 @@ class BuildingService implements IService
         if($br->deleteOne($id))
         {
             http_response_code(200);
-            echo json_encode(array("message" => "Building was deleted"));
+            echo json_encode(array("message" => "Budynek został usunięty."));
         }
         else {
             http_response_code(503);
-            echo json_encode(array("message" => "Unable to delete building. Service temporarily unavailable."));
+            echo json_encode(array("message" => "Niepowodzenie. Usługa chwilowo niedostępna."));
         }
     }
 }

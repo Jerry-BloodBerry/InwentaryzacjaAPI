@@ -3,15 +3,22 @@ include_once 'Building.php';
 include_once 'AssetType.php';
 include_once 'Room.php';
 
+/** Klasa srodka trwalego */
 class Asset implements JsonSerializable
 {
-    //fields
+    /** int id srodka trwalego */
     private $id;
+
+    /** AssetType typ srodka trwalego */
     private $assetType;
+
+    /** Room pokoj do ktorego przypisany jest srodek trwaly */
     private $room;
 
+
     /**
-     * @return integer
+     * Pobiera id srodka trwalego
+     * @return integer id srodka trwalego
      */
     public function getId()
     {
@@ -19,7 +26,8 @@ class Asset implements JsonSerializable
     }
 
     /**
-     * @param integer $id
+     * Ustawia id srodka trwalego
+     * @param integer $id id srodka trwalego
      */
     public function setId(int $id)
     {
@@ -27,7 +35,8 @@ class Asset implements JsonSerializable
     }
 
     /**
-     * @return AssetType
+     * Pobiera typ srodka trwalego
+     * @return AssetType typ srodka trwalego
      */
     public function getAssetType()
     {
@@ -35,7 +44,8 @@ class Asset implements JsonSerializable
     }
 
     /**
-     * @param AssetType $assetType
+     * Ustawia typ srodka trwalego
+     * @param AssetType $assetType typ srodka trwalego
      */
     public function setAssetType(AssetType $assetType)
     {
@@ -43,7 +53,8 @@ class Asset implements JsonSerializable
     }
 
     /**
-     * @return Room
+     * Pobiera pokoj do ktorego przypisany jest srodkek trwaly
+     * @return Room pokoj do ktorego przypisany jest srodkek trwaly
      */
     public function getRoom()
     {
@@ -51,7 +62,8 @@ class Asset implements JsonSerializable
     }
 
     /**
-     * @param Room $room
+     * Przypisuje pokoj do srodka trwalego
+     * @param Room $room pokoj, do ktorego ma byc przypisany srodkek trwaly
      */
     public function setRoom(Room $room)
     {
@@ -59,7 +71,8 @@ class Asset implements JsonSerializable
     }
 
     /**
-     * @inheritDoc
+     * Zwraca srodkek trwaly w postaci JSON
+     * @return array srodkek trwaly w postaci JSON
      */
     public function jsonSerialize()
     {
@@ -68,6 +81,7 @@ class Asset implements JsonSerializable
         $json['type'] = $this->assetType;
         if($this->room != null)
             $json['room'] = $this->room;
+        else $json['room'] = null;
         return $json;
     }
 }

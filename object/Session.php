@@ -1,17 +1,29 @@
 <?php
 
-
+/** Klasa sesji */
 class Session
 {
+    /** integer id sesji */
     private $id;
+
+    /** integer id uzytkownika */
     private $user_id;
+
+    /** string token sesji */
     private $token;
+
+    /** DateTime data waznosci sesji */
     private $expiration_date;
+
+    /** DateTime data utworzenia sesji */
     private $create_date;
+
+    /** boolean czy sesja sie skonczyla */
     private $expired;
 
     /**
-     * @return integer
+     * Zwraca id sesji
+     * @return integer id sesji
      */
     public function getId()
     {
@@ -19,7 +31,8 @@ class Session
     }
 
     /**
-     * @param integer $id
+     * Ustawia id sesji
+     * @param integer $id id sesji
      */
     public function setId(int $id)
     {
@@ -27,7 +40,8 @@ class Session
     }
 
     /**
-     * @return integer
+     * Zwraca id uzytkownika
+     * @return integer id uzytkownika
      */
     public function getUserId()
     {
@@ -35,7 +49,8 @@ class Session
     }
 
     /**
-     * @param integer $user_id
+     * Ustawia id uzytkownika
+     * @param integer $user_id id uzytkownika
      */
     public function setUserId(int $user_id)
     {
@@ -43,7 +58,8 @@ class Session
     }
 
     /**
-     * @return string
+     * Zwraca token
+     * @return string token
      */
     public function getToken()
     {
@@ -51,7 +67,8 @@ class Session
     }
 
     /**
-     * @param string $token
+     * Ustawia token
+     * @param string $token token
      */
     public function setToken(string $token)
     {
@@ -59,7 +76,8 @@ class Session
     }
 
     /**
-     * @return datetime
+     * Zwraca date waznosci sesji
+     * @return datetime data waznosci sesji
      */
     public function getExpirationDate()
     {
@@ -67,7 +85,8 @@ class Session
     }
 
     /**
-     * @param datetime $expiration_date
+     * Ustawia date waznosci sesji
+     * @return datetime data waznosci sesji
      */
     public function setExpirationDate(DateTime $expiration_date)
     {
@@ -75,7 +94,8 @@ class Session
     }
 
     /**
-     * @return datetime
+     * Zwraca date utworzenia sesji
+     * @return datetime data utworzenia sesji
      */
     public function getCreateDate()
     {
@@ -83,7 +103,8 @@ class Session
     }
 
     /**
-     * @param datetime $create_date
+     * Ustawia date utworzenia sesji
+     * @return datetime data utworzenia sesji
      */
     public function setCreateDate(DateTime $create_date)
     {
@@ -91,7 +112,8 @@ class Session
     }
 
     /**
-     * @return boolean
+     * Zwraca, czy sesja sie skonczyla
+     * @return boolean czy sesja sie skonczyla
      */
     public function getExpired()
     {
@@ -99,7 +121,8 @@ class Session
     }
 
     /**
-     * @param boolean $expired
+     * Ustawia czy sesja sie skonczyla
+     * @param boolean $expired czy sesja sie skonczyla
      */
     public function setExpired(bool $expired)
     {

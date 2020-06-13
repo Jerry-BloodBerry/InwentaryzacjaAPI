@@ -2,15 +2,28 @@
 include_once '../object/Room.php';
 include_once '../object/User.php';
 
+/** Klasa metadanych raportu */
 class ReportHeader implements JsonSerializable
 {
+    /** integer id raportu  */
     private $id;
+
+    /** string nazwa raportu */
     private $name;
+
+    /** DateTime utworzenia raportu  */
     private $create_date;
+
+    /** User wlasciciel raportu */
     private $owner;
+
+    /** Room pokoj dla ktorego zostal utworzony raport */
     private $room;
+
+
     /**
-     * @return integer
+     * Zwraca id raportu
+     * @return integer id raportu
      */
     public function getId()
     {
@@ -18,7 +31,8 @@ class ReportHeader implements JsonSerializable
     }
 
     /**
-     * @param integer $id
+     * Ustawia id raportu
+     * @param integer $id id raportu
      */
     public function setId(int $id)
     {
@@ -26,7 +40,8 @@ class ReportHeader implements JsonSerializable
     }
 
     /**
-     * @return string
+     * Zwraca nazwe raportu
+     * @return string nazwa raportu
      */
     public function getName()
     {
@@ -34,7 +49,8 @@ class ReportHeader implements JsonSerializable
     }
 
     /**
-     * @param string $name
+     * Ustawia nazwe raportu
+     * @param string $name nazwa raportu
      */
     public function setName(string $name)
     {
@@ -42,7 +58,8 @@ class ReportHeader implements JsonSerializable
     }
 
     /**
-     * @return DateTime
+     * Zwraca date utworzenia raportu
+     * @return DateTime data utworzenia raportu
      */
     public function getCreateDate()
     {
@@ -50,7 +67,8 @@ class ReportHeader implements JsonSerializable
     }
 
     /**
-     * @param DateTime $create_date
+     * Ustawia date utworzenia raportu
+     * @param DateTime $create_date data utworzenia raportu
      */
     public function setCreateDate(DateTime $create_date)
     {
@@ -58,7 +76,8 @@ class ReportHeader implements JsonSerializable
     }
 
     /**
-     * @return User
+     * Zwraca wlasciciela raportu
+     * @return User wlasciciel raportu
      */
     public function getOwner()
     {
@@ -66,7 +85,8 @@ class ReportHeader implements JsonSerializable
     }
 
     /**
-     * @param User $owner
+     * Ustawia wlasciciela raportu
+     * @param User $owner wlasciciel raportu
      */
     public function setOwner(User $owner): void
     {
@@ -74,7 +94,8 @@ class ReportHeader implements JsonSerializable
     }
 
     /**
-     * @return Room
+     * Zwraca pokoj raportu
+     * @return Room pokoj raportu
      */
     public function getRoom()
     {
@@ -82,7 +103,8 @@ class ReportHeader implements JsonSerializable
     }
 
     /**
-     * @param Room $room
+     * Ustawia pokoj raportu
+     * @param Room $room pokoj raportu
      */
     public function setRoom(Room $room): void
     {
@@ -90,7 +112,8 @@ class ReportHeader implements JsonSerializable
     }
 
     /**
-     * @inheritDoc
+     * Zwraca metadane raportu w postaci JSON
+     * @return string metadane raportu w postaci JSON
      */
     public function jsonSerialize()
     {

@@ -4,25 +4,27 @@
 interface IService
 {
     /**
-     * @param $id
-     * @return void
+     * Funkcja wyszukuje pojedynczy element w bazie i go zwraca
+     * @param integer $id id szukanego elementu
+     * @return mixed - zwraca element z bazy o podanym id
      */
     static function findOneById($id);
 
     /**
-     * @return void
+     * Funkcja wyszukuje wszystkie elementy w bazie i je zwraca
+     * @return mixed - zwraca wszystkie elementy z bazy
      */
     static function findAll();
 
     /**
-     * @param array $data
-     * @return void
+     * Funkcja dodaje pojedynczy element do bazy
+     * @param array $data dane elementu dodawanego
      */
     static function addNew($data);
 
     /**
-     * @param integer $id
-     * @return void
+     * Funkcja usuwa pojedynczy element z bazy
+     *  @param integer $id id usuwanego elementu
      */
     static function deleteOneById($id);
 }

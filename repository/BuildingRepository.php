@@ -3,20 +3,30 @@ include_once '../interfaces/IRepository.php';
 include_once '../object/Building.php';
 include_once '../object/Room.php';
 
+/** Klasa do obslugi tabeli budynkow */
 class BuildingRepository implements IRepository
 {
-    //database connection and table name
-    /**
-     * @var PDO
-     */
+    /** PDO wartosc polaczenia z baza */
     private $conn;
+
+    /** string nazwa tabeli */
     private $table_name = "buildings";
 
+
+    /**
+     * konstrukor
+     * @param PDO $db polaczenie z baza
+     */
     public function __construct($db)
     {
         $this->conn = $db;
     }
 
+    /**
+     * Zwraca tablice z wszystkimi pokojami w podanym budynku i ich liczebnoscia
+     * @param integer $building_id id budynku
+     * @return array|string tablica z wszystkimi pokojami w podanym budynku, lub wiadomość o błędzie zwrócona przez bazę
+     */
     function findAllRooms($building_id)
     {
         $query = "CALL getRooms(?)";
@@ -31,6 +41,10 @@ class BuildingRepository implements IRepository
         $stmt->execute();
         $room_array = array();
         while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            if($row['message'] != null)
+            {
+                return $row['message'];
+            }
             $room = new Room();
             $room->setId($row["id"]);
             $room->setName($row["name"]);
@@ -42,9 +56,14 @@ class BuildingRepository implements IRepository
             $room->setBuilding($building);
             $room_array [] = $room;
         }
-        return array("count" => $stmt->rowCount(), "rooms" => $room_array);
+        return $room_array;
     }
 
+    /**
+     * Zwraca budynek o podanym id
+     * @param integer $id id budynku
+     * @return Building|null znaleziony budynek
+     */
     function find($id)
     {
         $query = "SELECT 
@@ -72,6 +91,10 @@ class BuildingRepository implements IRepository
         return $building;
     }
 
+    /**
+     * Zwraca tablice z wszystkimi budynkami i ich liczebnoscia
+     * @return array tablica z wszystkimi budynkami
+     */
     function findAll()
     {
         $query = "CALL getBuildings()";
@@ -90,6 +113,11 @@ class BuildingRepository implements IRepository
         return array("count" => $stmt->rowCount(), "buildings" => $building_array);
     }
 
+    /**
+     * Usuwa budynek o podanym id
+     * @param integer $id id budynku do usuniecia
+     * @return bool czy udalo sie usunac budynek
+     */
     function deleteOne($id)
     {
         $query = "DELETE
@@ -112,8 +140,9 @@ class BuildingRepository implements IRepository
     }
 
     /**
-     * @param Building $building
-     * @return bool
+     * Dodaje nowy budynek
+     * @param Building $building budynek do dodania
+     * @return array wiadomosc czy udalo sie dodac budynek i id dodanego budynku
      */
     function addNew($building)
     {
@@ -131,8 +160,25 @@ class BuildingRepository implements IRepository
         //execute query
         if($stmt->execute())
         {
-            return true;
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            return [
+                "id" => $row['id'],
+                "message" => $row['message']
+            ];
         }
-        return false;
+        return ["id" => null, "message" => null];
+    }
+
+    /**
+     * Zwraca id ostatniego budynku w tabeli
+     * @return integer id ostatniego budynku w tabeli
+     */
+    public function getLastBuildingID()
+    {
+        $query = "SELECT MAX(id) AS id FROM buildings";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row['id'];
     }
 }

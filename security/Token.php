@@ -3,6 +3,12 @@
 
 class Token
 {
+    /**
+     * Funkcja generujaca token
+     * @param integer $length dlugosc generowanego tokenu
+     * @return string - token
+     * @throws Exception
+     */
     static function getToken($length)
     {
         $token = "";

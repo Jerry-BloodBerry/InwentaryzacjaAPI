@@ -5,23 +5,29 @@ include_once '../object/Room.php';
 include_once '../object/AssetType.php';
 include_once '../object/Building.php';
 
+/** Klasa do obslugi tabeli srodkow trwalych */
 class AssetRepository
 {
-    //database connection and table name
-    /**
-     * @var PDO
-     */
+    /** PDO wartosc polaczenia z baza */
     private $conn;
+
+    /** string nazwa tabeli */
     private $table_name = "assets";
 
+
+    /**
+     * konstrukor
+     * @param PDO $db polaczenie z baza
+     */
     public function __construct($db)
     {
         $this->conn = $db;
     }
 
     /**
-     * @param integer $id
-     * @return Asset
+     * Znajuje i zwraca srodek trwaly o podanym id
+     * @param integer $id id srodka trwalego
+     * @return Asset|string znaleziony srodek trwaly lub błąd zwrócony przez bazę danych
      */
     function find($id)
     {
@@ -34,14 +40,18 @@ class AssetRepository
 
         //fetch row
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        if(!$row) return null;
+        if($row['message']!=null)
+        {
+            return $row['message'];
+        }
 
         return self::createAssetInfo($row);
     }
 
     /**
-     * @param integer $id
-     * @return bool
+     * Usuwa srodek trwaly o podanym id
+     * @param integer $id id srodka trwalego
+     * @return bool czy udalo sie usunac srodek trwaly
      */
     function deleteOne($id)
     {
@@ -65,8 +75,9 @@ class AssetRepository
     }
 
     /**
-     * @param Asset $asset
-     * @return bool
+     * Dodaje nowy srodek trwaly do tabeli
+     * @param Asset $asset srodek trwaly do dodania
+     * @return array czy udalo sie dodac srodek trwaly i jakie jest jego id
      */
     function addNew($asset)
     {
@@ -81,17 +92,28 @@ class AssetRepository
         //execute query
         if($stmt->execute())
         {
-            return true;
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            return [
+                'message' => $row['message'],
+                'id' => $row['id']
+            ];
         }
-        return false;
+        return [
+            'message' => null,
+            'id' => null
+        ];
     }
 
+    /**
+     * Tworzy i zwraca srodek trwaly na podstawie przekazanego wyniku kwerendy
+     * @param array $row wynik kwerendy fetch
+     * @return Asset utworzony srodek trwaly
+     */
     private static function createAssetInfo($row)
     {
         $asset = new Asset();
         $asset_type = new AssetType();
-        $building = new Building();
-        $room = new Room();
+
 
         $asset->setId($row['id']);
 
@@ -99,16 +121,34 @@ class AssetRepository
         $asset_type->setName($row['asset_type_name']);
         $asset_type->setLetter($row['letter']);
 
-        $building->setName($row['building_name']);
-        $building->setId($row['building_id']);
+        if($row['room_id'])
+        {
+            $building = new Building();
+            $room = new Room();
+            $building->setName($row['building_name']);
+            $building->setId($row['building_id']);
 
-        $room->setId($row['room_id']);
-        $room->setName($row['room_name']);
-        $room->setBuilding($building);
+            $room->setId($row['room_id']);
+            $room->setName($row['room_name']);
+            $room->setBuilding($building);
+
+            $asset->setRoom($room);
+        }
 
         $asset->setAssetType($asset_type);
-        $asset->setRoom($room);
-
         return $asset;
+    }
+
+    /**
+     * Zwraca id ostatniego srodka trwalego w tabeli
+     * @return integer id ostatniego srodka trwalego w tabeli
+     */
+    public function getLastAssetID()
+    {
+        $query = "SELECT MAX(id) AS id FROM assets";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row['id'];
     }
 }

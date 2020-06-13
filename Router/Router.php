@@ -45,6 +45,11 @@ $resources = [
   'getReportsHeaders' => '../report/getReportsHeaders.php',
   'getReportPositions' => '../report/getPositionsInReport.php',
   'addNewReport' => '../report/addNewReport.php',
+  'getScans' => '../scan/getScans.php',
+  'addScan' => '../scan/addScan.php',
+  'deleteScan' => '../scan/deleteScan.php',
+  'updateScan' => '../scan/updateScan.php',
+  'getScanPositions' => '../scan/getScanPositions.php'
   'pdfGenerator'=>'../generator/pdfGenerator.php'
 ];
 

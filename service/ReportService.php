@@ -7,10 +7,16 @@ include_once '../object/ReportAsset.php';
 include_once '../repository/ReportAssetRepository.php';
 include_once '../object/Report.php';
 
+/**
+ * Klasa posrednia pomiedzy otrzymaniem danych a wstawieniem ich do bazy danych
+ */
 class ReportService implements IService
 {
     /**
-     * @inheritDoc
+     * Funkcja prosi repozytorium aby odpytalo baze, czy zawiera w sobie element o danym id.
+     * Jeżeli zawiera, to repozytorium zwraca funkcji obiekt (raport), a funkcja zwraca go jako json
+     * @param integer $id id szukanego raportu
+     * @return void - zwraca raport w formacie JSON jezeli jest w bazie
      */
     static function findOneById($id)
     {
@@ -21,22 +27,23 @@ class ReportService implements IService
         // create a repository instance
         $rr = new ReportRepository($db);
 
-        $report = $rr->find($id);
+        $response = $rr->find($id);
 
-        if($report!=null)
+        if(!is_string($response))
         {
-            //everything went OK, asset was found
             http_response_code(200);
-            echo json_encode($report);
+            echo json_encode($response);
         }
         else {
-            http_response_code(404); // asset was not found
-            echo json_encode(["message" => "ReportHeader does not exist"]);
+            http_response_code(404);
+            echo json_encode(["message" => $response]);
         }
     }
 
     /**
-     * @inheritDoc
+     * Funkcja prosi repozytorium aby odpytalo baze, o wszystkie elementy.
+     * Repozytorium zwraca funkcji wszystkie obiekty (raporty), a funkcja zwraca je jako json
+     * @return mixed|void - zwraca wszystkie raporty
      */
     static function findAll()
     {
@@ -47,37 +54,43 @@ class ReportService implements IService
         // create a repository instance
         $rr = new ReportRepository($db);
 
-        $reports = $rr->findAll();
-
-        if(count($reports)>0)
+        $response = $rr->findAll();
+        if(is_string($response))
         {
             http_response_code(200);
-            echo json_encode($reports);
+            echo json_encode(array("message" => $response));
         }
         else
         {
-            http_response_code(404);
-            echo json_encode(array("message" => "No reports were found"));
+            http_response_code(200);
+            echo json_encode($response);
         }
     }
 
     /**
-     * @inheritDoc
+     * Funkcja prosi repozytorium aby dodalo nowy raport na podstawie jego danych do bazy
+     * @param object $data dane dodawanego raportu
      */
+
     static function addNew($data)
     {
         if(
-            !empty($data->name)&&
-            !empty($data->room)&&
-            !empty($data->assets))
+            property_exists($data, 'name') &&
+            property_exists($data, 'room') &&
+            property_exists($data, 'assets')
+        )
         {
             $assets = $data->assets;
             foreach ($data->assets as $asset)
             {
-                if(empty($asset->id) || empty($asset->present)) {
+                if(!property_exists($asset, 'id') || !property_exists($asset, 'present') || !property_exists($asset, 'previous')) {
                     http_response_code(400);
-                    echo json_encode(array("message" => "Unable to create report. The data is incomplete."));
+                    echo json_encode(array("message" => "Niepowodzenie. Przekazano niekompletne dane."));
                     exit();
+                }
+                if($asset->previous == -1)
+                {
+                    $asset->previous = null;
                 }
             }
             $report = new ReportHeader();
@@ -97,27 +110,37 @@ class ReportService implements IService
                 'report' => $report,
                 'assets' => $assets
             ];
-            if($rr->addNew($report_data))
+            $resp = $rr->addNew($report_data);
+            if($resp['id']!=null)
             {
+                $id = (int)$resp['id'];
                 http_response_code(201);
-                echo json_encode(array("message" => "ReportHeader created successfully"));
+                echo json_encode(array("message" => "Raport został utworzony.", "id" => $id));
+            }
+            else if($resp['message']!=null)
+            {
+                http_response_code(409);
+                echo json_encode(array("message" => $resp['message'], "id"=> null));
             }
             else
             {
                 http_response_code(503);
-                echo json_encode(array("message" => "Unable to create report. Service temporarily unavailable."));
+                echo json_encode(array("message" => "Niepowodzenie. Usługa chwilowo niedostępna.", "id" => null));
             }
         }
         else
         {
             http_response_code(400);
-            echo json_encode(array("message" => "Unable to create report. The data is incomplete."));
+            echo json_encode(array("message" => "Niepowodzenie. Przekazano niekompletne dane."));
         }
     }
 
     /**
-     * @inheritDoc
+     * Funkcja prosi repozytorium aby odpytalo baze, czy zawiera w sobie element o danym id.
+     * Jeżeli zawiera, to repozytorium usuwa z bazy danych ten element (raport).
+     * @param integer $id id usuwanego raportu
      */
+
     static function deleteOneById($id)
     {
         // get database connection
@@ -130,11 +153,11 @@ class ReportService implements IService
         if($rr->deleteOne($id))
         {
             http_response_code(200);
-            echo json_encode(array("message" => "ReportHeader was deleted"));
+            echo json_encode(array("message" => "Raport został usunięty."));
         }
         else {
             http_response_code(503);
-            echo json_encode(array("message" => "Unable to delete report. Service temporarily unavailable."));
+            echo json_encode(array("message" => "Niepowodzenie. Usługa chwilowo niedostępna."));
         }
     }
 

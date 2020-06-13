@@ -5,20 +5,30 @@ include_once '../config/Database.php';
 include_once '../security/BearerToken.php';
 include_once '../object/Building.php';
 
+/** Klasa do obslugi tabeli raportow */
 class ReportRepository implements IRepository
 {
-    //database connection and table name
-    /**
-     * @var PDO
-     */
+    /** PDO wartosc polaczenia z baza */
     private $conn;
+
+    /** string nazwa tabeli */
     private $table_name = "reports";
 
+
+    /**
+     * konstrukor
+     * @param PDO $db polaczenie z baza
+     */
     public function __construct($db)
     {
         $this->conn = $db;
     }
 
+    /**
+     * Zwraca raport o podanym id
+     * @param integer $id id raportu
+     * @return ReportHeader|string znaleziony raport, lub błąd zwrócony przez bazę danych
+     */
     function find($id)
     {
         $query = "CALL getReportHeader(?)";
@@ -30,11 +40,17 @@ class ReportRepository implements IRepository
 
         //fetch row
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        if(!$row) return null;
+        if($row['message'] != null){
+            return $row['message'];
+        }
 
         return self::createReport($row);
     }
 
+    /**
+     * Zwraca tablice z wszystkimi raportami
+     * @return array|string tablica z wszystkimi raportami, lub błąd zwrócony przez bazę danych
+     */
     function findAll()
     {
         $query = "CALL getLoginSession(?)";
@@ -57,12 +73,20 @@ class ReportRepository implements IRepository
         $stmt->execute();
         $report_array = array();
         while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-
+            if($row['message']!=null)
+            {
+                return $row['message'];
+            }
             $report_array [] = self::createReport($row);
         }
         return $report_array;
     }
 
+    /**
+     * Usuwa raport o podanym id
+     * @param integer $id id raportu do usuniecia
+     * @return bool czy udalo sie usunac raport
+     */
     function deleteOne($id)
     {
         $query = "DELETE
@@ -85,8 +109,9 @@ class ReportRepository implements IRepository
     }
 
     /**
-     * @param mixed $report_data
-     * @return bool
+     * Dodaj nowy raport
+     * @param array $report_data raport do dodania
+     * @return array czy udalo sie dodac raport
      */
     function addNew($report_data)
     {
@@ -110,10 +135,22 @@ class ReportRepository implements IRepository
         $stmt->bindParam(':owner', $owner_id);
         $stmt->bindParam(':positions', $assets);
 
-        $stmt->execute();
-        return true;
+        if($stmt->execute())
+        {
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            return [
+                'message' => $row['message'],
+                'id' => $row['id']
+            ];
+        }
+        return ["message" => null, "id" => null];
+
     }
 
+    /**
+     * Ustawia wlasciciela podanego raportu na obecnie zalogowanego uzytkownika
+     * @param ReportHeader $report raport
+     */
     private function setOwnerForReport(ReportHeader $report)
     {
         $query = "CALL getLoginSession(?)";
@@ -130,6 +167,11 @@ class ReportRepository implements IRepository
         $report->setOwner($owner);
     }
 
+    /**
+     * Tworzy i zwraca metadane raportu (naglowek) na podstawie przekazanego wyniku kwerendy
+     * @param array $row wynik kwerendy fetch
+     * @return ReportHeader utworzony naglowek raportu
+     */
     private static function createReport($row)
     {
         $report = new ReportHeader();
@@ -156,5 +198,18 @@ class ReportRepository implements IRepository
 
         $report->setRoom($room);
         return $report;
+    }
+
+    /**
+     * Zwraca id ostatniego naglowka raportu w tabeli
+     * @return integer id ostatniego naglowka raportu w tabeli
+     */
+    public function getLastReportID()
+    {
+        $query = "SELECT MAX(id) AS id FROM reports";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row['id'];
     }
 }
