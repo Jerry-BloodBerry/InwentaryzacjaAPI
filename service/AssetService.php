@@ -20,23 +20,20 @@ class AssetService
 
     static function findOneById($id)
     {
-        // get database connection
         $database = new Database();
         $db = $database->getConnection();
 
-        // create a repository instance
         $ar = new AssetRepository($db);
 
         $response = $ar->find($id);
 
         if(!is_string($response))
         {
-            //everything went OK, response was found
             http_response_code(200);
             echo json_encode($response);
         }
         else {
-            http_response_code(404); // response was not found
+            http_response_code(404);
             echo json_encode(["message" => $response]);
         }
     }
@@ -60,7 +57,6 @@ class AssetService
             $asset_type->setId($data->type);
             $asset->setAssetType($asset_type);
 
-            //init database
             $database = new Database();
             $db = $database->getConnection();
 
@@ -99,11 +95,9 @@ class AssetService
      */
     public static function deleteOneById($id)
     {
-        // get database connection
         $database = new Database();
         $db = $database->getConnection();
 
-        // create a repository instance
         $ar = new AssetRepository($db);
 
         if($ar->deleteOne($id))

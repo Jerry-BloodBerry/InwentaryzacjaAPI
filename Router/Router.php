@@ -29,7 +29,8 @@ $resources = [
   'getScans' => '../scan/getScans.php',
   'addScan' => '../scan/addScan.php',
   'deleteScan' => '../scan/deleteScan.php',
-  'updateScan' => '../scan/updateScan.php'
+  'updateScan' => '../scan/updateScan.php',
+  'getScanPositions' => '../scan/getScanPositions.php'
 ];
 
 foreach ($resources as $name => $path) {

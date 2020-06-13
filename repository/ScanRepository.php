@@ -4,6 +4,9 @@ include_once '../object/Room.php';
 include_once '../object/User.php';
 include_once '../object/Building.php';
 include_once '../config/Database.php';
+include_once '../object/ScanPosition.php';
+include_once '../object/Asset.php';
+include_once '../object/AssetType.php';
 
 /**
  * Klasa odpowiadajaca za obsluge skanowania
@@ -45,34 +48,23 @@ class ScanRepository
         return $scans_array;
     }
 
-    /**
-     * Funkcja tworzy i zwraca skan na podstawie przekazanego wyniku kwerendy
-     * @param array $row wynik kwerendy fetch
-     * @return Scan utworzony skan
-     */
-    private static function createScan($row)
+    public function getScanPositions($id)
     {
-        $scan = new Scan();
-        $scan->setId($row['id']);
+        $query = "CALL getScanPositions(?)";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(1,$id);
 
-        $building = new Building();
-        $building->setId($row['building_id']);
-        $building->setName($row['building_name']);
+        $stmt->execute();
 
-        $room = new Room();
-        $room->setId($row['room_id']);
-        $room->setName($row['room_name']);
-        $room->setBuilding($building);
-
-        $scan->setRoom($room);
-
-        $owner = new User();
-        $owner->setId($row['owner_id']);
-        $owner->setLogin($row['owner_name']);
-
-        $scan->setOwner($owner);
-        $scan->setCreateDate($row['create_date']);
-        return $scan;
+        $scan_positions_array = array();
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            if($row['message']!=null)
+            {
+                return $row['message'];
+            }
+            $scan_positions_array [] = self::createScanPosition($row);
+        }
+        return $scan_positions_array;
     }
 
     /**
@@ -128,5 +120,65 @@ class ScanRepository
         $stmt->bindParam(':positions', $positions);
 
         return $stmt->execute();
+    }
+
+    /**
+     * Funkcja tworzy i zwraca skan na podstawie przekazanego wyniku kwerendy
+     * @param array $row wynik kwerendy fetch
+     * @return Scan utworzony skan
+     */
+    private static function createScan($row)
+    {
+        $scan = new Scan();
+        $scan->setId($row['id']);
+
+        $building = new Building();
+        $building->setId($row['building_id']);
+        $building->setName($row['building_name']);
+
+        $room = new Room();
+        $room->setId($row['room_id']);
+        $room->setName($row['room_name']);
+        $room->setBuilding($building);
+
+        $scan->setRoom($room);
+
+        $owner = new User();
+        $owner->setId($row['owner_id']);
+        $owner->setLogin($row['owner_name']);
+
+        $scan->setOwner($owner);
+        $scan->setCreateDate($row['create_date']);
+        return $scan;
+    }
+
+    private static function createScanPosition($row)
+    {
+        $scan_pos = new ScanPosition();
+
+        $asset = new Asset();
+        $asset_type = new AssetType();
+        $building = new Building();
+        $room = new Room();
+
+        $asset_type->setId($row['type']);
+        $asset_type->setLetter($row['letter']);
+        $asset_type->setName($row['asset_type_name']);
+
+        $building->setId($row['building_id']);
+        $building->setName($row['building_name']);
+
+        $room->setId($row['room_id']);
+        $room->setName($row['room_name']);
+        $room->setBuilding($building);
+
+        $asset->setId($row['id']);
+        $asset->setAssetType($asset_type);
+        $asset->setRoom($room);
+
+        $scan_pos->setAsset($asset);
+        $scan_pos->setState($row['state']);
+
+        return $scan_pos;
     }
 }

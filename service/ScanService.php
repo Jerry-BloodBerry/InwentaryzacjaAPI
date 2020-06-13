@@ -13,11 +13,8 @@ class ScanService
      */
     public static function getScans()
     {
-        // get database connection
         $database = new Database();
         $db = $database->getConnection();
-
-        // create a repository instance
 
         $ur = new UserRepository($db);
         $user = $ur->findCurrentUser();
@@ -36,6 +33,27 @@ class ScanService
             echo json_encode(array("message" => $response));
         }
     }
+
+    public static function getScanPositions($id)
+    {
+        $database = new Database();
+        $db = $database->getConnection();
+
+        $sr = new ScanRepository($db);
+        $response = $sr->getScanPositions($id);
+
+        if(!is_string($response))
+        {
+            http_response_code(200);
+            echo json_encode($response);
+        }
+        else
+        {
+            http_response_code(404);
+            echo json_encode(array("message" => $response));
+        }
+    }
+
     /**
      * Funkcja prosi repozytorium aby dodalo nowy skan do bazy
      * @param object $data dane nowego elementu (skanu)
