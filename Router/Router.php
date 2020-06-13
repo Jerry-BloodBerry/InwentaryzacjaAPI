@@ -49,7 +49,7 @@ $resources = [
   'addScan' => '../scan/addScan.php',
   'deleteScan' => '../scan/deleteScan.php',
   'updateScan' => '../scan/updateScan.php',
-  'getScanPositions' => '../scan/getScanPositions.php'
+  'getScanPositions' => '../scan/getScanPositions.php',
   'pdfGenerator'=>'../generator/pdfGenerator.php'
 ];
 
