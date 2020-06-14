@@ -105,6 +105,8 @@ to make requests listed below.
   ]
 }
 ```
+  * /scan/getScanPositions/{id} - returns all assets from scan
+  
   ### UserCreator <- Just for testing!
   * /creator/user_creator - creates a User object with 
  the specified login and password and persists it to database.
