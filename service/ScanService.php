@@ -34,6 +34,10 @@ class ScanService
         }
     }
 
+    /**
+     * Zwraca liste srodkow trwalych w skanie w formacie JSON
+     * @param integer $id id skanu
+     */
     public static function getScanPositions($id)
     {
         $database = new Database();
@@ -58,7 +62,6 @@ class ScanService
      * Funkcja prosi repozytorium aby dodalo nowy skan do bazy
      * @param object $data dane nowego elementu (skanu)
      */
-
     static function addNew($data)
     {
         if(property_exists($data,'room'))
@@ -125,7 +128,6 @@ class ScanService
      * Funkcja prosi repozytorium aby odpytalo baze, aby zaktualizowac dany skan.
      * @param object $data dane skanu do zaktualizowania
      */
-
     public static function updateScan($data)
     {
         if(property_exists($data,'id') && property_exists($data,'positions')) {

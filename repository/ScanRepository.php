@@ -48,6 +48,11 @@ class ScanRepository
         return $scans_array;
     }
 
+    /**
+     * Zwraca liste srodkow trwalych w raporcie
+     * @param $id
+     * @return array|mixed
+     */
     public function getScanPositions($id)
     {
         $query = "CALL getScanPositions(?)";
@@ -155,6 +160,11 @@ class ScanRepository
         return $scan;
     }
 
+    /**
+     * Tworzy nowy srodek trwaly w skanie
+     * @param array $row wynik kwerendy fetch
+     * @return ScanPosition utworzony srodek trwaly w skanie
+     */
     private static function createScanPosition($row)
     {
         $scan_pos = new ScanPosition();
