@@ -35,9 +35,8 @@ class ScanService
     }
 
     /**
-     * Zwraca liste srodkow trwalych w skanie
+     * Zwraca liste srodkow trwalych w skanie w formacie JSON
      * @param integer $id id skanu
-     * @return array lista srodkow trwalych w skanie
      */
     public static function getScanPositions($id)
     {
